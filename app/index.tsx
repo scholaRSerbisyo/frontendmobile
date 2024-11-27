@@ -1,73 +1,114 @@
+import React from 'react';
+import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Text } from '~/components/ui/text';
+import { router } from 'expo-router';
 
-
-
-  import * as React from 'react';
-  import { View, Image, StyleSheet } from 'react-native';
-  import { useNavigation } from '@react-navigation/native';
-  import Animated, { FadeIn, FadeInUp } from 'react-native-reanimated';
-  import { Button } from '~/components/ui/button';
-  import { Text } from '~/components/ui/text';
-  import { Link } from 'expo-router';
-  export default function LandingPage() {
-      
-  //   const navigation = useNavigation();
-
-  //   const handleWelcomePress = () => {
-  //     navigation.navigate('Login');
-  //   };
-
-    return (
-      <View style={styles.container}>
-        <Animated.View entering={FadeIn.delay(300).duration(1000)} style={styles.logoContainer}>
-          <Image
-            source={require('../assets/images/2nd-type-logo.png')}
-            resizeMode="contain"
-            style={styles.logo}
-          />
-        </Animated.View>
-
-        <Animated.View entering={FadeInUp.delay(800).duration(800)}>
-          <Button
-            style={styles.continueButton}          
-          >
-           <Link href= '/auth/Login'>
-            <Text style={styles.continueButtonText}>Welcome Scholars</Text>
-            </Link>
-          </Button>
-        </Animated.View>
+export default function LogoutScreen() {
+  return (
+    <SafeAreaView style={styles.container}>
+      {/* Logo */}
+      <View style={styles.logoContainer}>
+        <Image
+          source={require('../assets/images/final-logo-iskoserbisyo.png')} // Replace with your logo path
+          style={styles.logo}
+          resizeMode="contain"
+        />
       </View>
-    );
-  }
 
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: 'center',
-      // alignItems: 'center',
-      // padding: 24,
-      backgroundColor: 'white', // Primary background color
-    },
-    logoContainer: {
-      // flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
+      {/* Content */}
+      <View style={styles.contentContainer}>
+        <Text style={styles.title}>Log Out</Text>
+        <Text style={styles.message}>
+          Are you sure that you want to log out?
+        </Text>
 
-    logo: {
-      resizeMode: 'contain'
-    },
-    continueButton: {
-      backgroundColor: '#FDB316',
-      height: '25%',
-      marginHorizontal: '10%',
-      borderRadius: 25,
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginTop: 10,
-    },
-    continueButtonText: {
-      color: '#191851',
-      fontSize: 18,
-      fontWeight: 'bold',
-    },
-  });
+        {/* Buttons */}
+        <TouchableOpacity
+          style={styles.continueButton}
+          onPress={() => {
+            console.log('User logged out');
+            // Add logout logic here
+            // router.replace('/login');
+          }}
+        >
+          <Text style={styles.continueButtonText}>Continue</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.cancelButton}
+          onPress={() => router.back()}
+        >
+          <Text style={styles.cancelButtonText}>Cancel</Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white', // Dark blue background
+  },
+  logoContainer: {
+    alignItems: 'center',
+    // marginTop: 40,
+    marginBottom: 20,
+  },
+  logo: {
+    width: 300,
+    height: 150,
+  },
+  contentContainer: {
+    backgroundColor: '#191851',
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    paddingVertical: 40,
+    paddingHorizontal: 20,
+    alignItems: 'center',
+    flex: 1,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'white', // Dark blue text
+    marginBottom: 15,
+    paddingTop: "25%"
+  },
+  message: {
+    fontSize: 16,
+    color: 'white', // Gray message text
+    textAlign: 'center',
+    marginBottom: 40,
+  },
+  continueButton: {
+    backgroundColor: '#FDB316', // Golden yellow
+    height: 50,
+    borderRadius: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '80%',
+    marginBottom: 15,
+  },
+  continueButtonText: {
+    color: 'white', // White text
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  cancelButton: {
+    backgroundColor: '#FDB316', // White button
+    height: 50,
+    borderRadius: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '80%',
+    borderWidth: 2,
+    borderColor: '#FDB316', // Golden yellow border
+  },
+  cancelButtonText: {
+    color: 'white', 
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+});
