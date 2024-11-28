@@ -101,10 +101,13 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   menuItem: {
-    backgroundColor: 'white',
     padding: 16,
     borderRadius: 8,
     marginBottom: 12,
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#FDB316',
+    paddingVertical: 10,
   },
   menuText: {
     fontSize: 16,

@@ -8,9 +8,7 @@ import {
     CircleUserRound } from 'lucide-react-native'
 import HomeScreen from './homescreen'
 import NotificationsScreen from './notificationscreen'
-import ContentScreen from './contentscreen'
-import AboutUsScreen from '../profile/aboutus'
-
+import ProfileScreen from '../../components/Profile/profileburger'
 const Tab = createBottomTabNavigator()
 
 export default function BottomTabs() {
@@ -51,8 +49,8 @@ export default function BottomTabs() {
         }}
       /> */}
       <Tab.Screen
-        name="Settings"
-        component={AboutUsScreen}
+        name="Profile"
+        component={ProfileScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
             <CircleUserRound color={color} size={size} />

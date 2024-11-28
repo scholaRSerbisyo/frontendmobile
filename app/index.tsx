@@ -1,113 +1,85 @@
-import React from 'react';
-import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Text } from '~/components/ui/text';
-import { router } from 'expo-router';
+import * as React from 'react'
+import { View, Image, StyleSheet, Platform } from 'react-native'
+import Animated, { FadeIn, FadeInUp } from 'react-native-reanimated'
+import { Button } from '../components/ui/button'
+import { Link } from 'expo-router'
+import { Text } from '../components/ui/text'
+import { StatusBar } from 'expo-status-bar'
 
-export default function LogoutScreen() {
+export default function LandingPage() {
   return (
-    <SafeAreaView style={styles.container}>
-      {/* Logo */}
-      <View style={styles.logoContainer}>
-        <Image
-          source={require('../assets/images/final-logo-iskoserbisyo.png')} // Replace with your logo path
-          style={styles.logo}
-          resizeMode="contain"
-        />
-      </View>
-
-      {/* Content */}
+    <View style={styles.container}>
+      <StatusBar style="dark" />
+      
       <View style={styles.contentContainer}>
-        <Text style={styles.title}>Log Out</Text>
-        <Text style={styles.message}>
-          Are you sure that you want to log out?
-        </Text>
-
-        {/* Buttons */}
-        <TouchableOpacity
-          style={styles.continueButton}
-          onPress={() => {
-            console.log('User logged out');
-            router.replace('/pages/calendar');
-          }}
+        <Animated.View 
+          entering={FadeIn.delay(300).duration(1000)} 
+          style={styles.logoContainer}
         >
-          <Text style={styles.continueButtonText}>Continue</Text>
-        </TouchableOpacity>
+          <Image
+            source={require('../assets/images/final-logo-iskoserbisyo.png')}
+            style={styles.logo}
+            resizeMode="contain"
+            accessibilityLabel="Scholar Serbisyo Logo"
+          />
+        </Animated.View>
 
-        <TouchableOpacity
-          style={styles.cancelButton}
-          onPress={() => router.back()}
+        <Animated.View 
+          entering={FadeInUp.delay(800).duration(800)}
+          style={styles.buttonContainer}
         >
-          <Text style={styles.cancelButtonText}>Cancel</Text>
-        </TouchableOpacity>
+          <Link href="/(authentication)/login" asChild>
+            <Button style={styles.continueButton}>
+              <Text style={styles.continueButtonText}>
+                Good day, Scholars!
+              </Text>
+            </Button>
+          </Link>
+        </Animated.View>
       </View>
-    </SafeAreaView>
-  );
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white', // Dark blue background
+    backgroundColor: 'white',
+  },
+  contentContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 24,
   },
   logoContainer: {
     alignItems: 'center',
-    // marginTop: 40,
-    marginBottom: 20,
+    marginBottom: undefined, // Reduced space between logo and button
   },
   logo: {
-    width: 300,
-    height: 150,
+    width: 280,
+    height: 180,
   },
-  contentContainer: {
-    backgroundColor: '#191851',
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    paddingVertical: 40,
-    paddingHorizontal: 20,
-    alignItems: 'center',
-    flex: 1,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: 'white', // Dark blue text
-    marginBottom: 15,
-    paddingTop: "25%"
-  },
-  message: {
-    fontSize: 16,
-    color: 'white', // Gray message text
-    textAlign: 'center',
-    marginBottom: 40,
+  buttonContainer: {
+    width: '80%',
   },
   continueButton: {
-    backgroundColor: '#FDB316', // Golden yellow
+    backgroundColor: '#FDB316',
     height: 50,
     borderRadius: 25,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '80%',
-    marginBottom: 15,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   continueButtonText: {
-    color: 'white', // White text
-    fontSize: 16,
-    fontWeight: 'bold', 
-  },
-  cancelButton: {
-    backgroundColor: '#FDB316', // White button
-    height: 50,
-    borderRadius: 25,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '80%',
-    borderWidth: 2,
-    borderColor: '#FDB316', // Golden yellow border
-  },
-  cancelButtonText: {
-    color: 'white', 
-    fontSize: 16,
+    color: '#191851',
+    fontSize: 18,
     fontWeight: 'bold',
   },
-});
+})
+

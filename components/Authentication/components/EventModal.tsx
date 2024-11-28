@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, Modal, TouchableOpacity, StyleSheet } from 'react-native';
-import { X, ChevronLeft, ChevronRight } from 'lucide-react-native';
+import { View, Text, Modal, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
+import { X } from 'lucide-react-native';
 
 interface EventModalProps {
   visible: boolean;
@@ -21,9 +21,10 @@ export function EventModal({ visible, onClose, selectedDate, onPrevDay, onNextDa
       <View style={styles.overlay}>
         <View style={styles.modalContent}>
           <View style={styles.header}>
-            <TouchableOpacity onPress={onPrevDay}>
-              <ChevronLeft size={24} color="#000" />
+            <TouchableOpacity onPress={onPrevDay} style={styles.navButton}>
+              <Text style={styles.navIcon}>{'<'}</Text>
             </TouchableOpacity>
+            
             <Text style={styles.dateText}>
               {selectedDate.toLocaleDateString('en-US', { 
                 month: 'long',
@@ -31,30 +32,32 @@ export function EventModal({ visible, onClose, selectedDate, onPrevDay, onNextDa
                 year: 'numeric'
               })}
             </Text>
-            <TouchableOpacity onPress={onNextDay}>
-              <ChevronRight size={24} color="#000" />
+            
+            <TouchableOpacity onPress={onNextDay} style={styles.navButton}>
+              <Text style={styles.navIcon}>{'>'}</Text>
             </TouchableOpacity>
+
             <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-              <X size={24} color="#000" />
+              <Text style={styles.closeIcon}>✕</Text>
             </TouchableOpacity>
           </View>
 
           <View style={styles.form}>
             <View style={styles.formGroup}>
               <Text style={styles.label}>Event Title:</Text>
-              <View style={styles.input} />
+              <TextInput style={styles.input} />
             </View>
             <View style={styles.formGroup}>
               <Text style={styles.label}>Location:</Text>
-              <View style={styles.input} />
+              <TextInput style={styles.input} />
             </View>
             <View style={styles.formGroup}>
               <Text style={styles.label}>Time:</Text>
-              <View style={styles.input} />
+              <TextInput style={styles.input} />
             </View>
             <View style={styles.formGroup}>
               <Text style={styles.label}>Type of Event:</Text>
-              <View style={styles.input} />
+              <TextInput style={styles.input} />
             </View>
           </View>
         </View>
@@ -72,33 +75,45 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     backgroundColor: 'white',
-    borderRadius: 10,
+    borderRadius: 15,
     padding: 20,
-    width: '80%',
+    width: '85%',
     maxWidth: 400,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     marginBottom: 20,
+    position: 'relative',
   },
   dateText: {
-    flex: 1,
-    textAlign: 'center',
     fontSize: 16,
     fontWeight: '600',
-    marginHorizontal: 10,
+    marginHorizontal: 15,
+  },
+  navButton: {
+    padding: 10,
+  },
+  navIcon: {
+    fontSize: 20,
+    fontWeight: '600',
   },
   closeButton: {
     position: 'absolute',
-    right: 0,
-    top: 0,
+    right: -10,
+    top: -10,
+    padding: 10,
+  },
+  closeIcon: {
+    fontSize: 20,
+    fontWeight: '300',
   },
   form: {
-    gap: 15,
+    gap: 20,
   },
   formGroup: {
-    gap: 5,
+    gap: 8,
   },
   label: {
     fontSize: 14,
@@ -108,7 +123,8 @@ const styles = StyleSheet.create({
     height: 40,
     borderWidth: 1,
     borderColor: '#ddd',
-    borderRadius: 5,
+    borderRadius: 8,
+    paddingHorizontal: 10,
   },
 });
 

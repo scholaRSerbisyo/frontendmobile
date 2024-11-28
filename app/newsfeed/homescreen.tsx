@@ -12,7 +12,7 @@ import {
 import { Text } from '~/components/ui/text'
 import { Card } from '~/components/ui/card'
 import { Calendar } from 'lucide-react-native'
-
+import { router } from 'expo-router'
 export default function HomeScreen() {
   const [isCommentsVisible, setCommentsVisible] = useState(false)
 
@@ -22,7 +22,9 @@ export default function HomeScreen() {
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.headerTitle}>Home</Text>
-          <TouchableOpacity style={styles.calendarButton}>
+          <TouchableOpacity style={styles.calendarButton}
+          onPress={() => router.navigate('/pages/calendar')}
+          >
             <Calendar color="#FDB316" size={24} />
           </TouchableOpacity>
         </View>

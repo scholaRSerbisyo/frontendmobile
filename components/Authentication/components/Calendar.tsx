@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-nati
 import { Link } from 'expo-router';
 import { EventModal } from './EventModal';
 import { User, Home, Bell } from 'lucide-react-native';
-
+import { router } from 'expo-router';
 type EventType = 'today' | 'upcoming' | 'previous';
 
 interface DayEvent {
@@ -44,14 +44,26 @@ export function Calendar() {
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <Link href="../" style={styles.backButton}>
-          <Text style={styles.backText}>Back</Text>
-        </Link>
-        <Text style={styles.title}>Calendar</Text>
-        <Link href="/profile/profileburger" style={styles.profileButton}>
-          <Text style={styles.profileText}>Profile</Text>
-        </Link>
-      </View>
+  {/* Back Button */}
+  <TouchableOpacity
+    onPress={() => router.back()}
+    style={styles.backButton}
+  >
+    <Text style={styles.backText}>Back</Text>
+  </TouchableOpacity>
+
+  {/* Title */}
+  <Text style={styles.title}>Calendar</Text>
+
+  {/* Profile Button */}
+  <TouchableOpacity
+    onPress={() => router.push('/profile/profileburger')}
+    style={styles.profileButton}
+  >
+    <Text style={styles.profileText}>Profile</Text>
+  </TouchableOpacity>
+</View>
+
 
       {/* Month */}
       <Text style={styles.month}>January</Text>
@@ -138,7 +150,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 15,
+    padding: 40,
     backgroundColor: '#191851',
   },
   backButton: {
@@ -149,7 +161,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: 24,
     fontWeight: '600',
   },
   profileButton: {

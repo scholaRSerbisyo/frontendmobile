@@ -9,7 +9,7 @@ import {
 import HomeScreen from '../newsfeed/homescreen'
 import NotificationsScreen from '../newsfeed/notificationscreen'
 import ContentScreen from '../newsfeed/contentscreen'
-import AboutUsScreen from '../profile/aboutus'
+import AboutUsScreen from './aboutus'
 
 const Tab = createBottomTabNavigator()
 

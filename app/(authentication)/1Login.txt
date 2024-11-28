@@ -1,0 +1,214 @@
+import React, { useState } from 'react'
+import {
+  View,
+  Image,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableOpacity,
+  Pressable,
+} from 'react-native'
+import { Link, useRouter } from 'expo-router'
+import axios from 'axios'
+import { Eye, EyeOff } from 'lucide-react-native'
+import { Text } from '~/components/ui/text'
+import { Button } from '~/components/ui/button'
+import { Input } from '~/components/ui/input';
+import { SafeAreaView } from 'react-native-safe-area-context'
+
+export default function LoginPage() {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
+  
+  const router = useRouter()
+
+  const handleLogin = async () => {
+    try {
+      setIsLoading(true)
+      setError('')
+
+      const response = await axios.post('YOUR_API_URL/login', {
+        username,
+        password,
+      }, {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+      })
+
+      // Handle successful login
+      if (response.data.token) {
+        // Store the token securely (you might want to use secure storage)
+        // await SecureStore.setItemAsync('userToken', response.data.token)
+        router.replace('/home')
+      }
+    } catch (error: any) {
+      setError(error.response?.data?.message || 'Login failed. Please try again.')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.keyboardAvoid}
+      >
+        <View style={styles.content}>
+          <View style={styles.logoContainer}>
+            <Image
+              source={require('~/assets/images/2nd-type-logo.png')}
+              style={styles.logo}
+              resizeMode="contain"
+            />
+          </View>
+
+          <View style={styles.formContainer}>
+            <Text style={styles.title}>Log In</Text>
+
+            <View style={styles.inputContainer}>
+              <Input
+                placeholder="Username"
+                value={username}
+                onChangeText={setUsername}
+                autoCapitalize="none"
+                style={styles.input}
+              />
+
+              <View style={styles.passwordContainer}>
+                <Input
+                  placeholder="Password"
+                  value={password}
+                  onChangeText={setPassword}
+                  secureTextEntry={!showPassword}
+                  style={styles.input}
+                />
+                <Pressable
+                  onPress={() => setShowPassword(!showPassword)}
+                  style={styles.showButton}
+                >
+                  <Text style={styles.showButtonText}>
+                    {showPassword ? <EyeOff size={20} color="#191851" /> : <Eye size={20} color="#191851" />}
+                  </Text>
+                </Pressable>
+              </View>
+
+              {error ? <Text style={styles.errorText}>{error}</Text> : null}
+
+              <Button
+                onPress={handleLogin}
+                style={styles.continueButton}
+                disabled={isLoading}
+              >
+                <Text style={styles.continueButtonText}>
+                  {isLoading ? 'Loading...' : 'Continue'}
+                </Text>
+              </Button>
+
+              <View style={styles.registerContainer}>
+                <Text style={styles.registerText}>No account yet? </Text>
+                <Link href="/register" asChild>
+                  <TouchableOpacity>
+                    <Text style={styles.registerLink}>Register here!</Text>
+                  </TouchableOpacity>
+                </Link>
+              </View>
+            </View>
+          </View>
+        </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
+  )
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  keyboardAvoid: {
+    flex: 1,
+  },
+  content: {
+    flex: 1,
+    padding: 24,
+  },
+  logoContainer: {
+    alignItems: 'center',
+    marginBottom: 24,
+  },
+  logo: {
+    width: 200,
+    height: 120,
+  },
+  formContainer: {
+    backgroundColor: '#191851',
+    borderRadius: 20,
+    padding: 24,
+    width: '100%',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'white',
+    marginBottom: 24,
+  },
+  inputContainer: {
+    gap: 16,
+  },
+  input: {
+    backgroundColor: 'white',
+    borderRadius: 8,
+    padding: 12,
+    fontSize: 16,
+  },
+  passwordContainer: {
+    position: 'relative',
+  },
+  showButton: {
+    position: 'absolute',
+    right: 12,
+    top: 12,
+  },
+  showButtonText: {
+    color: '#191851',
+    fontSize: 14,
+  },
+  continueButton: {
+    backgroundColor: '#FDB316',
+    padding: 16,
+    borderRadius: 25,
+    marginTop: 8,
+  },
+  continueButtonText: {
+    color: '#191851',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  registerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 16,
+  },
+  registerText: {
+    color: 'white',
+    fontSize: 14,
+  },
+  registerLink: {
+    color: '#FDB316',
+    fontSize: 14,
+    textDecorationLine: 'underline',
+  },
+  errorText: {
+    color: '#ff4444',
+    fontSize: 14,
+    textAlign: 'center',
+  },
+})
+
