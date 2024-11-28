@@ -28,8 +28,7 @@ export default function LogoutScreen() {
           style={styles.continueButton}
           onPress={() => {
             console.log('User logged out');
-            // Add logout logic here
-            // router.replace('/login');
+            router.replace('/pages/calendar');
           }}
         >
           <Text style={styles.continueButtonText}>Continue</Text>
@@ -94,7 +93,7 @@ const styles = StyleSheet.create({
   continueButtonText: {
     color: 'white', // White text
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: 'bold', 
   },
   cancelButton: {
     backgroundColor: '#FDB316', // White button
