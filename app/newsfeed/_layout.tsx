@@ -1,7 +1,6 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { View, StyleSheet } from 'react-native'
-// import { Text } from '~/components/ui/text'
+import { StyleSheet } from 'react-native'
 import { 
     Home, 
     Bell, 
@@ -39,15 +38,6 @@ export default function BottomTabs() {
           ),
         }}
       />
-      {/* <Tab.Screen
-        name="Profile"
-        component={ContentScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <CircleUserRound color={color} size={size} />
-          ),
-        }}
-      /> */}
       <Tab.Screen
         name="Profile"
         component={ProfileScreen}

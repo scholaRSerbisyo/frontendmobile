@@ -57,7 +57,7 @@ export function Calendar() {
 
   {/* Profile Button */}
   <TouchableOpacity
-    onPress={() => router.push('/profile/profileburger')}
+    onPress={() => router.push('/profile/aboutus')}
     style={styles.profileButton}
   >
     <Text style={styles.profileText}>Profile</Text>

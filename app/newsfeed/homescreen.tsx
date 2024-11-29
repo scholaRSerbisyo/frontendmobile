@@ -23,7 +23,7 @@ export default function HomeScreen() {
         <View style={styles.header}>
           <Text style={styles.headerTitle}>Home</Text>
           <TouchableOpacity style={styles.calendarButton}
-          onPress={() => router.navigate('/pages/calendar')}
+          onPress={() => router.navigate('/(calendar)/calendar')}
           >
             <Calendar color="#FDB316" size={24} />
           </TouchableOpacity>

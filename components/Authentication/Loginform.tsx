@@ -39,7 +39,9 @@ export function LoginForm() {
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity style={styles.continueButton}>
+      <TouchableOpacity 
+        onPress={() => router.push('/newsfeed/homescreen')}
+        style={styles.continueButton}>
         <Text style={styles.continueButtonText}>Continue</Text>
       </TouchableOpacity>
 
