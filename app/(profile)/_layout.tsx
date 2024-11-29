@@ -10,7 +10,7 @@ import HomeScreen from '../newsfeed/homescreen'
 import NotificationsScreen from '../newsfeed/notificationscreen'
 import ContentScreen from '../newsfeed/contentscreen'
 import AboutUsScreen from './aboutus'
-
+import TotalRSScreen from './total-rs'
 const Tab = createBottomTabNavigator()
 
 export default function BottomTabs() {

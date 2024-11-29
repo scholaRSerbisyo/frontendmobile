@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { Link } from 'expo-router';
-import { EventModal } from './EventModal';
+import { CalendarEventModal } from './CalendarEventModal';
 import { User, Home, Bell } from 'lucide-react-native';
 import { router } from 'expo-router';
 type EventType = 'today' | 'upcoming' | 'previous';
@@ -57,7 +57,7 @@ export function Calendar() {
 
   {/* Profile Button */}
   <TouchableOpacity
-    onPress={() => router.push('/profile/aboutus')}
+    onPress={() => router.push('/(profile)aboutus')}
     style={styles.profileButton}
   >
     <Text style={styles.profileText}>Profile</Text>

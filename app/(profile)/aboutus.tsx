@@ -15,7 +15,7 @@ const AboutUsScreen = () => {
         >
           <Undo2 size={24} color="#191851" />
         </TouchableOpacity>
-        <Text style={styles.title}>Settings</Text>
+        <Text style={styles.title}>About Us</Text>
       </View>
 
       <ScrollView style={styles.contentContainer}>
@@ -94,37 +94,35 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingHorizontal: 15,
     marginBottom: 10,
+    backgroundColor: '#FFFFFF',
   },
   backButton: {
     padding: 8,
-    position: 'absolute',
-    left: 15,
-    zIndex: 1,
   },
   title: {
-    fontSize: 30,
+    fontSize: 20,
     fontWeight: 'bold',
-    textAlign: 'center',
     color: '#191851',
-    flex: 1,
+    marginLeft: 16,
   },
   contentContainer: {
     paddingHorizontal: 15,
   },
   section: {
     backgroundColor: '#FFFFFF',
-    borderWidth: 3,
-    borderColor: '#191851',
+    borderWidth: 1,
+    borderColor: '#E5E5E5',
     marginBottom: 15,
+    borderRadius: 8,
+    overflow: 'hidden',
   },
   sectionHeader: {
     backgroundColor: '#FDB316',
     paddingVertical: 8,
     paddingHorizontal: 10,
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
-    color: '#000000',
-    textAlign: 'center',
+    color: '#191851',
   },
   sectionContentContainer: {
     padding: 10,
@@ -133,7 +131,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#333333',
     lineHeight: 22,
-    textAlign: 'justify'
   },
 })
 

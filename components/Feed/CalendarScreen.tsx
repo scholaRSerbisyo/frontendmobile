@@ -5,7 +5,7 @@ import { Calendar } from 'react-native-calendars'
 import { ChevronLeft, Home, Calendar as CalendarIcon, User } from 'lucide-react-native'
 import { Text } from '../ui/text'
 import { SafeAreaView } from 'react-native-safe-area-context'
-
+import { CalendarEventModal } from '../Authentication/components/CalendarEventModal'
 type Event = {
   id: string
   title: string
@@ -18,6 +18,7 @@ type Event = {
 export function CalendarScreen() {
   const router = useRouter()
   const [selectedDate, setSelectedDate] = useState('')
+  const [showEventDetails, setShowEventDetails] = useState(false)
 
   // Sample events data
   const events: { [key: string]: Event } = {
@@ -107,6 +108,11 @@ export function CalendarScreen() {
     }
   }, {})
 
+  const handleDayPress = (day: any) => {
+    setSelectedDate(day.dateString)
+    setShowEventDetails(true)
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
@@ -117,7 +123,7 @@ export function CalendarScreen() {
             <Text style={styles.headerButtonText}>Back</Text>
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Calendar</Text>
-          <TouchableOpacity onPress={() => router.push('/profile/logout')} style={styles.headerButton}>
+          <TouchableOpacity onPress={() => router.push('/profile')} style={styles.headerButton}>
             <Text style={styles.headerButtonTextRight}>Profile</Text>
           </TouchableOpacity>
         </View>
@@ -143,7 +149,7 @@ export function CalendarScreen() {
               textMonthFontSize: 18,
             }}
             markedDates={markedDates}
-            onDayPress={(day) => setSelectedDate(day.dateString)}
+            onDayPress={handleDayPress}
           />
         </View>
 
@@ -168,16 +174,24 @@ export function CalendarScreen() {
 
         {/* Bottom Navigation */}
         <View style={styles.bottomNav}>
-          <TouchableOpacity style={styles.navButton}>
+          <TouchableOpacity style={styles.navButton} onPress={() => router.push('/calendar')}>
             <CalendarIcon size={24} color="#FFFFFF" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.navButton}>
+          <TouchableOpacity style={styles.navButton} onPress={() => router.push('/home')}>
             <Home size={24} color="#FFFFFF" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.navButton}>
+          <TouchableOpacity style={styles.navButton} onPress={() => router.push('/profile')}>
             <User size={24} color="#FFFFFF" />
           </TouchableOpacity>
         </View>
+
+        {/* Event Details Modal */}
+        <CalendarEventModal
+          visible={showEventDetails}
+          onClose={() => setShowEventDetails(false)}
+          selectedDate={selectedDate}
+          event={events[selectedDate] || null}
+        />
       </View>
     </SafeAreaView>
   )

@@ -1,24 +1,51 @@
 import React, { useState } from 'react'
-import { View, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native'
 import { useRouter } from 'expo-router'
 import { Text } from '../ui/text'
 import { Input } from '../ui/input'
+import { useAuth } from './api/Auth'
 
 export function LoginForm() {
-  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isPasswordVisible, setPasswordVisible] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
   const router = useRouter()
+  const { signIn } = useAuth()
+
+  const handleLogin = async () => {
+    if (!email || !password) {
+      setError('Please enter both email and password')
+      return
+    }
+
+    setIsLoading(true)
+    setError('')
+
+    try {
+      const response = await signIn(email, password)
+
+      console.log(response)
+      router.replace('/home')
+    } catch (error) {
+      setError('Invalid email or password')
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   return (
     <View style={styles.formContainer}>
       <Text style={styles.title}>Log In</Text>
 
       <Input
-        placeholder="Username"
-        value={username}
-        onChangeText={setUsername}
+        placeholder="Email"
+        value={email}
+        onChangeText={setEmail}
         style={styles.input}
+        keyboardType="email-address"
+        autoCapitalize="none"
       />
 
       <View style={styles.passwordContainer}>
@@ -39,10 +66,18 @@ export function LoginForm() {
         </TouchableOpacity>
       </View>
 
+      {error ? <Text style={styles.errorText}>{error}</Text> : null}
+
       <TouchableOpacity 
-        onPress={() => router.push('/newsfeed/homescreen')}
-        style={styles.continueButton}>
-        <Text style={styles.continueButtonText}>Continue</Text>
+        style={styles.continueButton} 
+        onPress={handleLogin}
+        disabled={isLoading}
+      >
+        {isLoading ? (
+          <ActivityIndicator color="#FFFFFF" />
+        ) : (
+          <Text style={styles.continueButtonText}>Continue</Text>
+        )}
       </TouchableOpacity>
 
       <View style={styles.registerContainer}>
@@ -64,7 +99,6 @@ const styles = StyleSheet.create({
   formContainer: {
     flex: 1,
     paddingHorizontal: 24,
-    // paddingTop: '10%',
   },
   title: {
     fontSize: 28,
@@ -120,6 +154,12 @@ const styles = StyleSheet.create({
     color: '#FDB316',
     fontWeight:'bold',
     textDecorationLine: 'underline'
+  },
+  errorText: {
+    color: '#FF3B30',
+    fontSize: 14,
+    marginBottom: 16,
+    textAlign: 'center',
   },
 })
 

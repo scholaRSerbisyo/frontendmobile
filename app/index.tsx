@@ -5,7 +5,7 @@ import { Button } from '../components/ui/button'
 import { Link } from 'expo-router'
 import { Text } from '../components/ui/text'
 import { StatusBar } from 'expo-status-bar'
-
+import { router } from 'expo-router'
 export default function LandingPage() {
   return (
     <View style={styles.container}>
@@ -28,13 +28,16 @@ export default function LandingPage() {
           entering={FadeInUp.delay(800).duration(800)}
           style={styles.buttonContainer}
         >
-          <Link href="/(authentication)/login" asChild>
-            <Button style={styles.continueButton}>
+          {/* <Link href="/profile\total-rs" asChild> */}
+            <Button 
+            onPress={() => router.push('/(authentication)/login')}
+
+            style={styles.continueButton}>
               <Text style={styles.continueButtonText}>
                 Good day, Scholars!
               </Text>
             </Button>
-          </Link>
+          {/* </Link> */}
         </Animated.View>
       </View>
     </View>

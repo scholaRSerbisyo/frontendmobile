@@ -28,25 +28,25 @@ export default function ProfileScreen() {
         </View>
 
         <View style={styles.menuSection}>
-          <Link href="/settings" asChild>
+          
             <TouchableOpacity style={styles.menuItem}>
               <Text style={styles.menuText}>Settings</Text>
             </TouchableOpacity>
-          </Link>
+          
 
-          <Link href="/faq" asChild>
+          <Link href="/profile/faq" asChild>
             <TouchableOpacity style={styles.menuItem}>
               <Text style={styles.menuText}>FAQ</Text>
             </TouchableOpacity>
           </Link>
 
-          <Link href="/calendar" asChild>
+          <Link href="/(calendar)/calendar" asChild>
             <TouchableOpacity style={styles.menuItem}>
               <Text style={styles.menuText}>Calendar</Text>
             </TouchableOpacity>
           </Link>
 
-          <Link href="/logout" asChild>
+          <Link href="/profile/logout" asChild>
             <TouchableOpacity style={styles.menuItem}>
               <Text style={styles.menuText}>Log Out</Text>
             </TouchableOpacity>
