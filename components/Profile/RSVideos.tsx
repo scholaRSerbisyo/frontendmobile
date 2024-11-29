@@ -31,7 +31,7 @@ const itemWidth = (windowWidth - 48) / 2 // 2 columns with padding
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#191851',
+    backgroundColor: 'white',
   },
   grid: {
     flexDirection: 'row',
