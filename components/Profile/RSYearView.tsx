@@ -20,6 +20,7 @@ export function RSYearView() {
           title={year.title}
           status={year.status}
           hours={year.hours}
+          isYear
         />
       ))}
     </ScrollView>

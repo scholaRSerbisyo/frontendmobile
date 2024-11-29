@@ -30,7 +30,7 @@ export default function LandingPage() {
         >
           {/* <Link href="/profile\total-rs" asChild> */}
             <Button 
-            onPress={() => router.push('/(authentication)/login')}
+            onPress={() => router.push('/(profile)/total-rs')}
 
             style={styles.continueButton}>
               <Text style={styles.continueButtonText}>

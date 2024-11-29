@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, ScrollView, StyleSheet } from 'react-native'
-import { Text } from '~/components/ui/text'
+import { Text } from '../ui/text'
 import { RSListItem } from './RSListItem'
 
 interface SemesterData {
@@ -27,7 +27,27 @@ const semesterData: SemesterData[] = [
       { title: '2nd Sem', status: 'Complete', hours: '5/5' },
     ]
   },
-  // Add more years as needed
+  {
+    year: 'Year: 2021-2022',
+    semesters: [
+      { title: '1st Sem', status: 'Complete', hours: '7/5' },
+      { title: '2nd Sem', status: 'Complete', hours: '10/5' },
+    ]
+  },
+  {
+    year: 'Year: 2020-2021',
+    semesters: [
+      { title: '1st Sem', status: 'Complete', hours: '6/5' },
+      { title: '2nd Sem', status: 'Complete', hours: '8/5' },
+    ]
+  },
+  {
+    year: 'Year: 2019-2020',
+    semesters: [
+      { title: '1st Sem', status: 'Complete', hours: '5/5' },
+      { title: '2nd Sem', status: 'Complete', hours: '5/5' },
+    ]
+  }
 ]
 
 export function RSSemesterView() {
@@ -56,7 +76,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
   },
   yearSection: {
-    marginBottom: 16,
+    marginBottom: 8,
   },
   yearTitle: {
     fontSize: 14,

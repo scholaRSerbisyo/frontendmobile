@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, TouchableOpacity, StyleSheet } from 'react-native'
-import { Text } from '~/components/ui/text'
+import { Text } from '../ui/text'
 
 interface RSTabsProps {
   activeTab: string
@@ -37,13 +37,14 @@ export function RSTabs({ activeTab, onTabChange }: RSTabsProps) {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
     backgroundColor: '#191851',
-    paddingHorizontal: 16,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingHorizontal: 4,
   },
   tab: {
-    paddingVertical: 12,
-    paddingHorizontal: 16,
+    paddingVertical: 8,
+    paddingHorizontal: 4,
     borderBottomWidth: 2,
     borderBottomColor: 'transparent',
   },
@@ -52,7 +53,7 @@ const styles = StyleSheet.create({
   },
   tabText: {
     color: '#FFF',
-    fontSize: 14,
+    fontSize: 12,
   },
   activeTabText: {
     fontWeight: 'bold',

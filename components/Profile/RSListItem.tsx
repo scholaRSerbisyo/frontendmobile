@@ -1,16 +1,17 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
-import { Text } from '~/components/ui/text'
+import { Text } from '../ui/text'
 
 interface RSListItemProps {
   title: string
   status: 'Complete' | 'Incomplete'
   hours: string
+  isYear?: boolean
 }
 
-export function RSListItem({ title, status, hours }: RSListItemProps) {
+export function RSListItem({ title, status, hours, isYear = false }: RSListItemProps) {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, isYear && styles.yearContainer]}>
       <View style={styles.leftContent}>
         <Text style={styles.title}>{title}</Text>
         <Text 
@@ -32,9 +33,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#F5F5F5',
+    backgroundColor: '#F0F0F0',
     padding: 16,
     marginBottom: 1,
+  },
+  yearContainer: {
+    backgroundColor: '#E8E8E8',
   },
   leftContent: {
     flex: 1,
