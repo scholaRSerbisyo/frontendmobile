@@ -1,9 +1,15 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store';
 import { getUser, login, logout } from './AuthContext';
 
+type User = {
+  id: number;
+  name: string;
+  email: string;
+};
+
 type AuthContextType = {
-  user: any | null;
+  user: User | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
@@ -12,13 +18,13 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [user, setUser] = useState<any | null>(null);
+    const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const loadStorageData = async () => {
             try {
-                const token = await AsyncStorage.getItem('authToken');
+                const token = await SecureStore.getItemAsync('authToken');
                 if (token) {
                     const userData = await getUser();
                     setUser(userData);
@@ -35,9 +41,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const signIn = async (email: string, password: string) => {
         try {
-            await login(email, password); // This will save the token
+            const response = await login(email, password);
             const userData = await getUser();
             setUser(userData);
+            return response;
         } catch (error) {
             console.error('Sign in error:', error);
             throw error;
@@ -74,4 +81,3 @@ export const useAuth = () => {
     }
     return context;
 };
-

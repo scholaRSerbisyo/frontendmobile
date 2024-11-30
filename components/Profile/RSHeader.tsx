@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Image, StyleSheet, TouchableOpacity } from 'react-native'
-import { ChevronLeft } from 'lucide-react-native'
+import { ChevronLeft, Menu } from 'lucide-react-native'
 import { Text } from '../ui/text'
 import { useRouter } from 'expo-router'
 
@@ -21,11 +21,9 @@ export function RSHeader({ name, school, location, photo }: RSHeaderProps) {
           <ChevronLeft size={24} color="#FFF" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Profile</Text>
-        <TouchableOpacity style={styles.menuButton}>
+        <TouchableOpacity style={styles.menuButton} onPress={() => router.push('/camera')}>
           <View style={styles.menuDots}>
-            <View style={styles.dot} />
-            <View style={styles.dot} />
-            <View style={styles.dot} />
+            <Menu style={styles.dot} />
           </View>
         </TouchableOpacity>
       </View>
@@ -86,13 +84,14 @@ const styles = StyleSheet.create({
   },
   menuDots: {
     flexDirection: 'row',
-    gap: 4,
+    // gap: 4,
   },
   dot: {
     width: 4,
     height: 4,
     borderRadius: 2,
-    backgroundColor: '#FFF',
+    // backgroundColor: '#FFF',
+    color: 'white'
   },
   profileSection: {
     alignItems: 'center',
