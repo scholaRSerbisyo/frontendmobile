@@ -1,29 +1,23 @@
-
-
 import PhotoPreviewSection from './PhotoPreview';
 import { Camera } from 'lucide-react-native';
 import { SwitchCamera } from 'lucide-react-native';
-import { Flashlight } from 'lucide-react-native';
 import { X } from 'lucide-react-native';
-import { CameraType, CameraView, FlashMode, useCameraPermissions  } from 'expo-camera';
+import { CameraType, CameraView, FlashMode, useCameraPermissions } from 'expo-camera';
 import { useRef, useState } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-
-export default function CameraScreen() {
+export default function CameraScreen({ navigation }: { navigation: any }) {
   const [facing, setFacing] = useState<CameraType>('back');
-  const [flash, setFlash] = useState<FlashMode>('on');
+  const [flashMode, setFlashMode] = useState<FlashMode>('on');
   const [permission, requestPermission] = useCameraPermissions();
   const [photo, setPhoto] = useState<any>(null);
   const cameraRef = useRef<CameraView | null>(null);
 
   if (!permission) {
-    // Camera permissions are still loading.
     return <View />;
   }
 
   if (!permission.granted) {
-    // Camera permissions are not granted yet.
     return (
       <View style={styles.container}>
         <Text style={{ textAlign: 'center' }}>We need your permission to show the camera</Text>
@@ -32,51 +26,69 @@ export default function CameraScreen() {
     );
   }
 
-  function toggleCameraFacing() {
-    setFacing(current => (current === 'back' ? 'front' : 'back'));
-  }
+  const toggleCameraFacing = () => {
+    setFacing((current) => (current === 'back' ? 'front' : 'back'));
+  };
 
-  function toggleCameraFlashing() {
-    setFlash(current => {
-      if (current === 'on') return 'off';
-      if (current === 'off') return 'auto';
-      if (current === 'auto') return 'on';
-      return 'off'; // Fallback, though it shouldn't reach here
-    });
-  }
+  const handleFlashMode = () => {
+    setFlashMode((current) =>
+      current === 'on' ? 'off' : current === 'off' ? 'auto' : 'on'
+    );
+  };
 
-  const handleTakePhoto =  async () => {
+  const handleTakePhoto = async () => {
     if (cameraRef.current) {
-        const options = {
-            quality: 1,
-            base64: true,
-            exif: false,
-        };
-        const takedPhoto = await cameraRef.current.takePictureAsync(options);
-
-        setPhoto(takedPhoto);
+      const options = {
+        quality: 1,
+        base64: true,
+        exif: false,
+      };
+      const takenPhoto = await cameraRef.current.takePictureAsync(options);
+      setPhoto(takenPhoto);
     }
-  }; 
+  };
 
   const handleRetakePhoto = () => setPhoto(null);
 
-  if (photo) return <PhotoPreviewSection photo={photo} handleRetakePhoto={handleRetakePhoto} />
+  const handleClose = () => {
+    navigation.goBack();
+  };
+
+  if (photo) return <PhotoPreviewSection photo={photo} handleRetakePhoto={handleRetakePhoto} />;
 
   return (
     <View style={styles.container}>
-      <CameraView style={styles.camera} 
-      facing={facing}
-      flash={flash}
-      ref={cameraRef}>
+      <CameraView
+        style={styles.camera}
+        facing={facing}
+        flash={flashMode} // Bind flash mode here
+        ref={cameraRef}
+      >
+        <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
+          <X size={36} color="white" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={handleFlashMode}
+          style={{
+            position: 'absolute',
+            left: '5%',
+            top: '10%',
+            backgroundColor: flashMode === 'off' ? '#000' : '#fff',
+            borderRadius: 12,
+            height: 36,
+            width: 36,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Text style={{ fontSize: 20 }}>{'⚡️'}</Text>
+        </TouchableOpacity>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
-            <SwitchCamera size={44} color='black' />
+            <SwitchCamera size={44} color="black" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={handleTakePhoto}>
-            <Camera size={44} color='black' />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={toggleCameraFlashing}>
-            <Flashlight size={44} color='black' />
+            <Camera size={44} color="black" />
           </TouchableOpacity>
         </View>
       </CameraView>
@@ -106,10 +118,18 @@ const styles = StyleSheet.create({
     backgroundColor: 'gray',
     borderRadius: 10,
   },
+  closeButton: {
+    position: 'absolute',
+    top: 20,
+    right: 20,
+    zIndex: 10,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    borderRadius: 20,
+    padding: 8,
+  },
   text: {
     fontSize: 24,
     fontWeight: 'bold',
     color: 'white',
   },
 });
-

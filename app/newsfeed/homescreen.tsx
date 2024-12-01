@@ -23,7 +23,7 @@ export default function HomeScreen() {
           onPress={() => router.push('/calendar')}
           style={styles.calendarButton}
         >
-          <Calendar size={24} color="#191851" />
+          <Calendar size={24} color="#FDB316" />
         </TouchableOpacity>
       </View>
 

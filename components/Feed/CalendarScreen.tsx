@@ -6,6 +6,7 @@ import { ChevronLeft, Home, Calendar as CalendarIcon, User } from 'lucide-react-
 import { Text } from '../ui/text'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { CalendarEventModal } from '../Authentication/components/CalendarEventModal'
+import { BottomNavigation } from '../Navigation/BottomNavigation'
 type Event = {
   id: string
   title: string
@@ -123,7 +124,7 @@ export function CalendarScreen() {
             <Text style={styles.headerButtonText}>Back</Text>
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Calendar</Text>
-          <TouchableOpacity onPress={() => router.push('/profile')} style={styles.headerButton}>
+          <TouchableOpacity onPress={() => router.push('/(profile)/total-rs')} style={styles.headerButton}>
             <Text style={styles.headerButtonTextRight}>Profile</Text>
           </TouchableOpacity>
         </View>
@@ -146,7 +147,7 @@ export function CalendarScreen() {
               monthTextColor: '#191851',
               textMonthFontWeight: 'bold',
               textDayFontSize: 16,
-              textMonthFontSize: 18,
+              textMonthFontSize: 24,
             }}
             markedDates={markedDates}
             onDayPress={handleDayPress}
@@ -171,9 +172,8 @@ export function CalendarScreen() {
             <Text style={styles.legendDuration}>30min.</Text>
           </View>
         </View>
-
         {/* Bottom Navigation */}
-        <View style={styles.bottomNav}>
+        {/* <View style={styles.bottomNav}>
           <TouchableOpacity style={styles.navButton} onPress={() => router.push('/calendar')}>
             <CalendarIcon size={24} color="#FFFFFF" />
           </TouchableOpacity>
@@ -183,7 +183,7 @@ export function CalendarScreen() {
           <TouchableOpacity style={styles.navButton} onPress={() => router.push('/profile')}>
             <User size={24} color="#FFFFFF" />
           </TouchableOpacity>
-        </View>
+        </View> */}
 
         {/* Event Details Modal */}
         <CalendarEventModal
@@ -193,6 +193,8 @@ export function CalendarScreen() {
           event={events[selectedDate] || null}
         />
       </View>
+      <BottomNavigation></BottomNavigation>
+
     </SafeAreaView>
   )
 }
@@ -209,7 +211,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 16,
+    padding: 24,
     backgroundColor: '#191851',
   },
   headerButton: {
@@ -226,7 +228,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   headerTitle: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: 'bold',
     color: '#FFFFFF',
   },

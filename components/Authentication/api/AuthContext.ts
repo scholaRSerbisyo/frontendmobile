@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios';
 import * as SecureStore from 'expo-secure-store';
 
-const API_URL = 'http://10.0.2.2:8000/api'; // For Android Emulator
+const API_URL = 'http://192.168.1.34:8000/api'; // For Android Emulator
 // const API_URL = 'http://localhost:8000/api'; // For iOS Simulator
 // const API_URL = 'http://YOUR_MACHINE_IP:8000/api'; // For physical device
 
