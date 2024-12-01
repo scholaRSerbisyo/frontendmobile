@@ -1,39 +1,43 @@
-import React, { useState } from 'react'
-import { View, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native'
-import { useRouter } from 'expo-router'
-import { Text } from '../ui/text'
-import { Input } from '../ui/input'
-import { useAuth } from './api/Auth'
+import React, { useState } from 'react';
+import { View, TouchableOpacity, StyleSheet, ActivityIndicator, Alert } from 'react-native';
+import { useRouter } from 'expo-router';
+import { Text } from '../ui/text';
+import { Input } from '../ui/input';
+import { useAuth } from './api/Auth';
 
 export function LoginForm() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [isPasswordVisible, setPasswordVisible] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState('')
-  const router = useRouter()
-  const { signIn } = useAuth()
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isPasswordVisible, setPasswordVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const router = useRouter();
+  const { signIn } = useAuth();
 
   const handleLogin = async () => {
     if (!email || !password) {
-      setError('Please enter both email and password')
-      return
+      setError('Please enter both email and password');
+      return;
     }
 
-    setIsLoading(true)
-    setError('')
+    setIsLoading(true);
+    setError('');
 
     try {
-      const response = await signIn(email, password)
-
-      console.log(response)
-      router.replace('/home')
+      await signIn(email, password);
+      router.replace('/newsfeed/homescreen');
     } catch (error) {
-      setError('Invalid email or password')
+      console.error('Login error:', error);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unexpected error occurred. Please try again.');
+      }
+      Alert.alert('Login Failed', error instanceof Error ? error.message : 'An unexpected error occurred');
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <View style={styles.formContainer}>
@@ -92,20 +96,20 @@ export function LoginForm() {
         </Text>
       </View>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   formContainer: {
     flex: 1,
     paddingHorizontal: 24,
+    justifyContent: 'center',
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
     color: 'white',
     marginBottom: 24,
-    paddingTop: '20%',
     textAlign: 'center'
   },
   input: {
@@ -152,7 +156,7 @@ const styles = StyleSheet.create({
   },
   registerLink: {
     color: '#FDB316',
-    fontWeight:'bold',
+    fontWeight: 'bold',
     textDecorationLine: 'underline'
   },
   errorText: {
@@ -161,5 +165,5 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     textAlign: 'center',
   },
-})
+});
 

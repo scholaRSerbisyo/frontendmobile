@@ -22,6 +22,9 @@ const PhotoPreviewSection = ({
             <TouchableOpacity style={styles.button} onPress={handleRetakePhoto}>
                 <Fontisto name='trash' size={36} color='black' />
             </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={handleRetakePhoto}>
+                <Fontisto name='check' size={36} color='black' />
+            </TouchableOpacity>
         </View>
     </SafeAreaView>
 );

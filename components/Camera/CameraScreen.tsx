@@ -1,11 +1,18 @@
+
+
 import PhotoPreviewSection from './PhotoPreview';
-import { AntDesign } from '@expo/vector-icons';
-import { CameraType, CameraView, useCameraPermissions } from 'expo-camera';
+import { Camera } from 'lucide-react-native';
+import { SwitchCamera } from 'lucide-react-native';
+import { Flashlight } from 'lucide-react-native';
+import { X } from 'lucide-react-native';
+import { CameraType, CameraView, FlashMode, useCameraPermissions  } from 'expo-camera';
 import { useRef, useState } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
+
 export default function CameraScreen() {
   const [facing, setFacing] = useState<CameraType>('back');
+  const [flash, setFlash] = useState<FlashMode>('on');
   const [permission, requestPermission] = useCameraPermissions();
   const [photo, setPhoto] = useState<any>(null);
   const cameraRef = useRef<CameraView | null>(null);
@@ -29,7 +36,14 @@ export default function CameraScreen() {
     setFacing(current => (current === 'back' ? 'front' : 'back'));
   }
 
-
+  function toggleCameraFlashing() {
+    setFlash(current => {
+      if (current === 'on') return 'off';
+      if (current === 'off') return 'auto';
+      if (current === 'auto') return 'on';
+      return 'off'; // Fallback, though it shouldn't reach here
+    });
+  }
 
   const handleTakePhoto =  async () => {
     if (cameraRef.current) {
@@ -50,13 +64,19 @@ export default function CameraScreen() {
 
   return (
     <View style={styles.container}>
-      <CameraView style={styles.camera} facing={facing} ref={cameraRef}>
+      <CameraView style={styles.camera} 
+      facing={facing}
+      flash={flash}
+      ref={cameraRef}>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
-            <AntDesign name='retweet' size={44} color='black' />
+            <SwitchCamera size={44} color='black' />
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={handleTakePhoto}>
-            <AntDesign name='camera' size={44} color='black' />
+            <Camera size={44} color='black' />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={toggleCameraFlashing}>
+            <Flashlight size={44} color='black' />
           </TouchableOpacity>
         </View>
       </CameraView>

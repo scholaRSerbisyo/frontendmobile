@@ -6,7 +6,7 @@ import {
     Bell, 
     CircleUserRound } from 'lucide-react-native'
 import HomeScreen from './homescreen'
-import NotificationsScreen from './notificationscreen'
+import NotificationsScreen from '../(notification)/page'
 import ProfileScreen from '../../components/Profile/profileburger'
 const Tab = createBottomTabNavigator()
 
