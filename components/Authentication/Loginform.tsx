@@ -28,12 +28,9 @@ export function LoginForm() {
       router.replace('/newsfeed/homescreen');
     } catch (error) {
       console.error('Login error:', error);
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError('An unexpected error occurred. Please try again.');
-      }
-      Alert.alert('Login Failed', error instanceof Error ? error.message : 'An unexpected error occurred');
+      const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred';
+      setError(errorMessage);
+      Alert.alert('Login Failed', errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -109,7 +106,7 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 'bold',
     color: 'white',
-    marginBottom: 24,
+    marginBottom: 16,
     textAlign: 'center'
   },
   input: {

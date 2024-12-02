@@ -35,21 +35,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signIn = async (email: string, password: string) => {
     try {
+      console.log('Signing in with email:', email);
       await login(email, password);
       const userData = await getUser();
       setUser(userData);
+      console.log('Sign in successful');
     } catch (error) {
       console.error('Sign in error:', error);
-      throw error;
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error('An unexpected error occurred during sign in');
+      }
     }
   };
 
   const signOut = async () => {
     try {
       await logout();
-      setUser(null);
     } catch (error) {
       console.error('Sign out error:', error);
+    } finally {
+      setUser(null);
     }
   };
 

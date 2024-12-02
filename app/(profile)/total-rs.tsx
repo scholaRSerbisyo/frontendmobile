@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { useRouter } from 'expo-router'
+import { ChevronLeft, MoreVertical } from 'lucide-react-native'
+import { Text } from '~/components/ui/text'
 import { RSHeader } from '~/components/Profile/RSHeader'
 import { RSTabs } from '~/components/Profile/RSTabs'
 import { RSOverview } from '~/components/Profile/RSOverview'
@@ -8,14 +11,30 @@ import { RSVideos } from '~/components/Profile/RSVideos'
 import { RSPhotos } from '~/components/Profile/RSPhotos'
 import { RSSemesterView } from '~/components/Profile/RSSemesterView'
 import { RSYearView } from '~/components/Profile/RSYearView'
-import { Text } from '~/components/ui/text'
+import { ProfilePost } from '~/components/Profile/ProfilePost'
+
+// Mock post data (simulating backend response)
+const mockPost = {
+  title: "Scholar's Cup",
+  date: "02/14/2024",
+  location: "Zone 2 Carmen Viamania",
+  type: "CSO basis",
+  description: "The gymnasium is hosting with excitement as students from nearby colleges gather for the CSO General Assembly!",
+  images: [
+    "https://example.com/scholars-cup-1.jpg",
+    "https://example.com/scholars-cup-2.jpg"
+  ]
+};
 
 export default function TotalRSScreen() {
-  const [activeTab, setActiveTab] = useState('Overview')
+  const [activeTab, setActiveTab] = useState('Post')
   const [view, setView] = useState<'semester' | 'year'>('semester')
+  const router = useRouter()
 
   const renderContent = () => {
     switch (activeTab) {
+      case 'Post':
+        return <ProfilePost post={mockPost} />
       case 'Overview':
         return <RSOverview />
       case 'Videos':
@@ -26,24 +45,24 @@ export default function TotalRSScreen() {
         return (
           <>
             <View style={styles.viewToggle}>
-              <View 
+              <TouchableOpacity 
                 style={[
                   styles.toggleOption,
                   view === 'semester' && styles.activeToggle
                 ]}
-                onTouchEnd={() => setView('semester')}
+                onPress={() => setView('semester')}
               >
                 <Text style={styles.toggleText}>By Semester</Text>
-              </View>
-              <View 
+              </TouchableOpacity>
+              <TouchableOpacity 
                 style={[
                   styles.toggleOption,
                   view === 'year' && styles.activeToggle
                 ]}
-                onTouchEnd={() => setView('year')}
+                onPress={() => setView('year')}
               >
                 <Text style={styles.toggleText}>By Year</Text>
-              </View>
+              </TouchableOpacity>
             </View>
             {view === 'semester' ? <RSSemesterView /> : <RSYearView />}
           </>
@@ -74,6 +93,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#191851',
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+  },
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
   },
   viewToggle: {
     flexDirection: 'row',
