@@ -1,68 +1,63 @@
+import React from 'react';
 import { Fontisto } from '@expo/vector-icons';
 import { CameraCapturedPicture } from 'expo-camera';
-import React from 'react'
 import { TouchableOpacity, SafeAreaView, Image, StyleSheet, View } from 'react-native';
 
 const PhotoPreviewSection = ({
     photo,
-    handleRetakePhoto
+    handleRetakePhoto,
+    handleConfirmPhoto
 }: {
     photo: CameraCapturedPicture;
     handleRetakePhoto: () => void;
+    handleConfirmPhoto: () => void;
 }) => (
     <SafeAreaView style={styles.container}>
-        <View style={styles.box}>
+        <View style={styles.topNavigation}>
+            <TouchableOpacity style={styles.navButton} onPress={handleRetakePhoto}>
+                <Fontisto name='trash' size={24} color='white' />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.navButton} onPress={handleConfirmPhoto}>
+                <Fontisto name='check' size={24} color='white' />
+            </TouchableOpacity>
+        </View>
+        <View style={styles.imageContainer}>
             <Image
-                style={styles.previewConatiner}
+                style={styles.previewImage}
                 source={{uri: 'data:image/jpg;base64,' + photo.base64}}
             />
-        </View>
-
-        <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button} onPress={handleRetakePhoto}>
-                <Fontisto name='trash' size={36} color='black' />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={handleRetakePhoto}>
-                <Fontisto name='check' size={36} color='black' />
-            </TouchableOpacity>
         </View>
     </SafeAreaView>
 );
 
 const styles = StyleSheet.create({
-    container:{
+    container: {
         flex: 1,
         backgroundColor: 'black',
-        alignItems: 'center',
-        justifyContent: 'center',
     },
-    box: {
-        borderRadius: 15,
-        padding: 1,
-        width: '95%',
-        backgroundColor: 'darkgray',
-        justifyContent: 'center',
-        alignItems: "center",
-    },
-    previewConatiner: {
-        width: '95%',
-        height: '85%',
-        borderRadius: 15
-    },
-    buttonContainer: {
-        marginTop: '4%',
+    topNavigation: {
         flexDirection: 'row',
-        justifyContent: "center",
-        width: '100%',
-    },
-    button: {
-        backgroundColor: 'gray',
-        borderRadius: 25,
-        padding: 10,
+        justifyContent: 'space-between',
         alignItems: 'center',
+        paddingHorizontal: 20,
+    },
+    navButton: {
+        padding: 20,
+        marginTop: "20%"
+    },
+    imageContainer: {
+        flex: 1,
         justifyContent: 'center',
-    }
-
+        alignItems: 'center',
+        paddingHorizontal: 10,
+    },
+    previewImage: {
+        width: '100%',
+        height: '100%',
+        borderRadius: 15,
+        resizeMode: 'contain',
+    },
 });
 
 export default PhotoPreviewSection;
+

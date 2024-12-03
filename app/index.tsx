@@ -30,7 +30,7 @@ export default function LandingPage() {
         >
           {/* <Link href="/profile\total-rs" asChild> */}
             <Button 
-            onPress={() => router.push('/(camera)/camera')}
+            onPress={() => router.push('/(calendar)/calendar')}
 
             style={styles.continueButton}>
               <Text style={styles.continueButtonText}>

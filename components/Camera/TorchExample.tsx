@@ -52,7 +52,22 @@ export default function CameraScreen2({ navigation }: { navigation: any }) {
     navigation.goBack();
   };
 
-  if (photo) return <PhotoPreviewSection photo={photo} handleRetakePhoto={handleRetakePhoto} />;
+  const handleConfirmPhoto = () => {
+    // Here you can implement the logic for confirming the photo
+    // For example, you might want to save it or send it to a server
+    console.log("Photo confirmed:", photo);
+    // After confirming, you might want to navigate back or to another screen
+    navigation.goBack();
+  };
+
+
+
+  if (photo) 
+  return <PhotoPreviewSection 
+  photo={photo} 
+  handleRetakePhoto={handleRetakePhoto} 
+  handleConfirmPhoto={handleConfirmPhoto}
+  />;
 
   return (
     <View style={styles.container}>

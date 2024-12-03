@@ -4,16 +4,12 @@ import { Text } from '../ui/text'
 import { Event } from '../types/event'
 import { useRouter } from 'expo-router'
 
-interface EventCardProps {
-  event: Event
-}
-
-interface EventCardProps {
-  event: Event
-}
-
-export function EventCard({ event }: EventCardProps) {
+export function EventCard({ event }: { event: Event | null }) {
   const router = useRouter()
+
+  if (!event) {
+    return null;
+  }
 
   return (
     <TouchableOpacity 
@@ -54,19 +50,21 @@ export function EventCard({ event }: EventCardProps) {
         </View>
 
         <Image 
-          source={require('~/assets/images/scholars-cup-banner.png')}
+          source={event.image ? { uri: event.image } : require('~/assets/images/scholars-cup-banner.png')}
           style={styles.image}
           resizeMode="cover"
         />
 
-        <TouchableOpacity 
-          onPress={() => router.push(`/event/${event.id}`)}
-          style={styles.commentsContainer}
-        >
-          <Text style={styles.commentsLink}>
-            View All Comments
-          </Text>
-        </TouchableOpacity>
+        {event.comments !== undefined && (
+          <TouchableOpacity 
+            onPress={() => router.push(`/event/${event.id}`)}
+            style={styles.commentsContainer}
+          >
+            <Text style={styles.commentsLink}>
+              View All Comments ({event.comments})
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
     </TouchableOpacity>
   )
@@ -136,3 +134,4 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 })
+

@@ -2,11 +2,12 @@ import React, { useState } from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { useRouter } from 'expo-router'
 import { Calendar } from 'react-native-calendars'
-import { ChevronLeft, Home, Calendar as CalendarIcon, User } from 'lucide-react-native'
+import { ChevronLeft } from 'lucide-react-native'
 import { Text } from '../ui/text'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { CalendarEventModal } from '../Authentication/components/CalendarEventModal'
 import { BottomNavigation } from '../Navigation/BottomNavigation'
+
 type Event = {
   id: string
   title: string
@@ -86,13 +87,13 @@ export function CalendarScreen() {
     let dotColor
     switch (event.type) {
       case 'today':
-        dotColor = '#007AFF'
+        dotColor = '#007AFF' // Blue
         break
       case 'upcoming':
-        dotColor = '#34C759'
+        dotColor = '#34C759' // Green
         break
       case 'previous':
-        dotColor = '#FF3B30'
+        dotColor = '#FF3B30' // Red
         break
       default:
         dotColor = '#007AFF'
@@ -172,18 +173,6 @@ export function CalendarScreen() {
             <Text style={styles.legendDuration}>30min.</Text>
           </View>
         </View>
-        {/* Bottom Navigation */}
-        {/* <View style={styles.bottomNav}>
-          <TouchableOpacity style={styles.navButton} onPress={() => router.push('/calendar')}>
-            <CalendarIcon size={24} color="#FFFFFF" />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.navButton} onPress={() => router.push('/home')}>
-            <Home size={24} color="#FFFFFF" />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.navButton} onPress={() => router.push('/profile')}>
-            <User size={24} color="#FFFFFF" />
-          </TouchableOpacity>
-        </View> */}
 
         {/* Event Details Modal */}
         <CalendarEventModal
@@ -193,8 +182,7 @@ export function CalendarScreen() {
           event={events[selectedDate] || null}
         />
       </View>
-      <BottomNavigation></BottomNavigation>
-
+      <BottomNavigation />
     </SafeAreaView>
   )
 }
@@ -261,20 +249,6 @@ const styles = StyleSheet.create({
   },
   legendDuration: {
     color: '#666',
-  },
-  bottomNav: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    padding: 16,
-    backgroundColor: '#191851',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-  },
-  navButton: {
-    padding: 8,
   },
 })
 

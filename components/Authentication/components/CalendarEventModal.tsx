@@ -13,7 +13,7 @@ interface CalendarEventModalProps {
     time: string;
     type: string;
   } | null;
-}
+} 
 
 export function CalendarEventModal({ visible, onClose, selectedDate, event }: CalendarEventModalProps) {
   const [currentDate, setCurrentDate] = useState(new Date(selectedDate));
