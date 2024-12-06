@@ -4,7 +4,14 @@ import { CameraType, CameraView, useCameraPermissions } from 'expo-camera';
 import { Camera, SwitchCamera, X, Zap } from 'lucide-react-native';
 import PhotoPreviewSection from './PhotoPreview';
 
-export default function CameraScreen2({ navigation }: { navigation: any }) {
+interface CameraScreen2Props {
+  navigation: {
+    goBack: () => void;
+  };
+  onPhotoConfirm: (photo: string) => void;
+}
+
+export default function CameraScreen2({ navigation, onPhotoConfirm }: CameraScreen2Props) {
   const [facing, setFacing] = useState<CameraType>('back');
   const [isTorchOn, setIsTorchOn] = useState(false);
   const [permission, requestPermission] = useCameraPermissions();
@@ -53,21 +60,18 @@ export default function CameraScreen2({ navigation }: { navigation: any }) {
   };
 
   const handleConfirmPhoto = () => {
-    // Here you can implement the logic for confirming the photo
-    // For example, you might want to save it or send it to a server
-    console.log("Photo confirmed:", photo);
-    // After confirming, you might want to navigate back or to another screen
+    if (photo && photo.base64) {
+      onPhotoConfirm(photo.base64);
+    }
     navigation.goBack();
   };
 
-
-
   if (photo) 
-  return <PhotoPreviewSection 
-  photo={photo} 
-  handleRetakePhoto={handleRetakePhoto} 
-  handleConfirmPhoto={handleConfirmPhoto}
-  />;
+    return <PhotoPreviewSection 
+      photo={photo} 
+      handleRetakePhoto={handleRetakePhoto} 
+      handleConfirmPhoto={handleConfirmPhoto}
+    />;
 
   return (
     <View style={styles.container}>

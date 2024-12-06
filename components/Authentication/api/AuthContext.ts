@@ -1,8 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import * as SecureStore from 'expo-secure-store';
-
-const API_URL = 'http://192.168.8.166:8000/api'; // For Android Emulator
-
+import API_URL from '~/constants/constants';
 export interface User {
   id: number;
   name: string;
@@ -33,18 +31,25 @@ api.interceptors.request.use(async config => {
 export const login = async (email: string, password: string) => {
   try {
     console.log('Attempting login with:', { email });
-    const response = await api.post<{ access_token: string }>('/user/login', { email, password });
+    const response = await api.post('/user/login', { email, password });
     console.log('Login response:', response.data);
-    const { access_token } = response.data;
     
-    // Ensure access_token is a string before storing
-    if (typeof access_token !== 'string') {
-      console.error('Invalid access_token type:', typeof access_token);
-      throw new Error('Invalid access token received from server');
+    // Check if the response contains a token property
+    if (response.data && response.data.token) {
+      const access_token = response.data.token;
+      
+      // Ensure access_token is a string before storing
+      if (typeof access_token !== 'string') {
+        console.error('Invalid access_token type:', typeof access_token);
+        throw new Error('Invalid access token received from server');
+      }
+      
+      await SecureStore.setItemAsync('authToken', access_token);
+      return { access_token };
+    } else {
+      console.error('Invalid response format:', response.data);
+      throw new Error('Invalid response format from server');
     }
-    
-    await SecureStore.setItemAsync('authToken', access_token);
-    return response.data;
   } catch (error) {
     console.error('Login error details:', error);
     throw handleApiError(error);
@@ -90,7 +95,7 @@ export const logout = async () => {
 
 export const getUser = async (): Promise<User> => {
   try {
-    const response = await api.get<User>('/user');
+    const response = await api.get<User>('/user/scholar/me/show');
     return response.data;
   } catch (error) {
     throw handleApiError(error);
