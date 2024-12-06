@@ -212,7 +212,7 @@ export default function ContentScreen() {
               <Text style={styles.commentsTitle}>All comments</Text>
               <TouchableOpacity 
                 style={styles.attachButton}
-                onPress={() => router.push('/(proof)/submit-proof')}
+                onPress={() => router.push(`/(proof)/submit-proof?id=${id}`)}
               >
                 <Text style={styles.attachButtonText}>Attach File</Text>
               </TouchableOpacity>

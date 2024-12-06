@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, StyleSheet, TouchableOpacity, TextInput, Platform, Image } from 'react-native'
+import { View, StyleSheet, TouchableOpacity, TextInput, Platform, Image, Modal, Alert } from 'react-native'
 import { useRouter } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { ChevronLeft, Camera } from 'lucide-react-native'
@@ -9,6 +9,8 @@ import axios from 'axios'
 import API_URL from '~/constants/constants'
 import * as SecureStore from 'expo-secure-store'
 import CameraScreen2 from '../Camera/TorchExample'
+import { format } from 'date-fns'
+import { CameraCapturedPicture } from 'expo-camera'
 
 interface Event {
   event_id: number
@@ -26,13 +28,13 @@ interface SubmissionData {
   scholar_id: number
   time_in_image_uuid: string
   time_in_location: string
+  time_in_image: string
   time_out_image_uuid: string
   time_out_location: string
+  time_out_image: string
   time_in: string
   time_out: string
   description: string
-  time_in_image: string
-  time_out_image: string
 }
 
 interface SubmitProofScreenProps {
@@ -41,20 +43,19 @@ interface SubmitProofScreenProps {
 
 export function SubmitProofScreen({ eventId }: SubmitProofScreenProps) {
   const router = useRouter()
-  const [currentLocation, setCurrentLocation] = useState<string>('')
   const [event, setEvent] = useState<Event | null>(null)
   const [submissionData, setSubmissionData] = useState<SubmissionData>({
     event_id: Number(eventId),
     scholar_id: 0,
     time_in_image_uuid: '',
     time_in_location: '',
+    time_in_image: '',
     time_out_image_uuid: '',
     time_out_location: '',
+    time_out_image: '',
     time_in: '',
     time_out: '',
     description: '',
-    time_in_image: '',
-    time_out_image: '',
   })
   const [timeInImage, setTimeInImage] = useState<string | null>(null)
   const [timeOutImage, setTimeOutImage] = useState<string | null>(null)
@@ -64,7 +65,6 @@ export function SubmitProofScreen({ eventId }: SubmitProofScreenProps) {
   useEffect(() => {
     fetchEventDetails()
     fetchScholarInfo()
-    getCurrentLocation()
   }, [eventId])
 
   const fetchEventDetails = async () => {
@@ -82,35 +82,12 @@ export function SubmitProofScreen({ eventId }: SubmitProofScreenProps) {
   const fetchScholarInfo = async () => {
     try {
       const token = await SecureStore.getItemAsync('authToken')
-      const response = await axios.get(`${API_URL}/user/scholar/me`, {
+      const response = await axios.get(`${API_URL}/user/scholar/me/show`, {
         headers: { 'Authorization': `Bearer ${token}` }
       })
       setSubmissionData(prev => ({ ...prev, scholar_id: response.data.scholar.scholar_id }))
     } catch (error) {
       console.error('Error fetching scholar info:', error)
-    }
-  }
-
-  const getCurrentLocation = async () => {
-    let { status } = await Location.requestForegroundPermissionsAsync()
-    if (status !== 'granted') {
-      console.warn('Location permission not granted')
-      return
-    }
-
-    let location = await Location.getCurrentPositionAsync({})
-    const address = await Location.reverseGeocodeAsync({
-      latitude: location.coords.latitude,
-      longitude: location.coords.longitude
-    })
-
-    if (address[0]) {
-      const { street, subregion, city, region } = address[0]
-      const locationParts = [street, subregion, city, region].filter(Boolean)
-      const locationString = locationParts.join(', ')
-      setCurrentLocation(locationString)
-    } else {
-      setCurrentLocation('Location not available')
     }
   }
 
@@ -124,30 +101,50 @@ export function SubmitProofScreen({ eventId }: SubmitProofScreenProps) {
     setCurrentCaptureType(null)
   }
 
-  const handlePhotoConfirm = (photo: string) => {
-    const base64Photo = `data:image/jpeg;base64,${photo}`;
+  const handlePhotoConfirm = async (photo: CameraCapturedPicture & { exif?: { GPSLatitude?: number; GPSLongitude?: number } }) => {
+    const base64Photo = `data:image/jpeg;base64,${photo.base64}`
+    let locationString = 'Location not available'
+
+    if (photo.exif?.GPSLatitude && photo.exif?.GPSLongitude) {
+      try {
+        const [address] = await Location.reverseGeocodeAsync({
+          latitude: photo.exif.GPSLatitude,
+          longitude: photo.exif.GPSLongitude
+        })
+
+        if (address) {
+          const parts = [address.street, address.city, address.region, address.country].filter(Boolean)
+          locationString = parts.join(', ')
+        }
+      } catch (error) {
+        console.error('Error in reverse geocoding:', error)
+      }
+    }
+
+    const currentTime = format(new Date(), 'HH:mm')
+
     if (currentCaptureType === 'timeIn') {
-      setTimeInImage(base64Photo);
+      setTimeInImage(base64Photo)
       setSubmissionData(prev => ({
         ...prev,
         time_in_image_uuid: generateUUID(),
-        time_in_location: currentLocation,
-        time_in: new Date().toISOString(),
+        time_in_location: locationString,
         time_in_image: base64Photo,
-      }));
+        time_in: currentTime,
+      }))
     } else if (currentCaptureType === 'timeOut') {
-      setTimeOutImage(base64Photo);
+      setTimeOutImage(base64Photo)
       setSubmissionData(prev => ({
         ...prev,
         time_out_image_uuid: generateUUID(),
-        time_out_location: currentLocation,
-        time_out: new Date().toISOString(),
+        time_out_location: locationString,
         time_out_image: base64Photo,
-      }));
+        time_out: currentTime,
+      }))
     }
-    setShowCamera(false);
-    setCurrentCaptureType(null);
-  };
+    setShowCamera(false)
+    setCurrentCaptureType(null)
+  }
 
   const generateUUID = (): string => {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -163,25 +160,16 @@ export function SubmitProofScreen({ eventId }: SubmitProofScreenProps) {
         headers: { 'Authorization': `Bearer ${token}` }
       })
       console.log('Submission successful:', response.data)
+      Alert.alert('Success', 'Proof submitted successfully')
       router.back()
     } catch (error) {
       console.error('Error submitting proof:', error)
+      Alert.alert('Error', 'Failed to submit proof. Please try again.')
     }
   }
 
   if (!event) {
     return <Text>Loading...</Text>
-  }
-
-  if (showCamera) {
-    return (
-      <CameraScreen2
-        navigation={{
-          goBack: handleCameraClose,
-        }}
-        onPhotoConfirm={handlePhotoConfirm}
-      />
-    )
   }
 
   return (
@@ -232,7 +220,11 @@ export function SubmitProofScreen({ eventId }: SubmitProofScreenProps) {
             onPress={() => handleImageCapture(true)}
           >
             {timeInImage ? (
-              <Image source={{ uri: timeInImage }} style={styles.capturedImage} />
+              <View style={styles.capturedImageContainer}>
+                <Image source={{ uri: timeInImage }} style={styles.capturedImage} />
+                <Text style={styles.capturedLocationText}>{submissionData.time_in_location}</Text>
+                <Text style={styles.capturedTimeText}>{submissionData.time_in}</Text>
+              </View>
             ) : (
               <>
                 <Camera size={32} color="#FDB316" />
@@ -247,7 +239,11 @@ export function SubmitProofScreen({ eventId }: SubmitProofScreenProps) {
             disabled={!timeInImage}
           >
             {timeOutImage ? (
-              <Image source={{ uri: timeOutImage }} style={styles.capturedImage} />
+              <View style={styles.capturedImageContainer}>
+                <Image source={{ uri: timeOutImage }} style={styles.capturedImage} />
+                <Text style={styles.capturedLocationText}>{submissionData.time_out_location}</Text>
+                <Text style={styles.capturedTimeText}>{submissionData.time_out}</Text>
+              </View>
             ) : (
               <>
                 <Camera size={32} color={timeInImage ? "#191851" : "#999"} />
@@ -265,6 +261,20 @@ export function SubmitProofScreen({ eventId }: SubmitProofScreenProps) {
           <Text style={styles.submitButtonText}>Submit</Text>
         </TouchableOpacity>
       </View>
+
+      <Modal
+        animationType="slide"
+        transparent={false}
+        visible={showCamera}
+        onRequestClose={handleCameraClose}
+      >
+        <CameraScreen2
+          navigation={{
+            goBack: handleCameraClose,
+          }}
+          onPhotoConfirm={handlePhotoConfirm}
+        />
+      </Modal>
     </SafeAreaView>
   )
 }
@@ -347,6 +357,36 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     borderRadius: 8,
+  },
+  capturedImageContainer: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
+  capturedLocationText: {
+    position: 'absolute',
+    bottom: 20,
+    left: 5,
+    right: 5,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    color: 'white',
+    padding: 2,
+    fontSize: 10,
+    textAlign: 'center',
+    borderRadius: 4,
+  },
+  capturedTimeText: {
+    position: 'absolute',
+    bottom: 5,
+    left: 5,
+    right: 5,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    color: 'white',
+    padding: 2,
+    fontSize: 10,
+    textAlign: 'center',
+    borderRadius: 4,
   },
   submitButton: {
     backgroundColor: '#FDB316',

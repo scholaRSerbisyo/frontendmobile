@@ -1,14 +1,16 @@
-import React, { useRef, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { CameraType, CameraView, useCameraPermissions } from 'expo-camera';
+import React, { useRef, useState, useEffect } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View, SafeAreaView, Dimensions } from 'react-native';
+import { CameraCapturedPicture, CameraType, CameraView, useCameraPermissions } from 'expo-camera';
 import { Camera, SwitchCamera, X, Zap } from 'lucide-react-native';
 import PhotoPreviewSection from './PhotoPreview';
+import * as Location from 'expo-location';
+import * as ScreenOrientation from 'expo-screen-orientation';
 
 interface CameraScreen2Props {
   navigation: {
     goBack: () => void;
   };
-  onPhotoConfirm: (photo: string) => void;
+  onPhotoConfirm: (photo: CameraCapturedPicture & { exif?: { GPSLatitude?: number; GPSLongitude?: number } }) => void;
 }
 
 export default function CameraScreen2({ navigation, onPhotoConfirm }: CameraScreen2Props) {
@@ -16,7 +18,37 @@ export default function CameraScreen2({ navigation, onPhotoConfirm }: CameraScre
   const [isTorchOn, setIsTorchOn] = useState(false);
   const [permission, requestPermission] = useCameraPermissions();
   const [photo, setPhoto] = useState<any>(null);
+  const [currentLocation, setCurrentLocation] = useState<Location.LocationObject | null>(null);
+  const [orientation, setOrientation] = useState<ScreenOrientation.Orientation>(ScreenOrientation.Orientation.PORTRAIT_UP);
   const cameraRef = useRef<CameraView | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        console.warn('Location permission not granted');
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setCurrentLocation(location);
+
+      // Set up orientation change listener
+      ScreenOrientation.addOrientationChangeListener(handleOrientationChange);
+      // Get initial orientation
+      const initialOrientation = await ScreenOrientation.getOrientationAsync();
+      setOrientation(initialOrientation);
+    })();
+
+    // Cleanup
+    return () => {
+      ScreenOrientation.removeOrientationChangeListeners();
+    };
+  }, []);
+
+  const handleOrientationChange = (event: ScreenOrientation.OrientationChangeEvent) => {
+    setOrientation(event.orientationInfo.orientation);
+  };
 
   if (!permission) {
     return <View />;
@@ -46,10 +78,20 @@ export default function CameraScreen2({ navigation, onPhotoConfirm }: CameraScre
       const options = {
         quality: 1,
         base64: true,
-        exif: false,
+        exif: true,
       };
       const takenPhoto = await cameraRef.current.takePictureAsync(options);
-      setPhoto(takenPhoto);
+      if (takenPhoto) {
+        setPhoto({
+          ...takenPhoto,
+          exif: {
+            ...takenPhoto.exif,
+            GPSLatitude: currentLocation?.coords.latitude,
+            GPSLongitude: currentLocation?.coords.longitude,
+            Orientation: orientation,
+          },
+        });
+      }
     }
   };
 
@@ -60,10 +102,20 @@ export default function CameraScreen2({ navigation, onPhotoConfirm }: CameraScre
   };
 
   const handleConfirmPhoto = () => {
-    if (photo && photo.base64) {
-      onPhotoConfirm(photo.base64);
+    if (photo) {
+      onPhotoConfirm(photo);
     }
     navigation.goBack();
+  };
+
+  const getCameraStyle = () => {
+    const { width, height } = Dimensions.get('window');
+    const isPortrait = orientation === ScreenOrientation.Orientation.PORTRAIT_UP || 
+                       orientation === ScreenOrientation.Orientation.PORTRAIT_DOWN;
+    return {
+      width: isPortrait ? width : height,
+      height: isPortrait ? height : width,
+    };
   };
 
   if (photo) 
@@ -74,9 +126,9 @@ export default function CameraScreen2({ navigation, onPhotoConfirm }: CameraScre
     />;
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <CameraView
-        style={styles.camera}
+        style={[styles.camera, getCameraStyle()]}
         facing={facing}
         enableTorch={isTorchOn}
         ref={cameraRef}
@@ -95,8 +147,11 @@ export default function CameraScreen2({ navigation, onPhotoConfirm }: CameraScre
             <SwitchCamera size={24} color="white" strokeWidth={3} />
           </TouchableOpacity>
         </View>
+        <View style={styles.locationContainer}>
+          <Text style={styles.locationText}>{currentLocation ? `${currentLocation?.coords.latitude.toFixed(6)}, ${currentLocation?.coords.longitude.toFixed(6)}` : 'Location not available'}</Text>
+        </View>
       </CameraView>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -114,7 +169,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: 100,
-    backgroundColor: 'black',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
@@ -144,7 +199,7 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     position: 'absolute',
-    top: 50,
+    top: 20,
     right: 20,
     zIndex: 10,
   },
@@ -157,6 +212,19 @@ const styles = StyleSheet.create({
   permissionButtonText: {
     color: 'white',
     textAlign: 'center',
+  },
+  locationContainer: {
+    position: 'absolute',
+    bottom: 120,
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+  },
+  locationText: {
+    color: 'white',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    padding: 5,
+    borderRadius: 5,
   },
 });
 

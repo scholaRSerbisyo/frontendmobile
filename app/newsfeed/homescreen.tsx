@@ -89,10 +89,6 @@ export default function HomeScreen() {
         </TouchableOpacity>
       </View>
 
-      <View style={styles.titleContainer}>
-        <Text style={styles.title}>Home</Text>
-      </View>
-
       <ScrollView 
         style={styles.content}
         contentContainerStyle={styles.scrollContent}
@@ -104,6 +100,9 @@ export default function HomeScreen() {
           />
         }
       >
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>Home</Text>
+        </View>
         {loading ? (
           <ActivityIndicator size="large" color="#FDB316" />
         ) : error ? (
