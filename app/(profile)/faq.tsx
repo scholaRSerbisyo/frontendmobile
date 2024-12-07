@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native'
 import { useRouter } from 'expo-router'
-import { Undo2, ChevronDown, ChevronUp } from 'lucide-react-native'
+import { Undo2, ChevronDown, ChevronUp, ChevronLeft } from 'lucide-react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 const FAQScreen = () => {
@@ -51,7 +51,7 @@ const FAQScreen = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-          <Undo2 size={24} color="#191851" />
+          <ChevronLeft size={24} color="#191851" />
         </TouchableOpacity>
         <Text style={styles.title}>Frequently Asked{'\n'}Questions</Text>
       </View>

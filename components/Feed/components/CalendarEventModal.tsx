@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, TouchableOpacity, Modal, ScrollView } from 'react-native';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react-native';
 import { Text } from '~/components/ui/text';
@@ -8,7 +8,7 @@ interface CalendarEventModalProps {
   visible: boolean;
   onClose: () => void;
   selectedDate: string;
-  event?: {
+  events: {
     event_id: number;
     event_name: string;
     description: string;
@@ -20,11 +20,16 @@ interface CalendarEventModalProps {
     event_type: {
       name: string;
     };
-  } | null;
+  }[];
 }
 
-const CalendarEventModal: React.FC<CalendarEventModalProps> = ({ visible, onClose, selectedDate, event }) => {
-  if (!event) return null;
+const CalendarEventModal: React.FC<CalendarEventModalProps> = ({ visible, onClose, selectedDate, events }) => {
+  const [currentEventIndex, setCurrentEventIndex] = useState(0);
+  const event = events[currentEventIndex];
+
+  useEffect(() => {
+    setCurrentEventIndex(0);
+  }, [events]);
 
   const formatDate = (dateString: string) => {
     return format(parse(dateString, 'yyyy-MM-dd', new Date()), 'MMMM d yyyy');
@@ -41,6 +46,20 @@ const CalendarEventModal: React.FC<CalendarEventModalProps> = ({ visible, onClos
     return format(date, 'h:mm a');
   };
 
+  const handlePreviousEvent = () => {
+    if (currentEventIndex > 0) {
+      setCurrentEventIndex(prevIndex => prevIndex - 1);
+    }
+  };
+
+  const handleNextEvent = () => {
+    if (currentEventIndex < events.length - 1) {
+      setCurrentEventIndex(prevIndex => prevIndex + 1);
+    }
+  };
+
+  if (!event) return null;
+
   return (
     <Modal visible={visible} animationType="slide" transparent={true}>
       <View style={styles.modalContainer}>
@@ -48,12 +67,20 @@ const CalendarEventModal: React.FC<CalendarEventModalProps> = ({ visible, onClos
           {/* Header */}
           <View style={styles.header}>
             <View style={styles.dateNavigation}>
-              <TouchableOpacity>
-                <ChevronLeft size={20} color="#191851" />
+              <TouchableOpacity 
+                onPress={handlePreviousEvent} 
+                disabled={currentEventIndex === 0}
+                style={styles.chevronButton}
+              >
+                <ChevronLeft size={24} color={currentEventIndex > 0 ? "#191851" : "#CCCCCC"} />
               </TouchableOpacity>
               <Text style={styles.dateText}>{formatDate(event.date)}</Text>
-              <TouchableOpacity>
-                <ChevronRight size={20} color="#191851" />
+              <TouchableOpacity 
+                onPress={handleNextEvent} 
+                disabled={currentEventIndex === events.length - 1}
+                style={styles.chevronButton}
+              >
+                <ChevronRight size={24} color={currentEventIndex < events.length - 1 ? "#191851" : "#CCCCCC"} />
               </TouchableOpacity>
             </View>
             <TouchableOpacity onPress={onClose} style={styles.closeButton}>
@@ -131,7 +158,9 @@ const styles = StyleSheet.create({
   dateNavigation: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    justifyContent: 'space-between',
+    width: '100%',
+    paddingHorizontal: 10,
   },
   dateText: {
     fontSize: 16,
@@ -173,6 +202,11 @@ const styles = StyleSheet.create({
   },
   upcoming: {
     color: '#007AFF',
+  },
+  chevronButton: {
+    padding: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

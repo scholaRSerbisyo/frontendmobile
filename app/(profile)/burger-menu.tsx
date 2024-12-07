@@ -42,28 +42,28 @@ export default function BurgerMenu() {
 
         <TouchableOpacity 
           style={styles.menuButton}
-          onPress={() => router.push('/settings')}
+          onPress={() => router.push('/(profile)/aboutus')}
         >
           <Text style={styles.menuButtonText}>Settings</Text>
         </TouchableOpacity>
 
         <TouchableOpacity 
           style={styles.menuButton}
-          onPress={() => router.push('/faq')}
+          onPress={() => router.push('/(profile)/faq')}
         >
           <Text style={styles.menuButtonText}>FAQ</Text>
         </TouchableOpacity>
 
         <TouchableOpacity 
           style={styles.menuButton}
-          onPress={() => router.push('/calendar')}
+          onPress={() => router.push('/(calendar)/calendar')}
         >
           <Text style={styles.menuButtonText}>Calendar</Text>
         </TouchableOpacity>
 
         <TouchableOpacity 
           style={styles.menuButton}
-          onPress={() => router.push('/(authentication)/logout')}
+          onPress={() => router.push('/(profile)/logout')}
         >
           <Text style={styles.menuButtonText}>Log Out</Text>
         </TouchableOpacity>

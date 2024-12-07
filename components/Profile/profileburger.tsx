@@ -12,9 +12,6 @@ export default function ProfileScreen() {
           <ChevronLeft color="white" size={24} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Profile</Text>
-        <TouchableOpacity>
-          <X color="white" size={24} />
-        </TouchableOpacity>
       </View>
       
       <ScrollView style={styles.content}>
@@ -34,7 +31,7 @@ export default function ProfileScreen() {
             </TouchableOpacity>
           
 
-          <Link href="/profile/faq" asChild>
+          <Link href="/(profile)/faq" asChild>
             <TouchableOpacity style={styles.menuItem}>
               <Text style={styles.menuText}>FAQ</Text>
             </TouchableOpacity>
@@ -46,7 +43,7 @@ export default function ProfileScreen() {
             </TouchableOpacity>
           </Link>
 
-          <Link href="/profile/logout" asChild>
+          <Link href="/(profile)/logout" asChild>
             <TouchableOpacity style={styles.menuItem}>
               <Text style={styles.menuText}>Log Out</Text>
             </TouchableOpacity>
