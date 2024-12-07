@@ -1,7 +1,9 @@
 import React from 'react'
 import { View, TouchableOpacity, StyleSheet } from 'react-native'
 import { useRouter, usePathname } from 'expo-router'
-import { Bell, Home, User } from 'lucide-react-native'
+import { Calendar, Home, User, Bell } from 'lucide-react-native'
+import { Text
+ } from '../ui/text'
 
 export function BottomNavigation() {
   const router = useRouter()
@@ -17,6 +19,7 @@ export function BottomNavigation() {
           size={24}
           color={pathname === '/calendar' ? '#FDB316' : '#FFFFFF'}
         />
+        <Text style={styles.navText}>Notifications</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.navButton}
@@ -26,6 +29,7 @@ export function BottomNavigation() {
           size={24}
           color={pathname === '/home' ? '#FDB316' : '#FFFFFF'}
         />
+        <Text style={styles.navText}>Home</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.navButton}
@@ -35,6 +39,7 @@ export function BottomNavigation() {
           size={24}
           color={pathname === '/profile' ? '#FDB316' : '#FFFFFF'}
         />
+        <Text style={styles.navText}>Profile</Text>
       </TouchableOpacity>
     </View>
   )
@@ -52,6 +57,12 @@ const styles = StyleSheet.create({
   },
   navButton: {
     padding: 10,
+    alignItems: 'center',
+  },
+  navText: {
+    color: '#FFFFFF',
+    fontSize: 12,
+    marginTop: 4,
   },
 })
 
