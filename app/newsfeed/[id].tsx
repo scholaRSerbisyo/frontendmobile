@@ -261,7 +261,7 @@ export default function ContentScreen() {
           <View style={styles.commentsSection}>
             <View style={styles.commentsHeader}>
               <Text style={styles.commentsTitle}>All comments</Text>
-              {isEventActive(event) && (
+              {isEventActive(event) && !hasExistingSubmission && (
                 <TouchableOpacity 
                   style={styles.attachButton}
                   onPress={() => router.push(`/(proof)/submit-proof?id=${id}`)}

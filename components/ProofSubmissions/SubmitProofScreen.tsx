@@ -87,11 +87,10 @@ export function SubmitProofScreen({ eventId }: SubmitProofScreenProps) {
   const fetchEventDetails = async () => {
     try {
       const token = await SecureStore.getItemAsync('authToken')
-      const response = await fetch(`${API_URL}/events/getevent/${eventId}`, {
+      const response = await axios.get<Event>(`${API_URL}/events/getevent/${eventId}`, {
         headers: { 'Authorization': `Bearer ${token}` },
       })
-      const data = await response.json()
-      setEvent(data)
+      setEvent(response.data)
     } catch (error) {
       console.error('Error fetching event details:', error)
       Alert.alert('Error', 'Failed to fetch event details. Please try again.')
@@ -101,11 +100,10 @@ export function SubmitProofScreen({ eventId }: SubmitProofScreenProps) {
   const fetchScholarInfo = async () => {
     try {
       const token = await SecureStore.getItemAsync('authToken')
-      const response = await fetch(`${API_URL}/user/scholar/me/show`, {
+      const response = await axios.get(`${API_URL}/user/scholar/me/show`, {
         headers: { 'Authorization': `Bearer ${token}` },
       })
-      const data = await response.json()
-      setSubmissionData(prev => ({ ...prev, scholar_id: data.scholar.scholar_id }))
+      setSubmissionData(prev => ({ ...prev, scholar_id: response.data.scholar.scholar_id }))
     } catch (error) {
       console.error('Error fetching scholar info:', error)
       Alert.alert('Error', 'Failed to fetch scholar information. Please try again.')
@@ -115,14 +113,13 @@ export function SubmitProofScreen({ eventId }: SubmitProofScreenProps) {
   const checkExistingSubmission = async () => {
     try {
       const token = await SecureStore.getItemAsync('authToken')
-      const response = await fetch(`${API_URL}/events/check-submission/${eventId}`, {
+      const response = await axios.get(`${API_URL}/events/check-submission/${eventId}`, {
         headers: { 'Authorization': `Bearer ${token}` },
       })
-      const data = await response.json()
-      setHasExistingSubmission(data.hasSubmission)
-      if (data.hasSubmission) {
+      setHasExistingSubmission(response.data.hasSubmission)
+      if (response.data.hasSubmission) {
         setIsTimeInSubmitted(true)
-        setSubmissionId(data.submissionId)
+        setSubmissionId(response.data.submissionId)
       }
     } catch (error) {
       console.error('Error checking existing submission:', error)
@@ -229,7 +226,7 @@ export function SubmitProofScreen({ eventId }: SubmitProofScreenProps) {
       console.warn('No location data available');
     }
 
-    const currentTime = format(toZonedTime(new Date(), 'Asia/Manila'), 'HH:mm:ss')
+    const currentTime = format(toZonedTime(new Date(), 'Asia/Manila'), 'H:mm')
 
     if (currentCaptureType === 'timeIn') {
       setTimeInImage(base64Photo)
@@ -266,35 +263,20 @@ export function SubmitProofScreen({ eventId }: SubmitProofScreenProps) {
   const saveTimeInSubmission = async (data: SubmissionData) => {
     try {
       const token = await SecureStore.getItemAsync('authToken')
-      const response = await fetch(`${API_URL}/events/submit-time-in`, {
-        method: 'POST',
+      const response = await axios.post(`${API_URL}/events/submit-time-in`, data, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify(data),
       })
-      
-      const responseText = await response.text()
-      let resData
-      try {
-        resData = JSON.parse(responseText)
-      } catch (parseError) {
-        console.error('Error parsing response:', responseText)
-        throw new Error('Server returned an invalid response')
-      }
 
-      if (!response.ok) {
-        throw new Error(resData.message || 'Server returned an error')
-      }
-
-      console.log('Time In submission successful:', resData)
-      setSubmissionId(resData.submission_id)
+      console.log('Time In submission successful:', response.data)
+      setSubmissionId(response.data.submission_id)
       setIsTimeInSubmitted(true)
       Alert.alert('Success', 'Time In recorded successfully')
     } catch (error: any) {
       console.error('Error submitting Time In:', error)
-      Alert.alert('Error', `Failed to record Time In. ${error.message || 'Please try again.'}`)
+      Alert.alert('Error', `Failed to record Time In. ${error.response?.data?.message || error.message || 'Please try again.'}`)
     }
   }
 
@@ -315,37 +297,22 @@ export function SubmitProofScreen({ eventId }: SubmitProofScreenProps) {
 
     try {
       const token = await SecureStore.getItemAsync('authToken')
-      const response = await fetch(`${API_URL}/events/submit-time-out`, {
-        method: 'POST',
+      const response = await axios.post(`${API_URL}/events/submit-time-out`, {
+        submission_id: submissionId,
+        ...submissionData
+      }, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          submission_id: submissionId,
-          ...submissionData
-        }),
       })
 
-      const responseText = await response.text()
-      let resData
-      try {
-        resData = JSON.parse(responseText)
-      } catch (parseError) {
-        console.error('Error parsing response:', responseText)
-        throw new Error('Server returned an invalid response')
-      }
-
-      if (!response.ok) {
-        throw new Error(resData.message || 'Server returned an error')
-      }
-
-      console.log('Time Out submission successful:', resData)
+      console.log('Time Out submission successful:', response.data)
       Alert.alert('Success', 'Proof submitted successfully')
       router.back()
     } catch (error: any) {
       console.error('Error submitting proof:', error)
-      Alert.alert('Error', `Failed to submit proof. ${error.message || 'Please try again.'}`)
+      Alert.alert('Error', `Failed to submit proof. ${error.response?.data?.message || error.message || 'Please try again.'}`)
     }
   }
 
@@ -357,6 +324,11 @@ export function SubmitProofScreen({ eventId }: SubmitProofScreenProps) {
   const formatTime = (timeString: string) => {
     const time = parse(timeString, 'HH:mm:ss', new Date())
     return format(time, 'h:mm a')
+  }
+
+  const formatTimeForDisplay = (timeString: string) => {
+    const [hours, minutes] = timeString.split(':')
+    return `${hours.padStart(2, '0')}:${minutes}`
   }
 
   if (!event) {
@@ -416,7 +388,7 @@ export function SubmitProofScreen({ eventId }: SubmitProofScreenProps) {
                 <View style={styles.capturedImageContainer}>
                   <Image source={{ uri: timeInImage }} style={styles.capturedImage} />
                   <Text style={styles.capturedLocationText}>{submissionData.time_in_location}</Text>
-                  <Text style={styles.capturedTimeText}>{submissionData.time_in}</Text>
+                  <Text style={styles.capturedTimeText}>{formatTimeForDisplay(submissionData.time_in)}</Text>
                 </View>
               ) : (
                 <>
@@ -437,7 +409,7 @@ export function SubmitProofScreen({ eventId }: SubmitProofScreenProps) {
                 <View style={styles.capturedImageContainer}>
                   <Image source={{ uri: timeOutImage }} style={styles.capturedImage} />
                   <Text style={styles.capturedLocationText}>{submissionData.time_out_location}</Text>
-                  <Text style={styles.capturedTimeText}>{submissionData.time_out}</Text>
+                  <Text style={styles.capturedTimeText}>{formatTimeForDisplay(submissionData.time_out)}</Text>
                 </View>
               ) : (
                 <>

@@ -24,8 +24,12 @@ export function LoginForm() {
     setError('');
 
     try {
-      await signIn(email, password);
-      router.replace('/newsfeed/homescreen');
+      const { success, message } = await signIn(email, password);
+      if (success) {
+        router.replace('/newsfeed/homescreen');
+      } else {
+        setError(message || 'Login failed');
+      }
     } catch (error) {
       console.error('Login error:', error);
       const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred';

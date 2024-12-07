@@ -2,12 +2,13 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 import { Modal, View, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import { User, getUser, login, logout } from './AuthContext';
-import { Text } from '~/components/ui/text'; // Assuming you have a custom Text component
+import { Text } from '~/components/ui/text';
+import { useRouter } from 'expo-router';
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  signIn: (email: string, password: string) => Promise<void>;
+  signIn: (email: string, password: string) => Promise<{ success: boolean; message?: string }>;
   signOut: () => Promise<void>;
 }
 
@@ -35,6 +36,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const loadStorageData = async () => {
@@ -54,24 +56,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     loadStorageData();
   }, []);
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = async (email: string, password: string): Promise<{ success: boolean; message?: string }> => {
     try {
       console.log('Signing in with email:', email);
       const { access_token } = await login(email, password);
       if (!access_token) {
-        throw new Error('No access token received from server');
+        return { success: false, message: 'No access token received from server' };
       }
       const userData = await getUser();
       setUser(userData);
       console.log('Sign in successful');
       setShowSuccessPopup(true);
+      return { success: true };
     } catch (error) {
-      console.error('Sign in error:', error);
-      if (error instanceof Error) {
-        Alert.alert('Sign In Error', error.message);
-      } else {
-        Alert.alert('Sign In Error', 'An unexpected error occurred during sign in');
-      }
+      const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred during sign in';
+      return { success: false, message: errorMessage };
     }
   };
 
@@ -82,6 +81,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.error('Sign out error:', error);
     } finally {
       setUser(null);
+      await SecureStore.deleteItemAsync('authToken');
+      router.replace('/');
     }
   };
 
@@ -111,17 +112,17 @@ export const useAuth = () => {
 const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
   },
   modalView: {
     margin: 20,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
+    alignItems: "center",
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2
@@ -134,15 +135,16 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     elevation: 2,
-    backgroundColor: '#2196F3',
+    backgroundColor: "#2196F3",
   },
   buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center'
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center"
   },
   modalText: {
     marginBottom: 15,
-    textAlign: 'center'
+    textAlign: "center"
   }
 });
+
