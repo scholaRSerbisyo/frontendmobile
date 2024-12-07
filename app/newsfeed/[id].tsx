@@ -7,7 +7,8 @@ import { getImageUrl } from '~/components/services/imageService'
 import axios from 'axios'
 import * as SecureStore from 'expo-secure-store'
 import API_URL from '~/constants/constants'
-import { format, parseISO, formatDistanceToNow } from 'date-fns'
+import { format, parseISO, formatDistanceToNow, isWithinInterval, parse, set, startOfDay, isSameDay } from 'date-fns'
+import { toZonedTime } from 'date-fns-tz'
 
 interface Event {
   event_id: number
@@ -53,6 +54,7 @@ export default function ContentScreen() {
   const [commentText, setCommentText] = useState('')
   const [comments, setComments] = useState<Comment[]>([])
   const [isCommentModalVisible, setIsCommentModalVisible] = useState(false)
+  const [hasExistingSubmission, setHasExistingSubmission] = useState(false)
 
   useEffect(() => {
     fetchEvent()
@@ -77,6 +79,7 @@ export default function ContentScreen() {
         const url = await getImageUrl(response.data.event_image_uuid)
         setImageUrl(url)
       }
+      await checkExistingSubmission()
     } catch (error) {
       console.error('Error fetching event:', error)
       setError('Failed to load event details. Please try again.')
@@ -92,6 +95,19 @@ export default function ContentScreen() {
       { id: 2, user_name: "Coordinator's Name", text: "coordinator's reply", created_at: "2023-06-01T13:00:00Z" },
     ]
     setComments(dummyComments)
+  }
+
+  const checkExistingSubmission = async () => {
+    try {
+      const token = await SecureStore.getItemAsync('authToken')
+      if (!token) throw new Error('No authentication token found')
+      const response = await axios.get(`${API_URL}/events/check-submission/${id}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+      setHasExistingSubmission(response.data.hasSubmission)
+    } catch (error) {
+      console.error('Error checking existing submission:', error)
+    }
   }
 
   const handleCommentSubmit = async () => {
@@ -111,15 +127,50 @@ export default function ContentScreen() {
   }
 
   const formatDate = (dateString: string) => {
-    return format(parseISO(dateString), 'MMMM d, yyyy')
+    const date = toZonedTime(parse(dateString, 'yyyy-MM-dd', new Date()), 'Asia/Manila')
+    return format(date, 'MMMM d, yyyy')
   }
 
   const formatTime = (timeString: string) => {
-    return format(parseISO(`2000-01-01T${timeString}`), 'h:mm a')
+    // Extract only the time part if the format is 'Y-m-d H:i:s'
+    const timePart = timeString.split(' ')[1] || timeString;
+    const [hours, minutes] = timePart.split(':').map(Number);
+    const time = toZonedTime(set(new Date(), { hours, minutes }), 'Asia/Manila');
+    return format(time, 'h:mm a');
   }
 
   const getTimeSinceCreation = (createdAt: string) => {
-    return formatDistanceToNow(parseISO(createdAt), { addSuffix: true })
+    const date = toZonedTime(parseISO(createdAt), 'Asia/Manila')
+    return formatDistanceToNow(date, { addSuffix: true })
+  }
+
+  const isEventActive = (event: Event) => {
+    const now = toZonedTime(new Date(), 'Asia/Manila')
+    const eventDate = toZonedTime(parse(event.date, 'yyyy-MM-dd', new Date()), 'Asia/Manila')
+
+    // Extract only the time part from time_from and time_to
+    const timeFrom = event.time_from.split(' ')[1] || event.time_from
+    const timeTo = event.time_to.split(' ')[1] || event.time_to
+
+    const [fromHour, fromMinute] = timeFrom.split(':').map(Number)
+    const [toHour, toMinute] = timeTo.split(':').map(Number)
+
+    const eventTimeFrom = set(eventDate, { hours: fromHour, minutes: fromMinute })
+    const eventTimeTo = set(eventDate, { hours: toHour, minutes: toMinute })
+
+    // Check if the event is today or in the future
+    if (eventDate >= startOfDay(now)) {
+      // If the event is today, check if it's within the time range
+      if (isSameDay(eventDate, now)) {
+        return isWithinInterval(now, { start: eventTimeFrom, end: eventTimeTo })
+      } else {
+        // If the event is in the future, consider it as active
+        return true
+      }
+    } else {
+      // If the event is in the past, it's not active
+      return false
+    }
   }
 
   if (loading) {
@@ -152,7 +203,7 @@ export default function ContentScreen() {
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
           <ChevronLeft size={24} color="#000" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Content</Text>
+        <Text style={styles.headerTitle}>Event Details</Text>
       </View>
       <ScrollView style={styles.scrollContainer}>
         <View style={styles.contentCard}>
@@ -210,12 +261,14 @@ export default function ContentScreen() {
           <View style={styles.commentsSection}>
             <View style={styles.commentsHeader}>
               <Text style={styles.commentsTitle}>All comments</Text>
-              <TouchableOpacity 
-                style={styles.attachButton}
-                onPress={() => router.push(`/(proof)/submit-proof?id=${id}`)}
-              >
-                <Text style={styles.attachButtonText}>Attach File</Text>
-              </TouchableOpacity>
+              {isEventActive(event) && (
+                <TouchableOpacity 
+                  style={styles.attachButton}
+                  onPress={() => router.push(`/(proof)/submit-proof?id=${id}`)}
+                >
+                  <Text style={styles.attachButtonText}>Attach File</Text>
+                </TouchableOpacity>
+              )}
             </View>
             <TouchableOpacity 
               style={styles.commentInputFrame}

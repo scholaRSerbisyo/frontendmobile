@@ -1,21 +1,25 @@
 import React, { useState, useEffect } from 'react'
-import { View, StyleSheet, TouchableOpacity, TextInput, Platform, Image, Modal, Alert } from 'react-native'
+import { View, StyleSheet, TouchableOpacity, TextInput, Image, Modal, Alert } from 'react-native'
 import { useRouter } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { ChevronLeft, Camera } from 'lucide-react-native'
 import { Text } from '../ui/text'
-import * as Location from 'expo-location'
-import axios from 'axios'
-import API_URL from '~/constants/constants'
 import * as SecureStore from 'expo-secure-store'
 import CameraScreen2 from '../Camera/TorchExample'
-import { format } from 'date-fns'
+import { format, parse, isWithinInterval, set, startOfDay, isSameDay } from 'date-fns'
+import { toZonedTime } from 'date-fns-tz'
+import { Toast } from '../ui/toast'
 import { CameraCapturedPicture } from 'expo-camera'
+import * as Location from 'expo-location';
+import axios from 'axios';
+import API_URL from '~/constants/constants'
 
 interface Event {
   event_id: number
   event_name: string
   date: string
+  time_from: string
+  time_to: string
   location: string
   event_type: {
     name: string
@@ -61,37 +65,107 @@ export function SubmitProofScreen({ eventId }: SubmitProofScreenProps) {
   const [timeOutImage, setTimeOutImage] = useState<string | null>(null)
   const [showCamera, setShowCamera] = useState(false)
   const [currentCaptureType, setCurrentCaptureType] = useState<'timeIn' | 'timeOut' | null>(null)
+  const [submissionId, setSubmissionId] = useState<number | null>(null)
+  const [isTimeInSubmitted, setIsTimeInSubmitted] = useState(false)
+  const [hasExistingSubmission, setHasExistingSubmission] = useState(false)
+  const [showErrorToast, setShowErrorToast] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
+  const [isEventActive, setIsEventActive] = useState(false)
 
   useEffect(() => {
     fetchEventDetails()
     fetchScholarInfo()
+    checkExistingSubmission()
   }, [eventId])
+
+  useEffect(() => {
+    if (event) {
+      checkEventActive()
+    }
+  }, [event])
 
   const fetchEventDetails = async () => {
     try {
       const token = await SecureStore.getItemAsync('authToken')
-      const response = await axios.get<Event>(`${API_URL}/events/getevent/${eventId}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
+      const response = await fetch(`${API_URL}/events/getevent/${eventId}`, {
+        headers: { 'Authorization': `Bearer ${token}` },
       })
-      setEvent(response.data)
+      const data = await response.json()
+      setEvent(data)
     } catch (error) {
       console.error('Error fetching event details:', error)
+      Alert.alert('Error', 'Failed to fetch event details. Please try again.')
     }
   }
 
   const fetchScholarInfo = async () => {
     try {
       const token = await SecureStore.getItemAsync('authToken')
-      const response = await axios.get(`${API_URL}/user/scholar/me/show`, {
-        headers: { 'Authorization': `Bearer ${token}` }
+      const response = await fetch(`${API_URL}/user/scholar/me/show`, {
+        headers: { 'Authorization': `Bearer ${token}` },
       })
-      setSubmissionData(prev => ({ ...prev, scholar_id: response.data.scholar.scholar_id }))
+      const data = await response.json()
+      setSubmissionData(prev => ({ ...prev, scholar_id: data.scholar.scholar_id }))
     } catch (error) {
       console.error('Error fetching scholar info:', error)
+      Alert.alert('Error', 'Failed to fetch scholar information. Please try again.')
     }
   }
 
-  const handleImageCapture = (isTimeIn: boolean) => {
+  const checkExistingSubmission = async () => {
+    try {
+      const token = await SecureStore.getItemAsync('authToken')
+      const response = await fetch(`${API_URL}/events/check-submission/${eventId}`, {
+        headers: { 'Authorization': `Bearer ${token}` },
+      })
+      const data = await response.json()
+      setHasExistingSubmission(data.hasSubmission)
+      if (data.hasSubmission) {
+        setIsTimeInSubmitted(true)
+        setSubmissionId(data.submissionId)
+      }
+    } catch (error) {
+      console.error('Error checking existing submission:', error)
+    }
+  }
+
+  const checkEventActive = () => {
+    if (!event) return
+
+    const now = toZonedTime(new Date(), 'Asia/Manila')
+    const eventDate = toZonedTime(parse(event.date, 'yyyy-MM-dd', new Date()), 'Asia/Manila')
+
+    const timeFrom = event.time_from.split(' ')[1] || event.time_from
+    const timeTo = event.time_to.split(' ')[1] || event.time_to
+
+    const [fromHour, fromMinute] = timeFrom.split(':').map(Number)
+    const [toHour, toMinute] = timeTo.split(':').map(Number)
+
+    const eventTimeFrom = set(eventDate, { hours: fromHour, minutes: fromMinute })
+    const eventTimeTo = set(eventDate, { hours: toHour, minutes: toMinute })
+
+    if (eventDate >= startOfDay(now)) {
+      if (isSameDay(eventDate, now)) {
+        setIsEventActive(isWithinInterval(now, { start: eventTimeFrom, end: eventTimeTo }))
+      } else {
+        setIsEventActive(true)
+      }
+    } else {
+      setIsEventActive(false)
+    }
+  }
+
+  const handleImageCapture = async (isTimeIn: boolean) => {
+    if (hasExistingSubmission && isTimeIn) {
+      setErrorMessage('You have already submitted proof for this event.')
+      setShowErrorToast(true)
+      return
+    }
+    if (!isEventActive) {
+      setErrorMessage('You can only submit proof during the event time.')
+      setShowErrorToast(true)
+      return
+    }
     setCurrentCaptureType(isTimeIn ? 'timeIn' : 'timeOut')
     setShowCamera(true)
   }
@@ -101,37 +175,73 @@ export function SubmitProofScreen({ eventId }: SubmitProofScreenProps) {
     setCurrentCaptureType(null)
   }
 
-  const handlePhotoConfirm = async (photo: CameraCapturedPicture & { exif?: { GPSLatitude?: number; GPSLongitude?: number } }) => {
+  const handlePhotoConfirm = async (photo: CameraCapturedPicture & { location?: { latitude: number; longitude: number } }) => {
     const base64Photo = `data:image/jpeg;base64,${photo.base64}`
     let locationString = 'Location not available'
 
     if (photo.exif?.GPSLatitude && photo.exif?.GPSLongitude) {
       try {
-        const [address] = await Location.reverseGeocodeAsync({
-          latitude: photo.exif.GPSLatitude,
-          longitude: photo.exif.GPSLongitude
-        })
+        const response = await axios.get('https://nominatim.openstreetmap.org/reverse', {
+          params: {
+            format: 'json',
+            lat: photo.exif.GPSLatitude,
+            lon: photo.exif.GPSLongitude,
+          },
+          headers: {
+            'User-Agent': 'ScholarSerbisyoApp/1.0',
+          },
+        });
 
-        if (address) {
-          const parts = [address.street, address.city, address.region, address.country].filter(Boolean)
-          locationString = parts.join(', ')
+        if (response.data && response.data.display_name) {
+          locationString = response.data.display_name;
+        } else {
+          console.warn('Detailed address not available from Nominatim API');
+          locationString = `Latitude: ${photo.exif.GPSLatitude}, Longitude: ${photo.exif.GPSLongitude}`;
         }
       } catch (error) {
-        console.error('Error in reverse geocoding:', error)
+        console.error('Error in reverse geocoding:', error);
+        locationString = `Latitude: ${photo.exif.GPSLatitude}, Longitude: ${photo.exif.GPSLongitude}`;
       }
+    } else if (photo.location) {
+      try {
+        const response = await axios.get('https://nominatim.openstreetmap.org/reverse', {
+          params: {
+            format: 'json',
+            lat: photo.location.latitude,
+            lon: photo.location.longitude,
+          },
+          headers: {
+            'User-Agent': 'ScholarSerbisyoApp/1.0',
+          },
+        });
+
+        if (response.data && response.data.display_name) {
+          locationString = response.data.display_name;
+        } else {
+          console.warn('Detailed address not available from Nominatim API');
+          locationString = `Latitude: ${photo.location.latitude}, Longitude: ${photo.location.longitude}`;
+        }
+      } catch (error) {
+        console.error('Error in reverse geocoding:', error);
+        locationString = `Latitude: ${photo.location.latitude}, Longitude: ${photo.location.longitude}`;
+      }
+    } else {
+      console.warn('No location data available');
     }
 
-    const currentTime = format(new Date(), 'HH:mm')
+    const currentTime = format(toZonedTime(new Date(), 'Asia/Manila'), 'HH:mm:ss')
 
     if (currentCaptureType === 'timeIn') {
       setTimeInImage(base64Photo)
-      setSubmissionData(prev => ({
-        ...prev,
+      const newSubmissionData = {
+        ...submissionData,
         time_in_image_uuid: generateUUID(),
         time_in_location: locationString,
         time_in_image: base64Photo,
         time_in: currentTime,
-      }))
+      }
+      setSubmissionData(newSubmissionData)
+      await saveTimeInSubmission(newSubmissionData)
     } else if (currentCaptureType === 'timeOut') {
       setTimeOutImage(base64Photo)
       setSubmissionData(prev => ({
@@ -153,19 +263,100 @@ export function SubmitProofScreen({ eventId }: SubmitProofScreenProps) {
     })
   }
 
-  const handleSubmit = async () => {
+  const saveTimeInSubmission = async (data: SubmissionData) => {
     try {
       const token = await SecureStore.getItemAsync('authToken')
-      const response = await axios.post(`${API_URL}/events/submit`, submissionData, {
-        headers: { 'Authorization': `Bearer ${token}` }
+      const response = await fetch(`${API_URL}/events/submit-time-in`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
       })
-      console.log('Submission successful:', response.data)
+      
+      const responseText = await response.text()
+      let resData
+      try {
+        resData = JSON.parse(responseText)
+      } catch (parseError) {
+        console.error('Error parsing response:', responseText)
+        throw new Error('Server returned an invalid response')
+      }
+
+      if (!response.ok) {
+        throw new Error(resData.message || 'Server returned an error')
+      }
+
+      console.log('Time In submission successful:', resData)
+      setSubmissionId(resData.submission_id)
+      setIsTimeInSubmitted(true)
+      Alert.alert('Success', 'Time In recorded successfully')
+    } catch (error: any) {
+      console.error('Error submitting Time In:', error)
+      Alert.alert('Error', `Failed to record Time In. ${error.message || 'Please try again.'}`)
+    }
+  }
+
+  const handleSubmit = async () => {
+    if (!isTimeInSubmitted) {
+      try {
+        await saveTimeInSubmission(submissionData)
+      } catch (error) {
+        console.error('Error saving Time In:', error)
+        return
+      }
+    }
+
+    if (!timeOutImage) {
+      Alert.alert('Incomplete Submission', 'Please capture the Time Out image to complete your submission.')
+      return
+    }
+
+    try {
+      const token = await SecureStore.getItemAsync('authToken')
+      const response = await fetch(`${API_URL}/events/submit-time-out`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          submission_id: submissionId,
+          ...submissionData
+        }),
+      })
+
+      const responseText = await response.text()
+      let resData
+      try {
+        resData = JSON.parse(responseText)
+      } catch (parseError) {
+        console.error('Error parsing response:', responseText)
+        throw new Error('Server returned an invalid response')
+      }
+
+      if (!response.ok) {
+        throw new Error(resData.message || 'Server returned an error')
+      }
+
+      console.log('Time Out submission successful:', resData)
       Alert.alert('Success', 'Proof submitted successfully')
       router.back()
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error submitting proof:', error)
-      Alert.alert('Error', 'Failed to submit proof. Please try again.')
+      Alert.alert('Error', `Failed to submit proof. ${error.message || 'Please try again.'}`)
     }
+  }
+
+  const formatDate = (dateString: string) => {
+    const date = parse(dateString, 'yyyy-MM-dd', new Date())
+    return format(date, 'MMMM d, yyyy')
+  }
+
+  const formatTime = (timeString: string) => {
+    const time = parse(timeString, 'HH:mm:ss', new Date())
+    return format(time, 'h:mm a')
   }
 
   if (!event) {
@@ -188,7 +379,7 @@ export function SubmitProofScreen({ eventId }: SubmitProofScreenProps) {
 
         <View style={styles.formField}>
           <Text style={styles.label}>Date</Text>
-          <Text style={styles.value}>{event.date}</Text>
+          <Text style={styles.value}>{formatDate(event.date)}</Text>
         </View>
 
         <View style={styles.formField}>
@@ -215,50 +406,63 @@ export function SubmitProofScreen({ eventId }: SubmitProofScreenProps) {
         </View>
 
         <View style={styles.photoSection}>
-          <TouchableOpacity 
-            style={styles.photoButton} 
-            onPress={() => handleImageCapture(true)}
-          >
-            {timeInImage ? (
-              <View style={styles.capturedImageContainer}>
-                <Image source={{ uri: timeInImage }} style={styles.capturedImage} />
-                <Text style={styles.capturedLocationText}>{submissionData.time_in_location}</Text>
-                <Text style={styles.capturedTimeText}>{submissionData.time_in}</Text>
-              </View>
-            ) : (
-              <>
-                <Camera size={32} color="#FDB316" />
-                <Text style={styles.photoButtonText}>Time in</Text>
-              </>
-            )}
-          </TouchableOpacity>
+          {isEventActive && !hasExistingSubmission && (
+            <TouchableOpacity 
+              style={styles.photoButton} 
+              onPress={() => handleImageCapture(true)}
+              disabled={isTimeInSubmitted}
+            >
+              {timeInImage ? (
+                <View style={styles.capturedImageContainer}>
+                  <Image source={{ uri: timeInImage }} style={styles.capturedImage} />
+                  <Text style={styles.capturedLocationText}>{submissionData.time_in_location}</Text>
+                  <Text style={styles.capturedTimeText}>{submissionData.time_in}</Text>
+                </View>
+              ) : (
+                <>
+                  <Camera size={32} color="#FDB316" />
+                  <Text style={styles.photoButtonText}>Time in</Text>
+                </>
+              )}
+            </TouchableOpacity>
+          )}
 
-          <TouchableOpacity 
-            style={[styles.photoButton, !timeInImage && styles.disabledButton]}
-            onPress={() => handleImageCapture(false)}
-            disabled={!timeInImage}
-          >
-            {timeOutImage ? (
-              <View style={styles.capturedImageContainer}>
-                <Image source={{ uri: timeOutImage }} style={styles.capturedImage} />
-                <Text style={styles.capturedLocationText}>{submissionData.time_out_location}</Text>
-                <Text style={styles.capturedTimeText}>{submissionData.time_out}</Text>
-              </View>
-            ) : (
-              <>
-                <Camera size={32} color={timeInImage ? "#191851" : "#999"} />
-                <Text style={[styles.photoButtonText, !timeInImage && styles.disabledText]}>Time out</Text>
-              </>
-            )}
-          </TouchableOpacity>
+          {isEventActive && (
+            <TouchableOpacity 
+              style={[styles.photoButton, !isTimeInSubmitted && styles.disabledButton]}
+              onPress={() => handleImageCapture(false)}
+              disabled={!isTimeInSubmitted || !!timeOutImage}
+            >
+              {timeOutImage ? (
+                <View style={styles.capturedImageContainer}>
+                  <Image source={{ uri: timeOutImage }} style={styles.capturedImage} />
+                  <Text style={styles.capturedLocationText}>{submissionData.time_out_location}</Text>
+                  <Text style={styles.capturedTimeText}>{submissionData.time_out}</Text>
+                </View>
+              ) : (
+                <>
+                  <Camera size={32} color={isTimeInSubmitted ? "#191851" : "#999"} />
+                  <Text style={[styles.photoButtonText, !isTimeInSubmitted && styles.disabledText]}>Time out</Text>
+                </>
+              )}
+            </TouchableOpacity>
+          )}
         </View>
 
+        {!isEventActive && (
+          <Text style={styles.eventInactiveText}>
+            Proof submission is only available during the event time.
+          </Text>
+        )}
+
         <TouchableOpacity 
-          style={[styles.submitButton, (!timeInImage || !timeOutImage) && styles.disabledButton]}
+          style={[styles.submitButton, (!isTimeInSubmitted || !timeOutImage || !isEventActive) && styles.disabledButton]}
           onPress={handleSubmit}
-          disabled={!timeInImage || !timeOutImage}
+          disabled={!isTimeInSubmitted || !timeOutImage || !isEventActive}
         >
-          <Text style={styles.submitButtonText}>Submit</Text>
+          <Text style={styles.submitButtonText}>
+            {isTimeInSubmitted ? 'Submit' : 'Save Time In'}
+          </Text>
         </TouchableOpacity>
       </View>
 
@@ -275,6 +479,12 @@ export function SubmitProofScreen({ eventId }: SubmitProofScreenProps) {
           onPhotoConfirm={handlePhotoConfirm}
         />
       </Modal>
+
+      <Toast
+        visible={showErrorToast}
+        message={errorMessage}
+        onDismiss={() => setShowErrorToast(false)}
+      />
     </SafeAreaView>
   )
 }
@@ -405,5 +615,13 @@ const styles = StyleSheet.create({
   disabledText: {
     color: '#999',
   },
+  eventInactiveText: {
+    color: '#FF0000',
+    fontSize: 14,
+    textAlign: 'center',
+    marginBottom: 16,
+  },
 })
+
+export default SubmitProofScreen
 
