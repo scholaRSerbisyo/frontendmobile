@@ -1,45 +1,51 @@
 import React from 'react';
-import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useRouter } from 'expo-router';
 import { Text } from '~/components/ui/text';
-import { router } from 'expo-router';
+import { useAuth } from '~/components/Authentication/api/Auth';
 
 export default function LogoutScreen() {
+  const router = useRouter();
+  const { signOut } = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      router.replace('/(authentication)/login');
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      {/* Logo */}
       <View style={styles.logoContainer}>
         <Image
-          source={require('~/assets/images/final-logo-iskoserbisyo.png')} // Replace with your logo path
+          source={require('../../assets/images/2nd-type-logo.png')}
           style={styles.logo}
           resizeMode="contain"
         />
       </View>
 
-      {/* Content */}
       <View style={styles.contentContainer}>
         <Text style={styles.title}>Log Out</Text>
         <Text style={styles.message}>
           Are you sure that you want to log out?
         </Text>
 
-        {/* Buttons */}
-        <TouchableOpacity
+        <TouchableOpacity 
           style={styles.continueButton}
-          onPress={() => {
-            console.log('User logged out');
-            // Add logout logic here
-            // router.replace('/login');
-          }}
+          onPress={handleLogout}
         >
-          <Text style={styles.continueButtonText}>Continue</Text>
+          <Text style={styles.buttonText}>Continue</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
+        <TouchableOpacity 
           style={styles.cancelButton}
           onPress={() => router.back()}
         >
-          <Text style={styles.cancelButtonText}>Cancel</Text>
+          <Text style={styles.buttonText}>Cancel</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -49,66 +55,59 @@ export default function LogoutScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white', // Dark blue background
+    backgroundColor: 'white',
   },
   logoContainer: {
     alignItems: 'center',
-    // marginTop: 40,
-    marginBottom: 20,
+    justifyContent: 'center',
+    flex: 1,
   },
   logo: {
-    width: 300,
-    height: 150,
+    width: 280,
+    height: 100,
   },
   contentContainer: {
     backgroundColor: '#191851',
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    paddingVertical: 40,
-    paddingHorizontal: 20,
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
+    padding: 24,
     alignItems: 'center',
     flex: 1,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: 'white', // Dark blue text
-    marginBottom: 15,
-    paddingTop: "25%"
+    color: 'white',
+    marginBottom: 16,
+    marginTop: 40,
   },
   message: {
     fontSize: 16,
-    color: 'white', // Gray message text
+    color: 'white',
     textAlign: 'center',
-    marginBottom: 40,
+    marginBottom: 32,
   },
   continueButton: {
-    backgroundColor: '#FDB316', // Golden yellow
-    height: 50,
-    borderRadius: 25,
+    backgroundColor: '#FDB316',
+    width: '100%',
+    height: 48,
+    borderRadius: 24,
     justifyContent: 'center',
     alignItems: 'center',
-    width: '80%',
-    marginBottom: 15,
-  },
-  continueButtonText: {
-    color: 'white', // White text
-    fontSize: 16,
-    fontWeight: 'bold', 
+    marginBottom: 16,
   },
   cancelButton: {
-    backgroundColor: '#FDB316', // White button
-    height: 50,
-    borderRadius: 25,
+    backgroundColor: '#FDB316',
+    width: '100%',
+    height: 48,
+    borderRadius: 24,
     justifyContent: 'center',
     alignItems: 'center',
-    width: '80%',
-    borderWidth: 2,
-    borderColor: '#FDB316', // Golden yellow border
   },
-  cancelButtonText: {
-    color: 'white', 
+  buttonText: {
+    color: 'white',
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
 });
+
