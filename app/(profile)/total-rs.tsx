@@ -172,34 +172,15 @@ export default function TotalRSScreen() {
         )
       case 'Overview':
         return <RSOverview />
-      case 'Videos':
-        return <RSVideos />
       case 'Photos':
         return <RSPhotos photos={photos} />
       case 'Total RS':
         return (
           <>
             <View style={styles.viewToggle}>
-              <TouchableOpacity 
-                style={[
-                  styles.toggleOption,
-                  view === 'semester' && styles.activeToggle
-                ]}
-                onPress={() => setView('semester')}
-              >
-                <Text style={styles.toggleText}>By Semester</Text>
-              </TouchableOpacity>
-              <TouchableOpacity 
-                style={[
-                  styles.toggleOption,
-                  view === 'year' && styles.activeToggle
-                ]}
-                onPress={() => setView('year')}
-              >
-                <Text style={styles.toggleText}>By Year</Text>
-              </TouchableOpacity>
+              <Text style={{color: 'black'}}>Year</Text>
             </View>
-            {view === 'semester' ? <RSSemesterView /> : <RSYearView />}
+            <RSYearView />
           </>
         )
       default:
