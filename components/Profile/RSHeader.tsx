@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Image, StyleSheet, TouchableOpacity } from 'react-native'
-import { ChevronLeft, Menu } from 'lucide-react-native'
+import { ChevronLeft, GraduationCap, MapPin, Menu } from 'lucide-react-native'
 import { Text } from '../ui/text'
 import { useRouter } from 'expo-router'
 
@@ -15,128 +15,120 @@ export function RSHeader({ name, school, location, photo }: RSHeaderProps) {
   const router = useRouter()
 
   return (
-    <View style={styles.container}>
-      <View style={styles.topBar}>
+    <>
+      <View style={styles.topSection}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-          <ChevronLeft size={24} color="#FFF" />
+          <ChevronLeft color="#FFF" size={24} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Profile</Text>
-        <TouchableOpacity style={styles.menuButton} onPress={() => router.push('/(profile)/burger-menu')}>
-          <View style={styles.menuDots}>
-            <Menu style={styles.dot} />
-          </View>
+        <TouchableOpacity style={styles.menuButton}>
+          <Menu color="#FFF" size={24} />
         </TouchableOpacity>
+        <View style={styles.nameContainer}>
+          <Text style={styles.name}>{name}</Text>
+        </View>
       </View>
-
-      <View style={styles.profileSection}>
-        <Image
-          source={{ uri: photo }}
-          style={styles.photo}
-        />
-        <Text style={styles.name}>{name}</Text>
-        <View style={styles.infoContainer}>
-          <View style={styles.infoRow}>
-            <Text style={styles.infoIcon}>📚</Text>
-            <Text style={styles.infoText}>
-              Studied at <Text style={styles.infoHighlight}>{school}</Text>
+      <View style={styles.divider} />
+      <View style={styles.bottomSection}>
+        <View style={styles.profileImageContainer}>
+          <Image
+            source={{ uri: photo }}
+            style={styles.profileImage}
+          />
+        </View>
+        <View style={styles.detailsContainer}>
+          <View style={styles.detailRow}>
+            <GraduationCap color="#FFA500" size={16} />
+            <Text style={styles.detailText}>
+              Studied at <Text style={styles.detailBold}>{school}</Text>
             </Text>
           </View>
-          <View style={styles.infoRow}>
-            <Text style={styles.infoIcon}>📍</Text>
-            <Text style={styles.infoText}>
-              Live in <Text style={styles.infoHighlight}>{location}</Text>
+          <View style={styles.detailRow}>
+            <MapPin color="#FFA500" size={16} />
+            <Text style={styles.detailText}>
+              Live in <Text style={styles.detailBold}>{location}</Text>
             </Text>
           </View>
         </View>
-        <View style={styles.yellowBar} />
       </View>
-    </View>
+    </>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#191851',
-    paddingTop: 40,
-  },
-  topBar: {
+  topSection: {
+    backgroundColor: '#1E1B4B',
+    paddingHorizontal: 24,
+    paddingBottom: 64,
+    paddingTop: 20,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingBottom: 16,
+    justifyContent: 'space-between',
   },
   backButton: {
-    width: 40,
-    height: 40,
-    justifyContent: 'center',
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#FFF',
+    padding: 4,
   },
   menuButton: {
-    width: 40,
-    height: 40,
-    justifyContent: 'center',
-    alignItems: 'flex-end',
+    padding: 4,
   },
-  menuDots: {
-    flexDirection: 'row',
-    // gap: 4,
+  headerTitle: {
+    fontSize: 28,
+    fontWeight: '700',
+    color: 'white',
+    marginTop: 20,
   },
-  dot: {
-    width: 4,
-    height: 4,
-    borderRadius: 2,
-    // backgroundColor: '#FFF',
-    color: 'white'
-  },
-  profileSection: {
-    alignItems: 'center',
-    paddingBottom: 16,
-    position: 'relative',
-  },
-  photo: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginBottom: 8,
-    borderWidth: 3,
-    borderColor: '#FFF',
+  nameContainer: {
+    position: 'absolute',
+    bottom: 12,
+    left: 140,
+    right: 24,
   },
   name: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#FFF',
-    marginBottom: 8,
+    fontSize: 24,
+    fontWeight: '600',
+    color: 'white',
   },
-  infoContainer: {
-    gap: 4,
+  divider: {
+    height: 4,
+    backgroundColor: '#FFA500',
   },
-  infoRow: {
+  bottomSection: {
+    backgroundColor: 'white',
+    paddingHorizontal: 24,
+  },
+  profileImageContainer: {
+    position: 'absolute',
+    top: -48,
+    left: 24,
+    width: 96,
+    height: 96,
+    borderRadius: 48,
+    borderWidth: 4,
+    borderColor: 'white',
+    overflow: 'hidden',
+    zIndex: 1,
+  },
+  profileImage: {
+    width: '100%',
+    height: '100%',
+  },
+  detailsContainer: {
+    marginLeft: 116,
+    paddingTop: 12,
+  },
+  detailRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
+    marginBottom: 8,
   },
-  infoIcon: {
-    fontSize: 16,
-  },
-  infoText: {
+  detailText: {
     fontSize: 14,
-    color: '#FFF',
+    color: '#666',
+    marginLeft: 8,
   },
-  infoHighlight: {
-    color: '#FDB316',
-  },
-  yellowBar: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 2,
-    backgroundColor: '#FDB316',
+  detailBold: {
+    color: '#333',
+    fontWeight: '500',
   },
 })
 
