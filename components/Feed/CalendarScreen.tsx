@@ -314,17 +314,18 @@ export function CalendarScreen() {
         <Calendar
           style={styles.calendar}
           theme={{
-            backgroundColor: '#ffffff',
-            calendarBackground: '#ffffff',
-            textSectionTitleColor: '#191851',
+            backgroundColor: '#1A1B3B',
+            calendarBackground: '#1A1B3B',
+            textSectionTitleColor: '#FFFFFF',
+            textSectionTitleDisabledColor: '#FFFFFF',
             selectedDayBackgroundColor: '#FDB316',
             selectedDayTextColor: '#ffffff',
             todayTextColor: '#FDB316',
-            dayTextColor: '#2d4150',
-            textDisabledColor: '#d9e1e8',
+            dayTextColor: '#FFFFFF',
+            textDisabledColor: '#666666',
             dotColor: '#00adf5',
             selectedDotColor: '#ffffff',
-            monthTextColor: '#191851',
+            monthTextColor: '#FFFFFF',
             textDayFontFamily: 'System',
             textMonthFontFamily: 'System',
             textDayHeaderFontFamily: 'System',
@@ -334,7 +335,7 @@ export function CalendarScreen() {
             textDayFontSize: 16,
             textMonthFontSize: 16,
             textDayHeaderFontSize: 16,
-            arrowColor: '#191851',
+            arrowColor: '#FFFFFF',
           }}
           current={currentMonth}
           onDayPress={handleDayPress}
@@ -397,6 +398,26 @@ const styles = StyleSheet.create({
   },
   calendar: {
     marginVertical: 40,
+  },
+  monthTitle: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: 'white',
+    textAlign: 'center',
+    marginVertical: 16,
+  },
+  weekDays: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingVertical: 10,
+  },
+  weekDayText: {
+    color: 'white',
+    fontSize: 14,
+  },
+  week: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   },
   legend: {
     flexDirection: 'row',
