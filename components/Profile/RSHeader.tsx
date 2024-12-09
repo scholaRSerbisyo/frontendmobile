@@ -76,6 +76,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: 'white',
     marginTop: 20,
+    paddingTop: 12,
   },
   nameContainer: {
     position: 'absolute',
