@@ -4,7 +4,8 @@ import { Text } from '../ui/text'
 import { useRouter } from 'expo-router'
 import { getImageUrl } from '../services/imageService'
 import { Feather } from '@expo/vector-icons'
-import { formatDistanceToNow, parseISO } from 'date-fns'
+import { formatDistanceToNow, parse } from 'date-fns'
+import { toZonedTime } from 'date-fns-tz'
 
 interface Event {
   event_id: number
@@ -53,8 +54,9 @@ export function EventCard({ event }: { event: Event }) {
   }
 
   const getTimeSinceCreation = () => {
-    const createdDate = parseISO(event.created_at)
-    return formatDistanceToNow(createdDate, { addSuffix: true })
+    const createdDate = parse(event.created_at, 'yyyy-MM-dd HH:mm:ss', new Date())
+    const zonedDate = toZonedTime(createdDate, 'Asia/Manila')
+    return formatDistanceToNow(zonedDate, { addSuffix: true })
   }
 
   const handleViewComments = () => {
@@ -114,7 +116,7 @@ export function EventCard({ event }: { event: Event }) {
 
         <View style={styles.footer}>
           <Text style={styles.createdAtText}>
-            Uploaded {getTimeSinceCreation()}
+            Created {getTimeSinceCreation()}
           </Text>
           <TouchableOpacity onPress={handleViewComments} style={styles.commentsButton}>
             <Text style={styles.commentsButtonText}>View All Comments</Text>
@@ -217,4 +219,3 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
 })
-

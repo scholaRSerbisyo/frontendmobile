@@ -8,7 +8,7 @@ interface RSTabsProps {
 }
 
 export function RSTabs({ activeTab, onTabChange }: RSTabsProps) {
-  const tabs = ['Post', 'Overview', 'Videos', 'Photos', 'Total RS']
+  const tabs = ['Post', 'Overview', 'Photos', 'Total RS']
 
   return (
     <View style={styles.container}>
