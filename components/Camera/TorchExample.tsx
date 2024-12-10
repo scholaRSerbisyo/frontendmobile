@@ -134,7 +134,7 @@ export default function CameraScreen2({ navigation, onPhotoConfirm }: CameraScre
         ref={cameraRef}
       >
         <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
-          <X size={24} color="#FFD700" />
+          <X size={36} color="#FFD700" />
         </TouchableOpacity>
         <View style={styles.bottomBar}>
           <TouchableOpacity style={styles.controlButton} onPress={handleTorchToggle}>
@@ -199,9 +199,9 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     position: 'absolute',
-    top: 20,
-    right: 20,
-    zIndex: 10,
+    marginTop: '16%',
+    marginLeft: '8%',
+    zIndex: 16,
   },
   permissionButton: {
     backgroundColor: 'blue',
