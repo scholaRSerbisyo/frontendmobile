@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native'
 import { useRouter } from 'expo-router'
-import { Undo2, ChevronDown, ChevronUp, ChevronLeft } from 'lucide-react-native'
+import { ChevronDown, ChevronUp, ChevronLeft } from 'lucide-react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { BottomNavigation } from '~/components/Navigation/BottomNavigation'
 const FAQScreen = () => {

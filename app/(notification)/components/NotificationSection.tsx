@@ -24,14 +24,15 @@ export function NotificationSection({ section }: NotificationSectionProps) {
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 24,
+    marginTop: 24,
+    paddingHorizontal: 16,
   },
   title: {
-    fontSize: 14,
+    fontSize: 18,
     fontWeight: '600',
-    color: '#666',
-    marginBottom: 8,
-    paddingHorizontal: 12,
+    color: '#000000',
+    marginBottom: 12,
+    marginLeft: 4,
   },
 })
 

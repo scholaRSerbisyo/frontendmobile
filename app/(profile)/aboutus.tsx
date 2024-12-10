@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, SafeAreaView } from 'react-native'
 import { useRouter } from 'expo-router'
-import { Undo2 } from 'lucide-react-native'
+import { ChevronLeft } from 'lucide-react-native'
 import { BottomNavigation } from '~/components/Navigation/BottomNavigation'
 const AboutUsScreen = () => {
   const router = useRouter()
@@ -14,7 +14,7 @@ const AboutUsScreen = () => {
             onPress={() => router.back()}
             style={styles.undoButton}
           >
-            <Undo2 size={24} color="#191851" />
+            <ChevronLeft size={24} color="#191851" />
           </TouchableOpacity>
         </View>
         

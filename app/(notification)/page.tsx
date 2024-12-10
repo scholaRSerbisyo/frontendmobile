@@ -6,27 +6,35 @@ import { ChevronLeft } from 'lucide-react-native'
 import { Text } from '~/components/ui/text'
 import { NotificationSection } from './components/NotificationSection'
 import { notifications } from './mock-data'
+import { BottomNavigation } from '~/components/Navigation/BottomNavigation'
 
 export default function NotificationsScreen() {
   const router = useRouter()
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity 
-          onPress={() => router.back()} 
-          style={styles.backButton}
-        >
-          <ChevronLeft size={24} color="#191851" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Notifications</Text>
-      </View>
+      <View style={{ flex: 1 }}>
+        <View style={styles.header}>
+          <TouchableOpacity 
+            onPress={() => router.back()} 
+            style={styles.backButton}
+          >
+            <ChevronLeft size={30} color="#FDB316" />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Notifications</Text>
+        </View>
 
-      <ScrollView style={styles.content}>
-        {notifications.map((section) => (
-          <NotificationSection key={section.title} section={section} />
-        ))}
-      </ScrollView>
+        <ScrollView 
+          style={styles.content} 
+          contentContainerStyle={styles.contentContainer}
+          showsVerticalScrollIndicator={false}
+        >
+          {notifications.map((section) => (
+            <NotificationSection key={section.title} section={section} />
+          ))}
+        </ScrollView>
+        <BottomNavigation />
+      </View>
     </SafeAreaView>
   )
 }
@@ -34,26 +42,37 @@ export default function NotificationsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#F5F5F5',
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#E5E5E5',
+    paddingHorizontal: 20,
+    paddingTop: 30,
+    paddingBottom: 20,
+    backgroundColor: '#FFFFFF',
   },
   backButton: {
-    marginRight: 12,
+    position: 'absolute',
+    left: 20,
+    top: 35,
+    zIndex: 1,
+    color: '#FDB316'
   },
   headerTitle: {
-    fontSize: 20,
+    fontSize: 32,
+    fontFamily: 'Times New Roman',
     fontWeight: 'bold',
     color: '#191851',
+    textAlign: 'center',
+    flex: 1,
+    paddingTop: 16
   },
   content: {
     flex: 1,
+  },
+  contentContainer: {
+    paddingBottom: 80,
   },
 })
 
