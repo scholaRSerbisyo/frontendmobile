@@ -19,7 +19,7 @@ export default function NotificationsScreen() {
             onPress={() => router.back()} 
             style={styles.backButton}
           >
-            <ChevronLeft size={30} color="#FDB316" />
+            <ChevronLeft size={24} color="#FDB316" />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Notifications</Text>
         </View>
@@ -33,6 +33,7 @@ export default function NotificationsScreen() {
             <NotificationSection key={section.title} section={section} />
           ))}
         </ScrollView>
+        <View style={styles.yellowLine} />
         <BottomNavigation />
       </View>
     </SafeAreaView>
@@ -57,7 +58,6 @@ const styles = StyleSheet.create({
     left: 20,
     top: 35,
     zIndex: 1,
-    color: '#FDB316'
   },
   headerTitle: {
     fontSize: 32,
@@ -66,13 +66,17 @@ const styles = StyleSheet.create({
     color: '#191851',
     textAlign: 'center',
     flex: 1,
-    paddingTop: 16
+    marginTop: 10,
   },
   content: {
     flex: 1,
   },
   contentContainer: {
     paddingBottom: 80,
+  },
+  yellowLine: {
+    height: 4,
+    backgroundColor: '#FDB316',
   },
 })
 
