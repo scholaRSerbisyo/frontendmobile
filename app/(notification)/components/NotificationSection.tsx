@@ -2,20 +2,22 @@ import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { Text } from '~/components/ui/text'
 import { NotificationItem } from './NotificationItem'
-import { NotificationSection as NotificationSectionType } from '../types'
+import { Notification } from '../types'
 
 interface NotificationSectionProps {
-  section: NotificationSectionType
+  section: { title: string; data: Notification[] }
+  onNotificationPress: (notification: Notification) => Promise<void>
 }
 
-export function NotificationSection({ section }: NotificationSectionProps) {
+export function NotificationSection({ section, onNotificationPress }: NotificationSectionProps) {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{section.title}</Text>
+    <View style={styles.section}>
+      <Text style={styles.sectionTitle}>{section.title}</Text>
       {section.data.map((notification) => (
         <NotificationItem 
           key={notification.id} 
-          notification={notification}
+          notification={notification} 
+          onPress={() => onNotificationPress(notification)}
         />
       ))}
     </View>
@@ -23,16 +25,14 @@ export function NotificationSection({ section }: NotificationSectionProps) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: 24,
-    paddingHorizontal: 16,
+  section: {
+    marginBottom: 20,
   },
-  title: {
+  sectionTitle: {
     fontSize: 18,
-    fontWeight: '600',
-    color: '#000000',
-    marginBottom: 12,
-    marginLeft: 4,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    color: '#191851',
   },
 })
 
