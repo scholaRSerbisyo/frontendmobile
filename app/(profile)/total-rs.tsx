@@ -6,14 +6,14 @@ import { Text } from '~/components/ui/text'
 import { RSHeader } from '~/components/Profile/RSHeader'
 import { RSTabs } from '~/components/Profile/RSTabs'
 import { RSOverview } from '~/components/Profile/RSOverview'
-import { RSVideos } from '~/components/Profile/RSVideos'
 import { RSPhotos } from '~/components/Profile/RSPhotos'
-import { RSSemesterView } from '~/components/Profile/RSSemesterView'
 import { RSYearView } from '~/components/Profile/RSYearView'
 import { ProfilePost } from '~/components/Profile/ProfilePost'
 import axios from 'axios'
 import * as SecureStore from 'expo-secure-store'
 import API_URL from '~/constants/constants'
+import { PostTabHeader } from '~/components/Profile/PostTabHeader'
+import * as ImagePicker from 'expo-image-picker'
 
 interface Submission {
   submission_id: number;
@@ -78,6 +78,7 @@ export default function TotalRSScreen() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [scholarData, setScholarData] = useState<ScholarData | null>(null)
+  const [searchQuery, setSearchQuery] = useState('')
   const router = useRouter()
 
   useEffect(() => {
@@ -138,6 +139,29 @@ export default function TotalRSScreen() {
     }
   }
 
+  const handlePhotoEdit = async () => {
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 1,
+      })
+
+      if (!result.canceled) {
+        // Here you would typically upload the image to your server
+        // and update the user's profile photo
+        console.log('Selected image:', result.assets[0].uri)
+      }
+    } catch (error) {
+      console.error('Error picking image:', error)
+    }
+  }
+
+  const filteredSubmissions = submissions.filter(submission =>
+    submission.event.event_name.toLowerCase().includes(searchQuery.toLowerCase())
+  )
+
   const renderContent = () => {
     if (loading) {
       return (
@@ -159,13 +183,15 @@ export default function TotalRSScreen() {
       case 'Post':
         return (
           <ScrollView style={styles.scrollView}>
-            {submissions.length > 0 ? (
-              submissions.map((submission) => (
+            {filteredSubmissions.length > 0 ? (
+              filteredSubmissions.map((submission) => (
                 <ProfilePost key={submission.submission_id} submission={submission} />
               ))
             ) : (
               <View style={styles.emptyContainer}>
-                <Text style={styles.emptyText}>No submissions found</Text>
+                <Text style={styles.emptyText}>
+                  {searchQuery ? 'No matching submissions found' : 'No submissions found'}
+                </Text>
               </View>
             )}
           </ScrollView>
@@ -194,12 +220,22 @@ export default function TotalRSScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <RSHeader
-        name={scholarData ? getFullName(scholarData.scholar) : ""}
-        school="School Name" // Note: School name is not provided in the sample data
-        location="Location" // Note: Location is not provided in the sample data
-        photo="https://i.pravatar.cc/300" // Note: Profile photo is not provided in the sample data
-      />
+      {activeTab === 'Post' ? (
+        <PostTabHeader
+          name={scholarData ? getFullName(scholarData.scholar) : "Earl Dave Gwapo"}
+          school="School Name"
+          location="Location"
+          photo="https://i.pravatar.cc/300"
+          onPhotoEdit={handlePhotoEdit}
+        />
+      ) : (
+        <RSHeader
+          name={scholarData ? getFullName(scholarData.scholar) : "Earl Dave Gwapo"}
+          school="School Name"
+          location="Location"
+          photo="https://i.pravatar.cc/300"
+        />
+      )}
       <RSTabs
         activeTab={activeTab}
         onTabChange={setActiveTab}
@@ -269,4 +305,3 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 })
-

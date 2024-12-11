@@ -72,8 +72,8 @@ const styles = StyleSheet.create({
     padding: 4,
   },
   headerTitle: {
-    fontSize: 28,
-    fontWeight: '700',
+    fontSize: 36,
+    fontWeight: 'black',
     color: 'white',
     marginTop: 20,
     paddingTop: 12,
@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '600',
     color: 'white',
+    paddingTop: 16
   },
   divider: {
     height: 4,
@@ -120,7 +121,7 @@ const styles = StyleSheet.create({
   detailRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 8,
+    // marginBottom: 8,
   },
   detailText: {
     fontSize: 14,
