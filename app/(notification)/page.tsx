@@ -19,7 +19,7 @@ export default function NotificationsScreen() {
             onPress={() => router.back()} 
             style={styles.backButton}
           >
-            <ChevronLeft size={24} color="#FDB316" />
+            <ChevronLeft size={36} color="#FDB316" />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Notifications</Text>
         </View>
@@ -56,17 +56,18 @@ const styles = StyleSheet.create({
   backButton: {
     position: 'absolute',
     left: 20,
-    top: 35,
+    top: 40,
     zIndex: 1,
   },
   headerTitle: {
-    fontSize: 32,
+    fontSize: 36,
     fontFamily: 'Times New Roman',
     fontWeight: 'bold',
     color: '#191851',
     textAlign: 'center',
     flex: 1,
     marginTop: 10,
+    paddingTop: 16,
   },
   content: {
     flex: 1,
