@@ -131,16 +131,6 @@ export default function NotificationsScreen() {
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Notifications</Text>
       </View>
-      <View style={{ flex: 1 }}>
-        <View style={styles.header}>
-          <TouchableOpacity 
-            onPress={() => router.back()} 
-            style={styles.backButton}
-          >
-            <ChevronLeft size={36} color="#FDB316" />
-          </TouchableOpacity>
-          <Text style={styles.headerTitle}>Notifications</Text>
-        </View>
 
       <SectionList
         sections={notificationSections}
@@ -183,18 +173,17 @@ const styles = StyleSheet.create({
   backButton: {
     position: 'absolute',
     left: 20,
-    top: 40,
+    top: 35,
     zIndex: 1,
   },
   headerTitle: {
-    fontSize: 36,
+    fontSize: 32,
     fontFamily: 'Times New Roman',
     fontWeight: 'bold',
     color: '#191851',
     textAlign: 'center',
     flex: 1,
     marginTop: 10,
-    paddingTop: 16,
   },
   contentContainer: {
     paddingHorizontal: 16,
