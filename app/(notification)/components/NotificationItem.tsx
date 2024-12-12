@@ -1,40 +1,63 @@
-import React from 'react'
-import { View, StyleSheet, TouchableOpacity } from 'react-native'
-import { Text } from '~/components/ui/text'
-import { Avatar, AvatarFallback } from '~/components/ui/avatar'
-import { Notification } from '../types'
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import { getImageUrl } from '~/components/services/imageService';
+import { Notification } from '../types';
+import { formatDistanceToNow, parseISO } from 'date-fns';
+import { useRouter } from 'expo-router';
 
 interface NotificationItemProps {
-  notification: Notification
-  onPress: () => void
+  notification: Notification;
 }
 
-const getIconBackgroundColor = (type: string) => {
-  switch (type) {
-    case 'CSO':
-      return '#007AFF'
-    case 'School':
-      return '#FFD700'
-    case 'Community':
-      return '#FF3B30'
+const getIconBackgroundColor = (eventTypeName: string) => {
+  switch (eventTypeName) {
+    case 'Meeting':
+      return 'blue';
+    case 'Reminder':
+      return 'green';
     default:
-      return '#007AFF'
+      return 'gray';
   }
-}
+};
 
-export function NotificationItem({ notification, onPress }: NotificationItemProps) {
+export function NotificationItem({ notification }: NotificationItemProps) {
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchImage = async () => {
+      if (notification.event_image_uuid) {
+        const url = await getImageUrl(notification.event_image_uuid);
+        setImageUrl(url);
+      }
+      setIsLoading(false);
+    };
+
+    fetchImage();
+  }, [notification.event_image_uuid]);
+
+  const relativeTime = formatDistanceToNow(parseISO(notification.created_at), { addSuffix: true });
+
+  const handlePress = () => {
+    router.push(`/newsfeed/${notification.event_id}`);
+  };
+
   return (
-    <TouchableOpacity onPress={onPress} style={styles.container}>
-      <Avatar alt='' style={[styles.avatar, { backgroundColor: getIconBackgroundColor(notification.data.eventType) }]}>
-        <AvatarFallback>
-          <Text style={styles.avatarText}>{notification.data.eventType.substring(0, 2)}</Text>
-        </AvatarFallback>
-      </Avatar>
+    <TouchableOpacity onPress={handlePress} style={styles.container}>
+      <View style={[styles.avatar, { backgroundColor: getIconBackgroundColor(notification.event_type_name) }]}>
+        {isLoading ? (
+          <Text style={styles.avatarText}>...</Text>
+        ) : imageUrl ? (
+          <Image source={{ uri: imageUrl }} style={styles.avatarImage} />
+        ) : (
+          <Text style={styles.avatarText}>{notification.event_type_name.substring(0, 2)}</Text>
+        )}
+      </View>
       <View style={styles.content}>
-        <Text style={styles.title}>{notification.title}</Text>
-        <Text style={styles.subtitle}>{notification.data.eventName}</Text>
-        <Text style={styles.details}>{notification.data.date} | {notification.data.timeFrom} - {notification.data.timeTo}</Text>
-        <Text style={styles.description} numberOfLines={2}>{notification.data.description}</Text>
+        <Text style={styles.title}>{notification.event_name}</Text>
+        <Text style={styles.description} numberOfLines={2}>{notification.description}</Text>
+        <Text style={styles.relativeTime}>{relativeTime}</Text>
       </View>
     </TouchableOpacity>
   )
@@ -43,50 +66,46 @@ export function NotificationItem({ notification, onPress }: NotificationItemProp
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    backgroundColor: '#E5E5E5',
-    marginBottom: 12,
-    marginTop: 4,
-    borderRadius: 8,
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#EEEEEE',
   },
   avatar: {
-    width: 46,
-    height: 46,
-    borderRadius: 23,
-    marginRight: 12,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginRight: 16,
     justifyContent: 'center',
     alignItems: 'center',
+    overflow: 'hidden',
+  },
+  avatarImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
   },
   avatarText: {
-    color: '#FFFFFF',
     fontSize: 16,
     fontWeight: 'bold',
+    color: 'white',
   },
   content: {
     flex: 1,
   },
   title: {
     fontSize: 16,
-    fontWeight: '500',
-    color: '#000000',
+    fontWeight: 'bold',
     marginBottom: 4,
   },
-  subtitle: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#333333',
-    marginBottom: 2,
-  },
-  details: {
-    fontSize: 12,
-    color: '#666666',
-    marginBottom: 2,
-  },
   description: {
-    fontSize: 12,
+    fontSize: 14,
     color: '#666666',
+    marginBottom: 4,
   },
-})
+  relativeTime: {
+    fontSize: 12,
+    color: '#888888',
+    fontStyle: 'italic',
+  },
+});
 

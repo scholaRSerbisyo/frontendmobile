@@ -1,16 +1,15 @@
 export interface Notification {
-  id: string;
-  title: string;
-  body: string;
-  data: {
-    eventId: number;
-    eventName: string;
-    eventType: string;
-    description: string;
-    date: string;
-    timeFrom: string;
-    timeTo: string;
-  };
+  notification_id: number;
+  event_id: number;
+  event_name: string;
+  description: string;
+  event_image_uuid: string;
+  event_type_name: string;
+  date: string;
+  time_from: string;
+  time_to: string;
+  created_at: string;
+  read: boolean;
 }
 
 export interface NotificationSection {

@@ -5,12 +5,14 @@ import { DarkTheme, DefaultTheme, Theme, ThemeProvider } from '@react-navigation
 import { SplashScreen, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
+import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
 import { NAV_THEME } from '~/lib/constants';
 import { useColorScheme } from '~/lib/useColorScheme';
 import { PortalHost } from '@rn-primitives/portal';
 import { ThemeToggle } from '~/components/ThemeToggle';
 import { setAndroidNavigationBar } from '~/lib/android-navigation-bar';
+import { registerForPushNotificationsAsync, sendPushTokenToServer, setupNotifications } from '~/lib/pushNotifications';
 
 
 const LIGHT_THEME: Theme = {
@@ -33,6 +35,32 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const { colorScheme, setColorScheme, isDarkColorScheme } = useColorScheme();
   const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false);
+
+  React.useEffect(() => {
+    async function setupPushNotifications() {
+      await setupNotifications();
+      const token = await registerForPushNotificationsAsync();
+      if (token) {
+        console.log('Push token:', token);
+        await sendPushTokenToServer(token);
+      }
+    }
+
+    setupPushNotifications();
+
+    const notificationListener = Notifications.addNotificationReceivedListener(notification => {
+      console.log('Notification received:', notification);
+    });
+
+    const responseListener = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log('Notification response:', response);
+    });
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener);
+      Notifications.removeNotificationSubscription(responseListener);
+    };
+  }, []);
 
   React.useEffect(() => {
     (async () => {

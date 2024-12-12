@@ -4,6 +4,8 @@ import { useRouter } from 'expo-router';
 import { Text } from '../ui/text';
 import { Input } from '../ui/input';
 import { useAuth } from './api/Auth';
+import { registerForPushNotificationsAsync, sendPushTokenToServer } from '../../lib/pushNotifications';
+import * as SecureStore from 'expo-secure-store';
 
 export function LoginForm() {
   const [email, setEmail] = useState('');
@@ -24,11 +26,20 @@ export function LoginForm() {
     setError('');
 
     try {
-      const { success, message } = await signIn(email, password);
-      if (success) {
+      const { success, message, scholarId } = await signIn(email, password);
+      if (success && scholarId) {
+        // Store the scholarId
+        await SecureStore.setItemAsync('scholarId', scholarId.toString());
+        
+        // Register for push notifications and send token to server
+        const pushToken = await registerForPushNotificationsAsync();
+        if (pushToken) {
+          await sendPushTokenToServer(pushToken);
+        }
         router.replace('/newsfeed/homescreen');
       } else {
         setError(message || 'Login failed');
+        Alert.alert('Login Failed', message || 'An error occurred during login. Please try again.');
       }
     } catch (error) {
       console.error('Login error:', error);

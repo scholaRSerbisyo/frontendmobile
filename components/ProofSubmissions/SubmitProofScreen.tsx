@@ -7,7 +7,7 @@ import { Text } from '../ui/text'
 import * as SecureStore from 'expo-secure-store'
 import CameraScreen2 from '../Camera/TorchExample'
 import { format, parse, isWithinInterval, set, startOfDay, isSameDay } from 'date-fns'
-import { toZonedTime } from 'date-fns-tz'
+import { toZonedTime, format as formatTZ } from 'date-fns-tz'
 import { Toast } from '../ui/toast'
 import { CameraCapturedPicture } from 'expo-camera'
 import * as Location from 'expo-location';
@@ -37,7 +37,9 @@ interface SubmissionData {
   time_out_location: string
   time_out_image: string
   time_in: string
+  time_in_full: string
   time_out: string
+  time_out_full: string
   description: string
 }
 
@@ -58,7 +60,9 @@ export function SubmitProofScreen({ eventId }: SubmitProofScreenProps) {
     time_out_location: '',
     time_out_image: '',
     time_in: '',
+    time_in_full: '',
     time_out: '',
+    time_out_full: '',
     description: '',
   })
   const [timeInImage, setTimeInImage] = useState<string | null>(null)
@@ -226,7 +230,10 @@ export function SubmitProofScreen({ eventId }: SubmitProofScreenProps) {
       console.warn('No location data available');
     }
 
-    const currentTime = format(toZonedTime(new Date(), 'Asia/Manila'), 'H:mm')
+    const currentDateTime = new Date()
+    const manilaTime = toZonedTime(currentDateTime, 'Asia/Manila')
+    const formattedTime = formatTZ(manilaTime, 'HH:mm', { timeZone: 'Asia/Manila' })
+    const formattedDateTime = formatTZ(manilaTime, "yyyy-MM-dd'T'HH:mm:ssxxx", { timeZone: 'Asia/Manila' })
 
     if (currentCaptureType === 'timeIn') {
       setTimeInImage(base64Photo)
@@ -235,18 +242,21 @@ export function SubmitProofScreen({ eventId }: SubmitProofScreenProps) {
         time_in_image_uuid: generateUUID(),
         time_in_location: locationString,
         time_in_image: base64Photo,
-        time_in: currentTime,
+        time_in: formattedTime,
+        time_in_full: formattedDateTime,
       }
       setSubmissionData(newSubmissionData)
       await saveTimeInSubmission(newSubmissionData)
     } else if (currentCaptureType === 'timeOut') {
+      const formattedTime = formatTZ(manilaTime, 'HH:mm', { timeZone: 'Asia/Manila' })
       setTimeOutImage(base64Photo)
       setSubmissionData(prev => ({
         ...prev,
         time_out_image_uuid: generateUUID(),
         time_out_location: locationString,
         time_out_image: base64Photo,
-        time_out: currentTime,
+        time_out: formattedTime,
+        time_out_full: formattedDateTime,
       }))
     }
     setShowCamera(false)
@@ -263,7 +273,10 @@ export function SubmitProofScreen({ eventId }: SubmitProofScreenProps) {
   const saveTimeInSubmission = async (data: SubmissionData) => {
     try {
       const token = await SecureStore.getItemAsync('authToken')
-      const response = await axios.post(`${API_URL}/events/submit-time-in`, data, {
+      const manilaTime = toZonedTime(new Date(), 'Asia/Manila')
+      const formattedTime = formatTZ(manilaTime, 'HH:mm', { timeZone: 'Asia/Manila' })
+      const updatedData = { ...data, time_in: formattedTime }
+      const response = await axios.post(`${API_URL}/events/submit-time-in`, updatedData, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
@@ -295,11 +308,22 @@ export function SubmitProofScreen({ eventId }: SubmitProofScreenProps) {
       return
     }
 
+    // Validate time_out is after time_in
+    const timeIn = parse(submissionData.time_in, 'HH:mm', new Date())
+    const timeOut = parse(submissionData.time_out, 'HH:mm', new Date())
+    if (timeOut <= timeIn) {
+      Alert.alert('Invalid Time Out', 'Time Out must be after Time In.')
+      return
+    }
+
     try {
       const token = await SecureStore.getItemAsync('authToken')
       const response = await axios.post(`${API_URL}/events/submit-time-out`, {
         submission_id: submissionId,
-        ...submissionData
+        time_out_location: submissionData.time_out_location,
+        time_out: submissionData.time_out,
+        time_out_image_uuid: submissionData.time_out_image_uuid,
+        time_out_image: submissionData.time_out_image,
       }, {
         headers: {
           'Content-Type': 'application/json',
@@ -308,8 +332,15 @@ export function SubmitProofScreen({ eventId }: SubmitProofScreenProps) {
       })
 
       console.log('Time Out submission successful:', response.data)
-      Alert.alert('Success', 'Proof submitted successfully')
-      router.back()
+      Alert.alert('Success', 'Proof submitted successfully', [
+        {
+          text: 'OK',
+          onPress: () => {
+            // Use router.push to navigate and refresh the Events screen
+            router.back()
+          }
+        }
+      ])
     } catch (error: any) {
       console.error('Error submitting proof:', error)
       Alert.alert('Error', `Failed to submit proof. ${error.response?.data?.message || error.message || 'Please try again.'}`)
@@ -326,9 +357,10 @@ export function SubmitProofScreen({ eventId }: SubmitProofScreenProps) {
     return format(time, 'h:mm a')
   }
 
-  const formatTimeForDisplay = (timeString: string) => {
-    const [hours, minutes] = timeString.split(':')
-    return `${hours.padStart(2, '0')}:${minutes}`
+  const formatTimeForDisplay = (dateTimeString: string) => {
+    const date = new Date(dateTimeString)
+    const manilaTime = toZonedTime(date, 'Asia/Manila')
+    return formatTZ(manilaTime, 'h:mm a', { timeZone: 'Asia/Manila' })
   }
 
   if (!event) {
@@ -388,7 +420,7 @@ export function SubmitProofScreen({ eventId }: SubmitProofScreenProps) {
                 <View style={styles.capturedImageContainer}>
                   <Image source={{ uri: timeInImage }} style={styles.capturedImage} />
                   <Text style={styles.capturedLocationText}>{submissionData.time_in_location}</Text>
-                  <Text style={styles.capturedTimeText}>{formatTimeForDisplay(submissionData.time_in)}</Text>
+                  <Text style={styles.capturedTimeText}>{formatTimeForDisplay(submissionData.time_in_full)}</Text>
                 </View>
               ) : (
                 <>
@@ -409,7 +441,7 @@ export function SubmitProofScreen({ eventId }: SubmitProofScreenProps) {
                 <View style={styles.capturedImageContainer}>
                   <Image source={{ uri: timeOutImage }} style={styles.capturedImage} />
                   <Text style={styles.capturedLocationText}>{submissionData.time_out_location}</Text>
-                  <Text style={styles.capturedTimeText}>{formatTimeForDisplay(submissionData.time_out)}</Text>
+                  <Text style={styles.capturedTimeText}>{formatTimeForDisplay(submissionData.time_out_full)}</Text>
                 </View>
               ) : (
                 <>
