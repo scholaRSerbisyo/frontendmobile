@@ -114,13 +114,12 @@ const styles = StyleSheet.create({
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'flex-start', // Changed from 'space-between' to 'flex-start'
+    justifyContent: 'space-between',
   },
   photoContainer: {
     width: itemWidth,
     aspectRatio: 1,
     marginBottom: 16,
-    marginRight: 8, // Added right margin
   },
   thumbnail: {
     flex: 1,
@@ -174,6 +173,8 @@ const styles = StyleSheet.create({
     height: '80%',
   },
 })
+
+
 
 // import React, { useState, useEffect } from 'react'
 // import { View, StyleSheet, TouchableOpacity, Dimensions, ScrollView, Image as RNImage, ActivityIndicator, Modal } from 'react-native'
