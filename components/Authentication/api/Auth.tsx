@@ -8,7 +8,7 @@ import { useRouter } from 'expo-router';
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  signIn: (email: string, password: string) => Promise<{ success: boolean; message?: string }>;
+  signIn: (email: string, password: string) => Promise<{ success: boolean; message?: string; scholarId?: number }>;
   signOut: () => Promise<void>;
 }
 
@@ -42,7 +42,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const loadStorageData = async () => {
       try {
         const token = await SecureStore.getItemAsync('authToken');
-        if (token) {
+        const scholarId = await SecureStore.getItemAsync('scholarId');
+        if (token && scholarId) {
           const userData = await getUser();
           setUser(userData);
         }
@@ -56,18 +57,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     loadStorageData();
   }, []);
 
-  const signIn = async (email: string, password: string): Promise<{ success: boolean; message?: string }> => {
+  const signIn = async (email: string, password: string): Promise<{ success: boolean; message?: string; scholarId?: number }> => {
     try {
       console.log('Signing in with email:', email);
-      const { access_token } = await login(email, password);
-      if (!access_token) {
-        return { success: false, message: 'No access token received from server' };
+      const { token, scholar_id } = await login(email, password);
+      if (!token || !scholar_id) {
+        return { success: false, message: 'Invalid response from server' };
       }
       const userData = await getUser();
       setUser(userData);
       console.log('Sign in successful');
       setShowSuccessPopup(true);
-      return { success: true };
+      return { success: true, scholarId: scholar_id };
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred during sign in';
       return { success: false, message: errorMessage };
@@ -82,6 +83,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } finally {
       setUser(null);
       await SecureStore.deleteItemAsync('authToken');
+      await SecureStore.deleteItemAsync('scholarId');
       router.replace('/');
     }
   };
@@ -96,7 +98,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   return (
     <AuthContext.Provider value={value}>
       {children}
-      <SuccessPopup visible={showSuccessPopup} onClose={() => setShowSuccessPopup(false)} />
     </AuthContext.Provider>
   );
 };
