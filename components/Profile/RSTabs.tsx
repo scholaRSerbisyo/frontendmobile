@@ -29,34 +29,53 @@ export function RSTabs({ activeTab, onTabChange }: RSTabsProps) {
           >
             {tab}
           </Text>
+          {activeTab === tab && <View style={styles.activeIndicator} />}
         </TouchableOpacity>
       ))}
+      <View style={styles.divider} />
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#191851',
+    backgroundColor: '#FFFFFF',
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingHorizontal: 4,
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
   },
   tab: {
-    paddingVertical: 8,
-    paddingHorizontal: 4,
-    borderBottomWidth: 2,
-    borderBottomColor: 'transparent',
+    paddingVertical: 12,
+    paddingHorizontal: 8,
+    position: 'relative',
   },
   activeTab: {
-    borderBottomColor: '#FDB316',
+    // Remove borderBottomWidth and borderBottomColor from here
   },
   tabText: {
-    color: '#FFF',
-    fontSize: 12,
+    color: '#191851',
+    fontSize: 14,
+    fontWeight: '500',
   },
   activeTabText: {
     fontWeight: 'bold',
+    color: '#FDB316',
+  },
+  activeIndicator: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 3,
+    backgroundColor: '#FDB316',
+  },
+  divider: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 2,
+    backgroundColor: 'rgba(253, 179, 22, 0.8)', // #FDB316 with 80% opacity
   },
 })
 

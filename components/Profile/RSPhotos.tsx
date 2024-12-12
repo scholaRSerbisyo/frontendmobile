@@ -61,7 +61,7 @@ export function RSPhotos({ photos }: RSPhotosProps) {
         <View style={styles.grid}>
           {photos.map((photo, index) => (
             <TouchableOpacity 
-              key={index} 
+              key={photo.image_uuid} 
               style={styles.photoContainer}
               onPress={() => handleImagePress(photo)}
             >
@@ -101,21 +101,25 @@ export function RSPhotos({ photos }: RSPhotosProps) {
 }
 
 const windowWidth = Dimensions.get('window').width
-const itemWidth = (windowWidth - 64) / 3 // 3 columns with padding
+const itemWidth = (windowWidth - 48) / 3 // 3 columns with 16px gap
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
   },
+  scrollContent: {
+    padding: 16,
+  },
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 16,
+    justifyContent: 'space-between',
   },
   photoContainer: {
     width: itemWidth,
     aspectRatio: 1,
+    marginBottom: 16,
   },
   thumbnail: {
     flex: 1,
@@ -123,6 +127,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
+    backgroundColor: '#F0F0F0',
   },
   image: {
     width: '100%',
@@ -136,9 +141,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#FDB316',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  scrollContent: {
-    padding: 16,
+    position: 'absolute',
+    bottom: 8,
+    right: 8,
   },
   overlayContainer: {
     flex: 1,
