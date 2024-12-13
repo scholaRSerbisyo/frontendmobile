@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, TouchableOpacity, StyleSheet } from 'react-native'
 import { useRouter, usePathname } from 'expo-router'
-import { Calendar, Home, User, Bell } from 'lucide-react-native'
+import { Home, User, Bell } from 'lucide-react-native'
 import { Text } from '../ui/text'
 
 export function BottomNavigation() {
@@ -12,27 +12,27 @@ export function BottomNavigation() {
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.navButton}
-        onPress={() => router.push('/(notification)/page')}
-      >
-        <Bell
-          size={24}
-          color={pathname.includes('/(notification)') ? '#FDB316' : '#FFFFFF'}
-        />
-        <Text style={[styles.navText, pathname.includes('/(notification)') && styles.activeNavText]}>Notifications</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.navButton}
         onPress={() => router.push('/newsfeed/homescreen')}
       >
         <Home
           size={24}
           color={pathname.includes('/newsfeed') ? '#FDB316' : '#FFFFFF'}
         />
-        <Text style={[styles.navText, pathname.includes('/newsfeed') && styles.activeNavText]}>Home</Text>
+        <Text style={[styles.navText, pathname.includes('/(notification)') && styles.activeNavText]}>Home</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.navButton}
         onPress={() => router.push('/(profile)/total-rs')}
+      >
+        <Bell
+          size={24}
+          color={pathname.includes('/(notification)') ? '#FDB316' : '#FFFFFF'}
+        />
+        <Text style={[styles.navText, pathname.includes('/newsfeed') && styles.activeNavText]}>Notifications</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.navButton}
+        onPress={() => router.push('/(notification)/page')}
       >
         <User
           size={24}
