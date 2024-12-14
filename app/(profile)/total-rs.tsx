@@ -45,6 +45,31 @@ interface PhotoData {
   event_name: string;
 }
 
+interface School {
+  school_id: number;
+  school_name: string;
+  // Add other properties if needed
+}
+
+interface SchoolResponse {
+  school: School;
+  events: any[]; // You can create a more specific type for events if needed
+  upcoming_events: any[];
+  past_events: any[];
+}
+
+interface Location {
+  baranggay_id: number;
+  baranggay_name: string;
+}
+
+interface LocationResponse {
+  baranggay: Location;
+  events: any[]; // You can create a more specific type for events if needed
+  upcoming_events: any[];
+  past_events: any[];
+}
+
 interface ScholarData {
   user_id: number;
   email: string;
@@ -78,6 +103,8 @@ export default function TotalRSScreen() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [scholarData, setScholarData] = useState<ScholarData | null>(null)
+  const [school, setSchool] = useState<School | null>(null)
+  const [barangay, setBarangay] = useState<Location | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const router = useRouter()
 
@@ -86,6 +113,13 @@ export default function TotalRSScreen() {
     fetchSubmissions()
     fetchPhotos()
   }, [])
+
+  useEffect(() => {
+    if (scholarData) {
+      fetchSchools()
+      fetchLocations()
+    }
+  }, [scholarData])
 
   const fetchScholarData = async () => {
     try {
@@ -99,6 +133,36 @@ export default function TotalRSScreen() {
     } catch (err) {
       console.error('Error fetching scholar data:', err)
       setError('Failed to load scholar data')
+    }
+  }
+
+  const fetchSchools = async () => {
+    try {
+      const token = await SecureStore.getItemAsync('authToken')
+      const response = await axios.get<SchoolResponse>(`${API_URL}/school/schools/${scholarData?.scholar.school_id}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      setSchool(response.data.school)
+    } catch (err) {
+      console.error('Error fetching school data:', err)
+      setError('Failed to load school data')
+    }
+  }
+
+  const fetchLocations = async () => {
+    try {
+      const token = await SecureStore.getItemAsync('authToken')
+      const response = await axios.get<LocationResponse>(`${API_URL}/baranggay/baranggays/${scholarData?.scholar.baranggay_id}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      setBarangay(response.data.baranggay)
+    } catch (err) {
+      console.error('Error fetching barangay data:', err)
+      setError('Failed to load barangay data')
     }
   }
 
@@ -204,7 +268,9 @@ export default function TotalRSScreen() {
         return (
           <>
             <View style={styles.viewToggle}>
-              <Text style={{color: 'black'}}>Year</Text>
+              <Text style={{color: 'gray'}}>Year</Text>
+              <Text style={{color: 'gray', marginLeft: 110}}>Status</Text>
+              <Text style={{color: 'gray', marginLeft: 80}}>Recorded RS</Text>
             </View>
             <RSYearView />
           </>
@@ -222,17 +288,17 @@ export default function TotalRSScreen() {
     <SafeAreaView style={styles.container}>
       {activeTab === 'Post' ? (
         <PostTabHeader
-          name={scholarData ? getFullName(scholarData.scholar) : "Earl Dave Gwapo"}
-          school="School Name"
-          location="Location"
+          name={scholarData ? getFullName(scholarData.scholar) : "no name"}
+          school={school?.school_name}
+          location={barangay?.baranggay_name}
           photo="https://i.pravatar.cc/300"
           onPhotoEdit={handlePhotoEdit}
         />
       ) : (
         <RSHeader
-          name={scholarData ? getFullName(scholarData.scholar) : "Earl Dave Gwapo"}
-          school="School Name"
-          location="Location"
+          name={scholarData ? getFullName(scholarData.scholar) : "no name"}
+          school={school?.school_name}
+          location={barangay?.baranggay_name}
           photo="https://i.pravatar.cc/300"
         />
       )}
@@ -286,7 +352,10 @@ const styles = StyleSheet.create({
   viewToggle: {
     flexDirection: 'row',
     backgroundColor: '#FFF',
-    padding: 0,
+    fontSize: 8,
+    paddingLeft: 35,
+    paddingRight: 40,
+    paddingTop: 25,
   },
   toggleOption: {
     flex: 1,
@@ -305,3 +374,4 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 })
+

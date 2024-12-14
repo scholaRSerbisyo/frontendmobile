@@ -6,8 +6,8 @@ import { useRouter } from 'expo-router'
 
 interface RSHeaderProps {
   name: string
-  school: string
-  location: string
+  school?: string
+  location?: string
   photo: string
 }
 
@@ -22,7 +22,7 @@ export function RSHeader({ name, school, location, photo }: RSHeaderProps) {
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Profile</Text>
         <TouchableOpacity style={styles.menuButton}>
-          <Menu color="#FDB316" size={24} />
+          <Menu color="#FDB316" onPress={() => router.push('/(profile)/burger-menu')} size={24} />
         </TouchableOpacity>
         <View style={styles.nameContainer}>
           <Text style={styles.name}>{name}</Text>

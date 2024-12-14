@@ -39,13 +39,11 @@ export function LoginForm() {
         router.replace('/newsfeed/homescreen');
       } else {
         setError(message || 'Login failed');
-        Alert.alert('Login Failed', message || 'An error occurred during login. Please try again.');
       }
     } catch (error) {
       console.error('Login error:', error);
       const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred';
       setError(errorMessage);
-      Alert.alert('Login Failed', errorMessage);
     } finally {
       setIsLoading(false);
     }

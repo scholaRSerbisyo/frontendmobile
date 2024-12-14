@@ -308,14 +308,6 @@ export function SubmitProofScreen({ eventId }: SubmitProofScreenProps) {
       return
     }
 
-    // Validate time_out is after time_in
-    const timeIn = parse(submissionData.time_in, 'HH:mm', new Date())
-    const timeOut = parse(submissionData.time_out, 'HH:mm', new Date())
-    if (timeOut <= timeIn) {
-      Alert.alert('Invalid Time Out', 'Time Out must be after Time In.')
-      return
-    }
-
     try {
       const token = await SecureStore.getItemAsync('authToken')
       const response = await axios.post(`${API_URL}/events/submit-time-out`, {
@@ -350,11 +342,6 @@ export function SubmitProofScreen({ eventId }: SubmitProofScreenProps) {
   const formatDate = (dateString: string) => {
     const date = parse(dateString, 'yyyy-MM-dd', new Date())
     return format(date, 'MMMM d, yyyy')
-  }
-
-  const formatTime = (timeString: string) => {
-    const time = parse(timeString, 'HH:mm:ss', new Date())
-    return format(time, 'h:mm a')
   }
 
   const formatTimeForDisplay = (dateTimeString: string) => {

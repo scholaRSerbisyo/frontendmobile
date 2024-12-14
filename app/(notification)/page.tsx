@@ -64,7 +64,7 @@ export default function NotificationsScreen() {
   const loadNotifications = useCallback(async (refresh = false) => {
     if (refresh) {
       setIsRefreshing(true)
-      setPage(1)
+      setPage(5)
     } else {
       setIsLoading(true)
     }

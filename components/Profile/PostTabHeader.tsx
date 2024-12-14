@@ -6,8 +6,8 @@ import { useRouter } from 'expo-router'
 
 interface PostTabHeaderProps {
   name: string
-  school: string
-  location: string
+  school?: string
+  location?: string
   photo: string
   onPhotoEdit?: () => void
 }
@@ -31,7 +31,7 @@ export function PostTabHeader({
             <ChevronLeft color="#FDB316" size={24} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Profile</Text>
-          <TouchableOpacity style={styles.iconButton}>
+          <TouchableOpacity onPress={() => router.push('/(profile)/burger-menu')} style={styles.iconButton}>
             <Menu color="#FDB316" size={24} />
           </TouchableOpacity>
         </View>

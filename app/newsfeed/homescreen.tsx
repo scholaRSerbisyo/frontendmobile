@@ -8,6 +8,7 @@ import { EventCard } from '~/components/Feed/EventCard'
 import { BottomNavigation } from '~/components/Navigation/BottomNavigation'
 import axios from 'axios'
 import * as SecureStore from 'expo-secure-store'
+import { parseISO } from 'date-fns'
 import API_URL from '~/constants/constants'
 
 interface Event {
@@ -54,7 +55,7 @@ export default function HomeScreen() {
           'Authorization': `Bearer ${token}`
         }
       })
-      setEvents(response.data)
+      setEvents(response.data.sort((a, b) => parseISO(b.created_at).getTime() - parseISO(a.created_at).getTime()))
     } catch (err) {
       console.error('Error fetching events:', err)
       setError('Failed to fetch events. Please try again.')
@@ -149,7 +150,7 @@ const styles = StyleSheet.create({
   titleContainer: {
     width: '100%',
     paddingHorizontal: 16,
-    paddingTop: 10,
+    paddingVertical: 10,
     backgroundColor: 'white',
   },
   title: {

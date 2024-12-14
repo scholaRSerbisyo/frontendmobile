@@ -2,7 +2,7 @@ import { Notification } from './types'
 import API_URL from '~/constants/constants'
 import * as SecureStore from 'expo-secure-store'
 
-export async function fetchNotifications(page: number = 1, perPage: number = 20): Promise<{ notifications: Notification[], hasMore: boolean }> {
+export async function fetchNotifications(page: number = 1, perPage: number = 40): Promise<{ notifications: Notification[], hasMore: boolean }> {
     const token = await SecureStore.getItemAsync('authToken');
   
     try {
@@ -19,7 +19,6 @@ export async function fetchNotifications(page: number = 1, perPage: number = 20)
         const errorData = await response.json();
         throw new Error(errorData.message || 'Failed to fetch notifications');
       }
-  
       const data = await response.json();
       return {
         notifications: data.notifications,
