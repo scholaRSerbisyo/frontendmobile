@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   continueButton: {
-    backgroundColor: '#FDB316',
+    backgroundColor: '#F3BC00',
     height: 50,
     borderRadius: 25,
     shadowColor: '#000',
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   continueButtonText: {
-    color: '#191851',
+    color: '#343474',
     fontSize: 18,
     fontWeight: 'bold',
   },

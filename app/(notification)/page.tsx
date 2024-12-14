@@ -5,7 +5,7 @@ import { useRouter } from 'expo-router'
 import { ChevronLeft } from 'lucide-react-native'
 import { Text } from '~/components/ui/text'
 import { NotificationSection } from './components/NotificationSection'
-import { BottomNavigation } from '~/components/Navigation/BottomNavigation'
+import { BottomNavigation, ScreenName } from '~/components/Navigation/BottomNavigation'
 import { Notification, NotificationSection as NotificationSectionType } from './types'
 import * as Notifications from 'expo-notifications'
 import { fetchNotifications } from './api'
@@ -127,9 +127,8 @@ export default function NotificationsScreen() {
           onPress={() => router.back()} 
           style={styles.backButton}
         >
-          <ChevronLeft size={24} color="#FDB316" />
+          <ChevronLeft size={36} color="#F3BC00" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Notifications</Text>
       </View>
 
       <SectionList
@@ -152,7 +151,7 @@ export default function NotificationsScreen() {
       />
 
       <View style={styles.yellowLine} />
-      <BottomNavigation />
+      <BottomNavigation activeScreen={ScreenName.Notifications}/>
     </SafeAreaView>
   )
 }
@@ -167,23 +166,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingTop: 30,
-    paddingBottom: 20,
     backgroundColor: '#FFFFFF',
   },
   backButton: {
-    position: 'absolute',
-    left: 20,
-    top: 35,
-    zIndex: 1,
-  },
-  headerTitle: {
-    fontSize: 32,
-    fontFamily: 'Times New Roman',
-    fontWeight: 'bold',
-    color: '#191851',
-    textAlign: 'center',
-    flex: 1,
-    marginTop: 10,
+    padding: 10,
   },
   contentContainer: {
     paddingHorizontal: 16,
@@ -191,14 +177,14 @@ const styles = StyleSheet.create({
   },
   yellowLine: {
     height: 4,
-    backgroundColor: '#FDB316',
+    backgroundColor: '#F3BC00',
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     marginTop: 20,
     marginBottom: 10,
-    color: '#191851',
+    color: '#343474',
   },
   loader: {
     marginVertical: 20,

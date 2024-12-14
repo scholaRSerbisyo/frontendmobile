@@ -72,7 +72,7 @@ const CalendarEventModal: React.FC<CalendarEventModalProps> = ({ visible, onClos
                 disabled={currentEventIndex === 0}
                 style={styles.chevronButton}
               >
-                <ChevronLeft size={24} color={currentEventIndex > 0 ? "#191851" : "#CCCCCC"} />
+                <ChevronLeft size={24} color={currentEventIndex > 0 ? "#343474" : "#CCCCCC"} />
               </TouchableOpacity>
               <Text style={styles.dateText}>{formatDate(event.date)}</Text>
               <TouchableOpacity 
@@ -80,11 +80,11 @@ const CalendarEventModal: React.FC<CalendarEventModalProps> = ({ visible, onClos
                 disabled={currentEventIndex === events.length - 1}
                 style={styles.chevronButton}
               >
-                <ChevronRight size={24} color={currentEventIndex < events.length - 1 ? "#191851" : "#CCCCCC"} />
+                <ChevronRight size={24} color={currentEventIndex < events.length - 1 ? "#343474" : "#CCCCCC"} />
               </TouchableOpacity>
             </View>
             <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-              <X size={20} color="#191851" />
+              <X size={20} color="#343474" />
             </TouchableOpacity>
           </View>
 
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
   dateText: {
     fontSize: 16,
     fontWeight: '500',
-    color: '#191851',
+    color: '#343474',
   },
   closeButton: {
     padding: 4,
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
   },
   value: {
     fontSize: 16,
-    color: '#191851',
+    color: '#343474',
     fontWeight: '500',
   },
   statusContainer: {

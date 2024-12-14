@@ -166,7 +166,7 @@ export default function TotalRSScreen() {
     if (loading) {
       return (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#FDB316" />
+          <ActivityIndicator size="large" color="#F3BC00" />
         </View>
       )
     }
@@ -248,7 +248,7 @@ export default function TotalRSScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#191851',
+    backgroundColor: '#343474',
   },
   scrollView: {
     flex: 1,
@@ -296,11 +296,11 @@ const styles = StyleSheet.create({
     borderBottomColor: 'transparent',
   },
   activeToggle: {
-    borderBottomColor: '#FDB316',
+    borderBottomColor: '#F3BC00',
     backgroundColor: '#FFF',
   },
   toggleText: {
-    color: '#191851',
+    color: '#343474',
     fontSize: 16,
     fontWeight: '600',
   },

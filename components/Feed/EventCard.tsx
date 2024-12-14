@@ -73,17 +73,17 @@ export function EventCard({ event }: { event: Event }) {
         
         <View style={styles.detailsContainer}>
           <View style={styles.detailRow}>
-            <Feather name="calendar" size={20} color="#191851" style={styles.icon} />
+            <Feather name="calendar" size={20} color="#343474" style={styles.icon} />
             <Text style={styles.detailText}>{event.date}</Text>
           </View>
           
           <View style={styles.detailRow}>
-            <Feather name="clock" size={20} color="#191851" style={styles.icon} />
+            <Feather name="clock" size={20} color="#343474" style={styles.icon} />
             <Text style={styles.detailText}>{`${event.time_from} to ${event.time_to}`}</Text>
           </View>
           
           <View style={styles.detailRow}>
-            <Feather name="map-pin" size={20} color="#191851" style={styles.icon} />
+            <Feather name="map-pin" size={20} color="#343474" style={styles.icon} />
             <Text style={styles.detailText}>{event.location}</Text>
           </View>
         </View>
@@ -102,7 +102,7 @@ export function EventCard({ event }: { event: Event }) {
 
         {event.event_image_uuid && (
           loading ? (
-            <ActivityIndicator size="large" color="#FDB316" style={styles.loader} />
+            <ActivityIndicator size="large" color="#F3BC00" style={styles.loader} />
           ) : (
             imageUrl && (
               <Image 
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 17,
     fontWeight: 'bold',
-    color: '#191851',
+    color: '#343474',
     marginBottom: 16,
   },
   detailsContainer: {
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
   labelText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#191851',
+    color: '#343474',
   },
   valueText: {
     fontSize: 13,
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
   footer: {
     marginTop: 8,
     borderBottomWidth: 3,
-    borderBlockColor: '#FDB316'
+    borderBlockColor: '#F3BC00'
   },
   createdAtText: {
     fontSize: 12,

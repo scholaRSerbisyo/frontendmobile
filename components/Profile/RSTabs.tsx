@@ -53,13 +53,13 @@ const styles = StyleSheet.create({
     // Remove borderBottomWidth and borderBottomColor from here
   },
   tabText: {
-    color: '#191851',
+    color: '#343474',
     fontSize: 14,
     fontWeight: '500',
   },
   activeTabText: {
     fontWeight: 'bold',
-    color: '#FDB316',
+    color: '#F3BC00',
   },
   activeIndicator: {
     position: 'absolute',
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: 3,
-    backgroundColor: '#FDB316',
+    backgroundColor: '#F3BC00',
   },
   divider: {
     position: 'absolute',
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: 2,
-    backgroundColor: 'rgba(253, 179, 22, 0.8)', // #FDB316 with 80% opacity
+    backgroundColor: 'rgba(253, 179, 22, 0.8)', // #F3BC00 with 80% opacity
   },
 })
 

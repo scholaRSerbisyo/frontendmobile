@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     top: 14,
   },
   showButtonText: {
-    color: '#191851',
+    color: '#343474',
     fontSize: 16,
     fontWeight: 'bold'
   },
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   backButton: {
-    backgroundColor: '#FDB316',
+    backgroundColor: '#F3BC00',
     height: 48,
     borderRadius: 24,
     justifyContent: 'center',
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     width: '45%',
   },
   continueButton: {
-    backgroundColor: '#FDB316',
+    backgroundColor: '#F3BC00',
     height: 48,
     borderRadius: 24,
     justifyContent: 'center',
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     width: '45%',
   },
   buttonText: {
-    color: '#191851',
+    color: '#343474',
     fontSize: 16,
     fontWeight: '600',
   },

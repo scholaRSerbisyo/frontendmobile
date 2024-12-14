@@ -57,7 +57,7 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#191851',
+    backgroundColor: '#343474',
   },
   header: {
     flexDirection: 'row',
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   },
   status: {
     fontSize: 14,
-    color: '#FDB316',
+    color: '#F3BC00',
     marginBottom: 20,
   },
   menuSection: {
@@ -103,12 +103,12 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     backgroundColor: '#fff',
     borderWidth: 1,
-    borderColor: '#FDB316',
+    borderColor: '#F3BC00',
     paddingVertical: 10,
   },
   menuText: {
     fontSize: 16,
-    color: '#191851',
+    color: '#343474',
     textAlign: 'center',
   },
 })

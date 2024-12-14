@@ -48,7 +48,7 @@ const FAQScreen = () => {
       <View style={{ flex: 1 }}>
         <View style={styles.headerContainer}>
           <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-            <ChevronLeft size={24} color="#191851" />
+            <ChevronLeft size={24} color="#343474" />
           </TouchableOpacity>
           <Text style={styles.title}>Frequently Asked{'\n'}Questions</Text>
         </View>
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28, // Increased from 24
     fontWeight: 'bold',
-    color: '#191851',
+    color: '#343474',
     textAlign: 'center',
     lineHeight: 36, // Adjusted to accommodate larger font size
   },
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 16,
-    backgroundColor: '#191851',
+    backgroundColor: '#343474',
   },
   questionText: {
     fontSize: 14,
@@ -130,11 +130,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderWidth: 1,
     borderTopWidth: 0,
-    borderColor: '#191851',
+    borderColor: '#343474',
   },
   answerText: {
     fontSize: 14,
-    color: '#191851',
+    color: '#343474',
     lineHeight: 20,
     textAlign: 'justify',
   },

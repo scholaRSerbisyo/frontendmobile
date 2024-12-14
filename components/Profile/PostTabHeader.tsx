@@ -28,11 +28,11 @@ export function PostTabHeader({
       <View style={styles.content}>
         <View style={styles.topSection}>
           <TouchableOpacity onPress={() => router.back()} style={styles.iconButton}>
-            <ChevronLeft color="#FDB316" size={24} />
+            <ChevronLeft color="#F3BC00" size={24} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Profile</Text>
           <TouchableOpacity style={styles.iconButton}>
-            <Menu color="#FDB316" size={24} />
+            <Menu color="#F3BC00" size={24} />
           </TouchableOpacity>
         </View>
 
@@ -59,13 +59,13 @@ export function PostTabHeader({
           
           <View style={styles.detailsContainer}>
             <View style={styles.detailRow}>
-              <GraduationCap color="#FDB316" size={16} />
+              <GraduationCap color="#F3BC00" size={16} />
               <Text style={styles.detailText}>
                 Studied at <Text style={styles.detailBold}>{school}</Text>
               </Text>
             </View>
             <View style={styles.detailRow}>
-              <MapPin color="#FDB316" size={16} />
+              <MapPin color="#F3BC00" size={16} />
               <Text style={styles.detailText}>
                 Live in <Text style={styles.detailBold}>{location}</Text>
               </Text>
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: 200,
-    backgroundColor: '#191851',
+    backgroundColor: '#343474',
   },
   bottomBackground: {
     position: 'absolute',

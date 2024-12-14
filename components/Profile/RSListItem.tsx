@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 16,
-    color: '#191851',
+    color: '#343474',
     marginBottom: 4,
   },
   status: {
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   },
   hours: {
     fontSize: 16,
-    color: '#191851',
+    color: '#343474',
     fontWeight: '500',
   },
 })

@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   continueButton: {
-    backgroundColor: '#FDB316',
+    backgroundColor: '#F3BC00',
     height: 48,
     borderRadius: 24,
     justifyContent: 'center',
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   loginLink: {
-    color: '#FDB316',
+    color: '#F3BC00',
     fontWeight: 'bold',
     textDecorationLine: 'underline'
   },

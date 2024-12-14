@@ -66,10 +66,11 @@
       [
         "expo-notifications",
         {
-          "icon": "./assets/notification-icon.png",
+          "icon": "./local/path/to/your/notification-icon.png",
           "color": "#ffffff",
           "sounds": [
-            "./assets/notification-sound.wav"
+            "./local/path/to/your/notification-sound.wav",
+            "./local/path/to/your/notification-sound-other.wav"
           ]
         }
       ]

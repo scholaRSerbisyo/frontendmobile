@@ -1,44 +1,47 @@
 import React from 'react'
 import { View, TouchableOpacity, StyleSheet } from 'react-native'
-import { useRouter, usePathname } from 'expo-router'
+import { useRouter } from 'expo-router'
 import { Home, User, Bell } from 'lucide-react-native'
 import { Text } from '../ui/text'
 
-export function BottomNavigation() {
+export enum ScreenName {
+  Home = 'Home',
+  Notifications = 'Notifications',
+  Profile = 'Profile'
+}
+
+interface BottomNavigationProps {
+  activeScreen: ScreenName
+}
+
+export function BottomNavigation({ activeScreen }: BottomNavigationProps) {
   const router = useRouter()
-  const pathname = usePathname()
+
+  const getNavIconColor = (screen: ScreenName) =>
+    activeScreen === screen ? '#F3BC00' : '#FFFFFF'
 
   return (
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.navButton}
-        onPress={() => router.push('/newsfeed/homescreen')}
+        onPress={() => router.push('/(newsfeed)/homescreen')}
       >
-        <Home
-          size={24}
-          color={pathname.includes('/newsfeed') ? '#FDB316' : '#FFFFFF'}
-        />
-        <Text style={[styles.navText, pathname.includes('/(notification)') && styles.activeNavText]}>Home</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.navButton}
-        onPress={() => router.push('/(profile)/total-rs')}
-      >
-        <Bell
-          size={24}
-          color={pathname.includes('/(notification)') ? '#FDB316' : '#FFFFFF'}
-        />
-        <Text style={[styles.navText, pathname.includes('/newsfeed') && styles.activeNavText]}>Notifications</Text>
+        <Home size={24} color={getNavIconColor(ScreenName.Home)} />
+        <Text style={[styles.navText, activeScreen === ScreenName.Home && styles.activeNavText]}>Home</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.navButton}
         onPress={() => router.push('/(notification)/page')}
       >
-        <User
-          size={24}
-          color={pathname.includes('/(profile)') ? '#FDB316' : '#FFFFFF'}
-        />
-        <Text style={[styles.navText, pathname.includes('/(profile)') && styles.activeNavText]}>Profile</Text>
+        <Bell size={24} color={getNavIconColor(ScreenName.Notifications)} />
+        <Text style={[styles.navText, activeScreen === ScreenName.Notifications && styles.activeNavText]}>Notifications</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.navButton}
+        onPress={() => router.push('/(profile)/total-rs')}
+      >
+        <User size={24} color={getNavIconColor(ScreenName.Profile)} />
+        <Text style={[styles.navText, activeScreen === ScreenName.Profile && styles.activeNavText]}>Profile</Text>
       </TouchableOpacity>
     </View>
   )
@@ -49,7 +52,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    backgroundColor: '#191851',
+    backgroundColor: '#343474',
     paddingVertical: 10,
     borderTopWidth: 1,
     borderTopColor: 'rgba(255, 255, 255, 0.1)',
@@ -64,7 +67,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   activeNavText: {
-    color: '#FDB316',
+    color: '#F3BC00',
   },
 })
 

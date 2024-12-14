@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#E5E5E5',
   },
   commentHeader: {
-    backgroundColor: '#191851',
+    backgroundColor: '#343474',
     padding: 8,
     borderRadius: 4,
     marginBottom: 8,
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   replyButtonText: {
-    color: '#191851',
+    color: '#343474',
     fontSize: 14,
     fontWeight: '500',
   },
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   saveButton: {
-    backgroundColor: '#191851',
+    backgroundColor: '#343474',
   },
   cancelText: {
     color: '#666666',
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
   replyAuthor: {
     fontSize: 14,
     fontWeight: '500',
-    color: '#191851',
+    color: '#343474',
     marginBottom: 4,
   },
   replyContent: {

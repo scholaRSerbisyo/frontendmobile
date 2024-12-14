@@ -132,7 +132,7 @@ export function CalendarScreen() {
         marked: true,
         dotColor: getEventColor(dayEvents[0].status),
         selected: date === selectedDate,
-        selectedColor: '#FDB316',
+        selectedColor: '#F3BC00',
       }
     })
     return markedDates
@@ -240,7 +240,7 @@ export function CalendarScreen() {
                 disabled={currentEventIndex === 0}
                 style={[styles.chevronButton, currentEventIndex === 0 && styles.disabledChevron]}
               >
-                <ChevronLeft size={24} color={currentEventIndex > 0 ? "#191851" : "#CCCCCC"} />
+                <ChevronLeft size={24} color={currentEventIndex > 0 ? "#343474" : "#CCCCCC"} />
               </TouchableOpacity>
               <Text style={styles.dateText}>{formatDate(event.date)}</Text>
               <TouchableOpacity 
@@ -248,10 +248,10 @@ export function CalendarScreen() {
                 disabled={currentEventIndex === allEvents.length - 1}
                 style={[styles.chevronButton, currentEventIndex === allEvents.length - 1 && styles.disabledChevron]}
               >
-                <ChevronRight size={24} color={currentEventIndex < allEvents.length - 1 ? "#191851" : "#CCCCCC"} />
+                <ChevronRight size={24} color={currentEventIndex < allEvents.length - 1 ? "#343474" : "#CCCCCC"} />
               </TouchableOpacity>
               <TouchableOpacity onPress={() => setShowEventDetails(false)} style={styles.closeButton}>
-                <X size={20} color="#191851" />
+                <X size={20} color="#343474" />
               </TouchableOpacity>
             </View>
 
@@ -305,7 +305,7 @@ export function CalendarScreen() {
       <ScrollView style={styles.content}>
         <View style={styles.header}>
           <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-            <ChevronLeft size={24} color="#191851" />
+            <ChevronLeft size={24} color="#343474" />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Calendar</Text>
           <View style={styles.placeholder} />
@@ -318,9 +318,9 @@ export function CalendarScreen() {
             calendarBackground: '#1A1B3B',
             textSectionTitleColor: '#FFFFFF',
             textSectionTitleDisabledColor: '#FFFFFF',
-            selectedDayBackgroundColor: '#FDB316',
+            selectedDayBackgroundColor: '#F3BC00',
             selectedDayTextColor: '#ffffff',
-            todayTextColor: '#FDB316',
+            todayTextColor: '#F3BC00',
             dayTextColor: '#FFFFFF',
             textDisabledColor: '#666666',
             dotColor: '#00adf5',
@@ -391,7 +391,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#191851',
+    color: '#343474',
   },
   placeholder: {
     width: 40,
@@ -437,7 +437,7 @@ const styles = StyleSheet.create({
   },
   legendText: {
     fontSize: 14,
-    color: '#191851',
+    color: '#343474',
   },
   eventDetailsContainer: {
     backgroundColor: 'white',
@@ -471,7 +471,7 @@ const styles = StyleSheet.create({
   dateText: {
     fontSize: 16,
     fontWeight: '500',
-    color: '#191851',
+    color: '#343474',
     flex: 1,
     textAlign: 'center',
   },
@@ -496,7 +496,7 @@ const styles = StyleSheet.create({
   },
   value: {
     fontSize: 16,
-    color: '#191851',
+    color: '#343474',
     fontWeight: '500',
   },
   statusContainer: {

@@ -14,7 +14,7 @@ const AboutUsScreen = () => {
             onPress={() => router.back()}
             style={styles.undoButton}
           >
-            <ChevronLeft size={24} color="#191851" />
+            <ChevronLeft size={24} color="#343474" />
           </TouchableOpacity>
         </View>
         
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontFamily: 'Times New Roman',
     fontWeight: 'bold',
-    color: '#191851',
+    color: '#343474',
     textAlign: 'center',
     marginVertical: 10,
   },
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   sectionHeader: {
-    backgroundColor: '#FDB316',
+    backgroundColor: '#F3BC00',
     paddingVertical: 12,
     paddingHorizontal: 15,
     fontSize: 24,

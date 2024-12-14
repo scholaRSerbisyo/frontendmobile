@@ -100,7 +100,7 @@ export function LoginForm() {
         <Text style={styles.registerText}>
           No account yet?{' '}
           <Text 
-            onPress={() => router.push('/(authentication)/register')}
+            onPress={() => router.push('/(newsfeed)/homescreen')}
             style={styles.registerLink}
           >
             Register here!
@@ -122,7 +122,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
     marginBottom: 16,
-    textAlign: 'center'
+    textAlign: 'center',
+    paddingTop: 12,
   },
   input: {
     backgroundColor: 'white',
@@ -141,12 +142,12 @@ const styles = StyleSheet.create({
     top: 14,
   },
   showButtonText: {
-    color: '#191851',
+    color: '#343474',
     fontSize: 16,
     fontWeight: 'bold'
   },
   continueButton: {
-    backgroundColor: '#FDB316',
+    backgroundColor: '#F3BC00',
     height: 48,
     borderRadius: 24,
     justifyContent: 'center',
@@ -167,7 +168,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   registerLink: {
-    color: '#FDB316',
+    color: '#F3BC00',
     fontWeight: 'bold',
     textDecorationLine: 'underline'
   },

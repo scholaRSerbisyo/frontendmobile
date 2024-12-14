@@ -48,7 +48,7 @@ export default function EditProfile() {
             style={styles.profileImage}
           />
           <View style={styles.cameraButton}>
-            <Camera size={20} color="#191851" />
+            <Camera size={20} color="#343474" />
           </View>
         </TouchableOpacity>
 
@@ -98,7 +98,7 @@ export default function EditProfile() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#191851',
+    backgroundColor: '#343474',
   },
   header: {
     flexDirection: 'row',
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     right: 0,
-    backgroundColor: '#FDB316',
+    backgroundColor: '#F3BC00',
     width: 36,
     height: 36,
     borderRadius: 18,
@@ -157,17 +157,17 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 12,
     fontSize: 16,
-    color: '#191851',
+    color: '#343474',
   },
   saveButton: {
-    backgroundColor: '#FDB316',
+    backgroundColor: '#F3BC00',
     borderRadius: 25,
     padding: 16,
     alignItems: 'center',
     marginTop: 24,
   },
   saveButtonText: {
-    color: '#191851',
+    color: '#343474',
     fontSize: 16,
     fontWeight: '600',
   },

@@ -18,11 +18,11 @@ export function RSHeader({ name, school, location, photo }: RSHeaderProps) {
     <>
       <View style={styles.topSection}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-          <ChevronLeft color="#FDB316" size={24} />
+          <ChevronLeft color="#F3BC00" size={24} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Profile</Text>
         <TouchableOpacity style={styles.menuButton}>
-          <Menu color="#FDB316" size={24} />
+          <Menu color="#F3BC00" size={24} />
         </TouchableOpacity>
         <View style={styles.nameContainer}>
           <Text style={styles.name}>{name}</Text>
@@ -38,13 +38,13 @@ export function RSHeader({ name, school, location, photo }: RSHeaderProps) {
         </View>
         <View style={styles.detailsContainer}>
           <View style={styles.detailRow}>
-            <GraduationCap color="#FDB316" size={16} />
+            <GraduationCap color="#F3BC00" size={16} />
             <Text style={styles.detailText}>
               Studied at <Text style={styles.detailBold}>{school}</Text>
             </Text>
           </View>
           <View style={styles.detailRow}>
-            <MapPin color="#FDB316" size={16} />
+            <MapPin color="#F3BC00" size={16} />
             <Text style={styles.detailText}>
               Live in <Text style={styles.detailBold}>{location}</Text>
             </Text>

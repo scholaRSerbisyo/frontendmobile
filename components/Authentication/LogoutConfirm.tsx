@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
   continueButton: {
-    backgroundColor: '#FDB316',
+    backgroundColor: '#F3BC00',
     height: 48,
     borderRadius: 24,
     justifyContent: 'center',
@@ -59,14 +59,14 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   cancelButton: {
-    backgroundColor: '#FDB316',
+    backgroundColor: '#F3BC00',
     height: 48,
     borderRadius: 24,
     justifyContent: 'center',
     alignItems: 'center',
   },
   buttonText: {
-    color: '#191851',
+    color: '#343474',
     fontSize: 16,
     fontWeight: '600',
   },

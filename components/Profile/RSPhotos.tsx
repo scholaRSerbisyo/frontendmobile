@@ -72,10 +72,10 @@ export function RSPhotos({ photos }: RSPhotosProps) {
                     style={styles.image}
                   />
                 ) : (
-                  <ActivityIndicator size="small" color="#FDB316" />
+                  <ActivityIndicator size="small" color="#F3BC00" />
                 )}
                 <View style={styles.searchButton}>
-                  <Image size={20} color="#191851" />
+                  <Image size={20} color="#343474" />
                 </View>
               </View>
             </TouchableOpacity>
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: '#FDB316',
+    backgroundColor: '#F3BC00',
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
@@ -250,10 +250,10 @@ const styles = StyleSheet.create({
 //                     style={styles.image}
 //                   />
 //                 ) : (
-//                   <ActivityIndicator size="small" color="#FDB316" />
+//                   <ActivityIndicator size="small" color="#F3BC00" />
 //                 )}
 //                 <View style={styles.searchButton}>
-//                   <Image size={20} color="#191851" />
+//                   <Image size={20} color="#343474" />
 //                 </View>
 //               </View>
 //             </TouchableOpacity>
@@ -316,7 +316,7 @@ const styles = StyleSheet.create({
 //     width: 32,
 //     height: 32,
 //     borderRadius: 16,
-//     backgroundColor: '#FDB316',
+//     backgroundColor: '#F3BC00',
 //     justifyContent: 'center',
 //     alignItems: 'center',
 //     position: 'absolute',

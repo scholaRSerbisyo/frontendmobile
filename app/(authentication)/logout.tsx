@@ -55,7 +55,7 @@ export default function LogoutScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#191851',
+    backgroundColor: '#343474',
   },
   content: {
     flex: 1,
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   },
   card: {
     width: '100%',
-    backgroundColor: '#191851',
+    backgroundColor: '#343474',
     borderRadius: 20,
     padding: 24,
     alignItems: 'center',
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   continueButton: {
-    backgroundColor: '#FDB316',
+    backgroundColor: '#F3BC00',
     width: '100%',
     height: 50,
     borderRadius: 25,
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   cancelButton: {
-    backgroundColor: '#FDB316',
+    backgroundColor: '#F3BC00',
     width: '100%',
     height: 50,
     borderRadius: 25,
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonText: {
-    color: '#191851',
+    color: '#343474',
     fontSize: 16,
     fontWeight: '600',
   },

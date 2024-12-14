@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 40,
-    backgroundColor: '#191851',
+    backgroundColor: '#343474',
   },
   backButton: {
     padding: 5,
@@ -174,12 +174,12 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     padding: 15,
-    backgroundColor: '#191851',
+    backgroundColor: '#343474',
     color: '#fff',
   },
   weekDays: {
     flexDirection: 'row',
-    backgroundColor: '#191851',
+    backgroundColor: '#343474',
     paddingBottom: 10,
   },
   weekDay: {
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     padding: 15,
-    backgroundColor: '#191851',
+    backgroundColor: '#343474',
   },
   navItem: {
     padding: 5,

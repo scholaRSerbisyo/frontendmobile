@@ -176,7 +176,7 @@ export default function ContentScreen() {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#FDB316" />
+        <ActivityIndicator size="large" color="#F3BC00" />
       </View>
     )
   }
@@ -457,7 +457,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   attachButton: {
-    backgroundColor: '#FDB316',
+    backgroundColor: '#F3BC00',
     paddingHorizontal: 25,
     paddingVertical: 6,
     borderRadius: 16,
@@ -511,7 +511,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
   },
   submitButton: {
-    backgroundColor: '#FDB316',
+    backgroundColor: '#F3BC00',
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderRadius: 8,

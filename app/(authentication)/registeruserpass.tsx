@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   },
   bottomSection: {
     flex: 1,
-    backgroundColor: '#191851',
+    backgroundColor: '#343474',
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
   },

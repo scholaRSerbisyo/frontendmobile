@@ -15,7 +15,7 @@ export default function BottomTabs() {
     <Tab.Navigator
       screenOptions={{
         tabBarStyle: styles.tabBar,
-        tabBarActiveTintColor: '#FDB316',
+        tabBarActiveTintColor: '#F3BC00',
         tabBarInactiveTintColor: '#ffffff',
         headerShown: false,
       }}
@@ -53,7 +53,7 @@ export default function BottomTabs() {
 
 const styles = StyleSheet.create({
   tabBar: {
-    backgroundColor: '#191851',
+    backgroundColor: '#343474',
     borderTopWidth: 0,
     height: 60,
     paddingBottom: 5,

@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     height: 100,
   },
   contentContainer: {
-    backgroundColor: '#191851',
+    backgroundColor: '#343474',
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
     padding: 24,
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
   continueButton: {
-    backgroundColor: '#FDB316',
+    backgroundColor: '#F3BC00',
     width: '100%',
     height: 48,
     borderRadius: 24,
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   cancelButton: {
-    backgroundColor: '#FDB316',
+    backgroundColor: '#F3BC00',
     width: '100%',
     height: 48,
     borderRadius: 24,

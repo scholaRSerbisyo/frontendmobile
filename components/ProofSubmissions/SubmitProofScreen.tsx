@@ -424,7 +424,7 @@ export function SubmitProofScreen({ eventId }: SubmitProofScreenProps) {
                 </View>
               ) : (
                 <>
-                  <Camera size={32} color="#FDB316" />
+                  <Camera size={32} color="#F3BC00" />
                   <Text style={styles.photoButtonText}>Time in</Text>
                 </>
               )}
@@ -445,7 +445,7 @@ export function SubmitProofScreen({ eventId }: SubmitProofScreenProps) {
                 </View>
               ) : (
                 <>
-                  <Camera size={32} color={isTimeInSubmitted ? "#191851" : "#999"} />
+                  <Camera size={32} color={isTimeInSubmitted ? "#343474" : "#999"} />
                   <Text style={[styles.photoButtonText, !isTimeInSubmitted && styles.disabledText]}>Time out</Text>
                 </>
               )}
@@ -503,7 +503,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: '#191851',
+    backgroundColor: '#343474',
   },
   backButton: {
     padding: 4,
@@ -532,7 +532,7 @@ const styles = StyleSheet.create({
   },
   value: {
     fontSize: 16,
-    color: '#191851',
+    color: '#343474',
     fontWeight: '500',
   },
   input: {
@@ -541,7 +541,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 12,
     fontSize: 16,
-    color: '#191851',
+    color: '#343474',
     textAlignVertical: 'top',
     minHeight: 100,
   },
@@ -565,7 +565,7 @@ const styles = StyleSheet.create({
   photoButtonText: {
     marginTop: 8,
     fontSize: 14,
-    color: '#191851',
+    color: '#343474',
   },
   capturedImage: {
     width: '100%',
@@ -603,13 +603,13 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   submitButton: {
-    backgroundColor: '#FDB316',
+    backgroundColor: '#F3BC00',
     paddingVertical: 16,
     borderRadius: 8,
     alignItems: 'center',
   },
   submitButtonText: {
-    color: '#191851',
+    color: '#343474',
     fontSize: 16,
     fontWeight: '600',
   },

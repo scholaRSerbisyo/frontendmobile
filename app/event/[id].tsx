@@ -25,7 +25,7 @@ export default function EventScreen() {
           onPress={() => router.back()}
           style={styles.backButton}
         >
-          <ChevronLeft size={24} color="#191851" />
+          <ChevronLeft size={24} color="#343474" />
           <Text style={styles.backText}>Back</Text>
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Content</Text>
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: '#191851',
+    backgroundColor: '#343474',
   },
   backButton: {
     flexDirection: 'row',
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#191851',
+    color: '#343474',
     marginBottom: 16,
   },
   field: {
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 14,
-    color: '#191851',
+    color: '#343474',
     fontWeight: '500',
   },
   value: {
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   attachButton: {
-    backgroundColor: '#FDB316',
+    backgroundColor: '#F3BC00',
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 20,
@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
   commentsHeader: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#191851',
+    color: '#343474',
     marginBottom: 12,
   },
 })

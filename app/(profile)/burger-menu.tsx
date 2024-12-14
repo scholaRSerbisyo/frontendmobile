@@ -75,7 +75,7 @@ export default function BurgerMenu() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#191851',
+    backgroundColor: '#343474',
   },
   header: {
     flexDirection: 'row',
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   menuButtonText: {
-    color: '#FDB316',
+    color: '#F3BC00',
     fontSize: 16,
     fontWeight: '600',
   },

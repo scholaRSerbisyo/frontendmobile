@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
   },
   value: {
     fontSize: 16,
-    color: '#191851',
+    color: '#343474',
   },
   divider: {
     height: 1,

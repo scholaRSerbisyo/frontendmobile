@@ -93,7 +93,7 @@ export default function LoginPage() {
                   style={styles.showButton}
                 >
                   <Text style={styles.showButtonText}>
-                    {showPassword ? <EyeOff size={20} color="#191851" /> : <Eye size={20} color="#191851" />}
+                    {showPassword ? <EyeOff size={20} color="#343474" /> : <Eye size={20} color="#343474" />}
                   </Text>
                 </Pressable>
               </View>
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     height: 120,
   },
   formContainer: {
-    backgroundColor: '#191851',
+    backgroundColor: '#343474',
     borderRadius: 20,
     padding: 24,
     width: '100%',
@@ -176,17 +176,17 @@ const styles = StyleSheet.create({
     top: 12,
   },
   showButtonText: {
-    color: '#191851',
+    color: '#343474',
     fontSize: 14,
   },
   continueButton: {
-    backgroundColor: '#FDB316',
+    backgroundColor: '#F3BC00',
     padding: 16,
     borderRadius: 25,
     marginTop: 8,
   },
   continueButtonText: {
-    color: '#191851',
+    color: '#343474',
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   registerLink: {
-    color: '#FDB316',
+    color: '#F3BC00',
     fontSize: 14,
     textDecorationLine: 'underline',
   },

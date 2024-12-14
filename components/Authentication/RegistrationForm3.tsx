@@ -38,7 +38,7 @@ export function RegistrationForm3() {
         <Text style={[styles.dropdownText, !value && styles.placeholder]}>
           {value || placeholder}
         </Text>
-        <ChevronDown size={20} color="#191851" />
+        <ChevronDown size={20} color="#343474" />
       </TouchableOpacity>
     </View>
   )
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
   },
   optionText: {
     fontSize: 16,
-    color: '#191851',
+    color: '#343474',
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   backButton: {
-    backgroundColor: '#FDB316',
+    backgroundColor: '#F3BC00',
     height: 48,
     borderRadius: 24,
     justifyContent: 'center',
@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
     width: '45%',
   },
   continueButton: {
-    backgroundColor: '#FDB316',
+    backgroundColor: '#F3BC00',
     height: 48,
     borderRadius: 24,
     justifyContent: 'center',
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
     width: '45%',
   },
   buttonText: {
-    color: '#191851',
+    color: '#343474',
     fontSize: 16,
     fontWeight: '600',
   },
