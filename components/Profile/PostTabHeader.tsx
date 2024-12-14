@@ -6,8 +6,8 @@ import { useRouter } from 'expo-router'
 
 interface PostTabHeaderProps {
   name: string
-  school: string
-  location: string
+  school?: string
+  location?: string
   photo: string
   onPhotoEdit?: () => void
 }

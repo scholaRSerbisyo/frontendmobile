@@ -6,23 +6,20 @@ interface RSListItemProps {
   title: string
   status: 'Complete' | 'Incomplete'
   hours: string
-  isYear?: boolean
 }
 
-export function RSListItem({ title, status, hours, isYear = false }: RSListItemProps) {
+export function RSListItem({ title, status, hours }: RSListItemProps) {
   return (
-    <View style={[styles.container, isYear && styles.yearContainer]}>
-      <View style={styles.leftContent}>
-        <Text style={styles.title}>{title}</Text>
-        <Text 
-          style={[
-            styles.status,
-            status === 'Complete' ? styles.complete : styles.incomplete
-          ]}
-        >
-          {status}
-        </Text>
-      </View>
+    <View style={styles.container}>
+      <Text style={styles.year}>{title}</Text>
+      <Text 
+        style={[
+          styles.status,
+          status === 'Complete' ? styles.complete : styles.incomplete
+        ]}
+      >
+        {status}
+      </Text>
       <Text style={styles.hours}>{hours}</Text>
     </View>
   )
@@ -35,21 +32,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F0F0F0',
     padding: 16,
-    marginBottom: 1,
+    marginHorizontal: 16,
+    marginBottom: 8,
+    borderRadius: 12,
   },
-  yearContainer: {
-    backgroundColor: '#E8E8E8',
-  },
-  leftContent: {
-    flex: 1,
-  },
-  title: {
+  year: {
     fontSize: 16,
     color: '#343474',
     marginBottom: 4,
   },
   status: {
     fontSize: 14,
+    flex: 1,
+    textAlign: 'center',
   },
   complete: {
     color: '#34C759',

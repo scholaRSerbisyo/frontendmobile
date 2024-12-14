@@ -12,7 +12,6 @@ export default function LogoutScreen() {
   const handleLogout = async () => {
     try {
       await signOut();
-      router.replace('/(authentication)/login');
     } catch (error) {
       console.error('Logout error:', error);
     }
