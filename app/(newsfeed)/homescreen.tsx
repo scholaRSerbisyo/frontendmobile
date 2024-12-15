@@ -148,22 +148,24 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
+    marginTop: '10%'
   },
   header: {
     paddingHorizontal: 16,
-    paddingTop: 8,
     paddingBottom: 12,
     backgroundColor: '#FFFFFF',
+    marginTop: -20
   },
   headerTop: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-between',  
     alignItems: 'center',
-    marginBottom: 8,
+    paddingBottom: '5%'
   },
   logo: {
     height: '100%',
     width: '25%',
+
   },
   calendarButton: {
     padding: 8,

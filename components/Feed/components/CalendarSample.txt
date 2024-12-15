@@ -41,7 +41,7 @@ type Event = {
 const TIMEZONE = 'Asia/Manila'
 const { width: SCREEN_WIDTH } = Dimensions.get('window')
 
-export function CalendarScreen() {
+export function CalendarScreenSample() {
   const [selectedDate, setSelectedDate] = useState(format(new Date(), 'yyyy-MM-dd'))
   const [currentMonth, setCurrentMonth] = useState(format(new Date(), 'yyyy-MM'))
   const [events, setEvents] = useState<{ [key: string]: Event[] }>({})

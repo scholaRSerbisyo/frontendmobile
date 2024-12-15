@@ -98,7 +98,7 @@ export function LoginForm() {
         <Text style={styles.registerText}>
           No account yet?{' '}
           <Text 
-            onPress={() => router.push('/(newsfeed)/homescreen')}
+            onPress={() => router.push('/(authentication)/register')}
             style={styles.registerLink}
           >
             Register here!
