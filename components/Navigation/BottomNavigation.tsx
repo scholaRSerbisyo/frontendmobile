@@ -24,7 +24,7 @@ export function BottomNavigation({ activeScreen }: BottomNavigationProps) {
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.navButton}
-        onPress={() => router.push('/(newsfeed)/homescreen')}
+        onPress={() => router.push('/newsfeed/homescreen')}
       >
         <Home size={24} color={getNavIconColor(ScreenName.Home)} />
         <Text style={[styles.navText, activeScreen === ScreenName.Home && styles.activeNavText]}>Home</Text>
