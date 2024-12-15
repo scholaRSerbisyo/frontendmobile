@@ -11,6 +11,12 @@ import * as SecureStore from 'expo-secure-store'
 import { parseISO } from 'date-fns'
 import API_URL from '~/constants/constants'
 
+export enum ScreenName {
+  Home = 'Home',
+  Notifications = 'Notifications',
+  Profile = 'Profile'
+}
+
 interface Event {
   event_id: number
   event_image_uuid: string
@@ -120,7 +126,7 @@ export default function HomeScreen() {
         )}
       </ScrollView>
 
-      <BottomNavigation />
+      <BottomNavigation activeScreen={ScreenName.Home} />
     </SafeAreaView>
   )
 }
