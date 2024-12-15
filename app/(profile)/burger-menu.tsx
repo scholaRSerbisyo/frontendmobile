@@ -37,14 +37,14 @@ export default function BurgerMenu() {
           style={styles.menuButton}
           onPress={() => router.push('/edit-profile')}
         >
-          <Text style={styles.menuButtonText}>Edit Profile</Text>
+          <Text style={styles.menuButtonText}>Scholar's Info</Text>
         </TouchableOpacity>
 
         <TouchableOpacity 
           style={styles.menuButton}
           onPress={() => router.push('/(profile)/aboutus')}
         >
-          <Text style={styles.menuButtonText}>Settings</Text>
+          <Text style={styles.menuButtonText}>About CSO</Text>
         </TouchableOpacity>
 
         <TouchableOpacity 

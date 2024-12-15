@@ -18,11 +18,10 @@ const AboutUsScreen = () => {
           </TouchableOpacity>
         </View>
         
-        <Text style={styles.mainTitle}>Settings</Text>
+        <Text style={styles.mainTitle}>About CSO</Text>
 
         <ScrollView style={styles.contentContainer}>
           <View style={styles.section}>
-            <Text style={styles.sectionHeader}>About Us</Text>
             <View style={styles.sectionContentContainer}>
               <Text style={styles.sectionContent}>
                 As part of the administration's RISE agenda to improve human development through access to quality education, the City Scholarships Office offers tertiary education scholarship grants to poor but deserving students of Cagayan de Oro.

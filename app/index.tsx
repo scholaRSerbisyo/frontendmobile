@@ -30,7 +30,7 @@ export default function LandingPage() {
         >
           {/* <Link href="/profile\total-rs" asChild> */}
             <Button 
-            onPress={() => router.replace('/(authentication)/login')}
+            onPress={() => router.replace('/(newsfeed)/homescreen')}
 
             style={styles.continueButton}>
               <Text style={styles.continueButtonText}>

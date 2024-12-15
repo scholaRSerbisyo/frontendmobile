@@ -21,7 +21,7 @@ export function RSHeader({ name, school, location, photo }: RSHeaderProps) {
           <ChevronLeft color="#F3BC00" size={24} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Profile</Text>
-        <TouchableOpacity style={styles.menuButton}>
+        <TouchableOpacity onPress={() => router.replace('../(profile)/burger-menu')} style={styles.menuButton}>
           <Menu color="#F3BC00" size={24} />
         </TouchableOpacity>
         <View style={styles.nameContainer}>

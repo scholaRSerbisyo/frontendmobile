@@ -313,7 +313,7 @@ export function CalendarScreen() {
             borderBottomLeftRadius: 0,
             borderBottomRightRadius: 0,
             marginBottom: 0,
-            paddingTop: 5, // Added to give some space at the top
+            paddingTop: 0, // Added to give some space at the top
           }]}
           theme={{
             backgroundColor: '#2A2A5C',
@@ -328,7 +328,7 @@ export function CalendarScreen() {
             selectedDotColor: '#2A2A5C',
             arrowColor: '#FFFFFF',
             monthTextColor: '#FFFFFF',
-            textMonthFontSize: 30,
+            textMonthFontSize: 24,
             textMonthFontWeight: 'bold',
             textDayFontSize: 20,
             textDayHeaderFontSize: 14,
@@ -342,7 +342,7 @@ export function CalendarScreen() {
                 backgroundColor: '#2A2A5C',
               },
               monthText: {
-                fontSize: 30,
+                fontSize: 24,
                 color: '#FFFFFF',
                 fontWeight: '700',
                 margin: 5, // Reduced from 10
@@ -360,7 +360,7 @@ export function CalendarScreen() {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
                 backgroundColor: '#FFFFFF',
-                paddingVertical: 5,
+                paddingVertical: 10,
               },
               container: {
                 backgroundColor: '#FFFFFF',
@@ -433,20 +433,21 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 16,
         backgroundColor: 'white',
-        borderRadius: 25,
+        borderRadius: 12,
         margin: 16,
       },
       backButton: {
-        fontSize: 16,
+        fontSize: 20,
         color: '#2A2A5C',
       },
       headerTitle: {
-        fontSize: 20,
+        fontSize: 28,
         fontWeight: 'bold',
         color: '#2A2A5C',
+        paddingTop: 8
       },
       placeholder: {
-        fontSize: 16,
+        fontSize: 20,
         color: '#2A2A5C',
       },
       calendar: {
