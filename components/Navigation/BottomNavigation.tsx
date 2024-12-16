@@ -2,7 +2,7 @@ import React from 'react'
 import { View, TouchableOpacity, StyleSheet } from 'react-native'
 import { useRouter } from 'expo-router'
 import { Home, User, Bell } from 'lucide-react-native'
-import { Text } from '../ui/text'
+import { Text } from '../ui/text' 
 
 export enum ScreenName {
   Home = 'Home',
