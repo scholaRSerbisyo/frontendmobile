@@ -304,7 +304,6 @@ export function CalendarScreen() {
         <View style={styles.header}>
           <Text style={styles.backButton}>Back</Text>
           <Text style={styles.headerTitle}>Calendar</Text>
-          <Text style={styles.placeholder}>Profile</Text>
         </View>
 
         <Calendar
@@ -316,8 +315,8 @@ export function CalendarScreen() {
             paddingTop: 0, // Added to give some space at the top
           }]}
           theme={{
-            backgroundColor: '#2A2A5C',
-            calendarBackground: '#2A2A5C',
+            backgroundColor: 'white',
+            calendarBackground: 'white',
             textSectionTitleColor: '#FFFFFF',
             selectedDayBackgroundColor: '#F3BC00',
             selectedDayTextColor: '#2A2A5C',
@@ -327,10 +326,10 @@ export function CalendarScreen() {
             dotColor: '#343474',
             selectedDotColor: '#2A2A5C',
             arrowColor: '#FFFFFF',
-            monthTextColor: '#FFFFFF',
+            monthTextColor: '#2A2A5C',
             textMonthFontSize: 24,
             textMonthFontWeight: 'bold',
-            textDayFontSize: 20,
+            textDayFontSize: 16,
             textDayHeaderFontSize: 14,
             'stylesheet.calendar.header': {
               week: {
@@ -343,14 +342,14 @@ export function CalendarScreen() {
               },
               monthText: {
                 fontSize: 24,
-                color: '#FFFFFF',
+                color: 'white', 
                 fontWeight: '700',
                 margin: 5, // Reduced from 10
               },
               dayHeader: {
                 color: '#FFFFFF',
-                fontWeight: '600',
-                fontSize: 16,
+                fontWeight: '400',
+                fontSize: 12,
                 marginBottom: 5, // Added to create some space between weekday names and dates
               },
             },
@@ -429,26 +428,24 @@ const styles = StyleSheet.create({
       },
       header: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         alignItems: 'center',
         padding: 16,
-        backgroundColor: 'white',
         borderRadius: 12,
         margin: 16,
       },
       backButton: {
-        fontSize: 20,
-        color: '#2A2A5C',
+        position: 'absolute',
+        left: 16,
+        fontSize: 18,
+        color: '#F3BC00',
+        fontWeight: '600',
       },
       headerTitle: {
-        fontSize: 28,
+        fontSize: 32,
         fontWeight: 'bold',
-        color: '#2A2A5C',
-        paddingTop: 8
-      },
-      placeholder: {
-        fontSize: 20,
-        color: '#2A2A5C',
+        color: 'white',
+        paddingTop: 10
       },
       calendar: {
         backgroundColor: '#FFFFFF',
@@ -510,8 +507,8 @@ const styles = StyleSheet.create({
     borderBottomColor: '#E5E5E5',
   },
   dateText: {
-    fontSize: 16,
-    fontWeight: '500',
+    fontSize: 12,
+    fontWeight: '400',
     color: '#343474',
     flex: 1,
     textAlign: 'center',
@@ -539,9 +536,9 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   value: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#343474',
-    fontWeight: '500',
+    fontWeight: '400',
   },
   statusContainer: {
     marginTop: 24,
