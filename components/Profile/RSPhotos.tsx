@@ -58,6 +58,9 @@ export function RSPhotos({ photos }: RSPhotosProps) {
   return (
     <>
       <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
+      {photos.length === 0 ? (
+        <Text style={styles.noPhotosText}>No Photos Submitted found</Text>
+      ) : (
         <View style={styles.grid}>
           {photos.map((photo, index) => (
             <TouchableOpacity 
@@ -81,6 +84,7 @@ export function RSPhotos({ photos }: RSPhotosProps) {
             </TouchableOpacity>
           ))}
         </View>
+      )}
       </ScrollView>
       <Modal
         visible={isOverlayVisible}
@@ -172,8 +176,15 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '80%',
   },
+  noPhotosText: {
+    fontSize: 18,
+    color: '#343474',
+    textAlign: 'center',
+    marginTop: 20,
+  },
 })
 
+<<<<<<< HEAD
 
 
 // import React, { useState, useEffect } from 'react'
@@ -352,3 +363,5 @@ const styles = StyleSheet.create({
 //   },
 // })
 
+=======
+>>>>>>> 313555c4aafdedcebac851217eddc67d25cc81ce

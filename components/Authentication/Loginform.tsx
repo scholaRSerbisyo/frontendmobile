@@ -36,7 +36,7 @@ export function LoginForm() {
         if (pushToken) {
           await sendPushTokenToServer(pushToken);
         }
-        router.replace('/newsfeed/homescreen');
+        router.replace('/(newsfeed)/homescreen');
       } else {
         setError(message || 'Login failed');
       }

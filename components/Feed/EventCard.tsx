@@ -66,7 +66,7 @@ export function EventCard({ event }: { event: Event }) {
   return (
     <TouchableOpacity 
       style={styles.container}
-      onPress={() => router.push(`/newsfeed/${event.event_id}`)}
+      onPress={() => router.push(`/(newsfeed)/${event.event_id}`)}
     >
       <View style={styles.content}>
         <Text style={styles.title}>{event.event_name}</Text>

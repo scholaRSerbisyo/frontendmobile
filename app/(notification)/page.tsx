@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { View, StyleSheet, SectionList, TouchableOpacity, Alert, ActivityIndicator } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useRouter } from 'expo-router'
-import { ChevronLeft } from 'lucide-react-native'
+import { ChevronLeft, SearchIcon } from 'lucide-react-native'
 import { Text } from '~/components/ui/text'
 import { NotificationSection } from './components/NotificationSection'
 import { BottomNavigation, ScreenName } from '~/components/Navigation/BottomNavigation'
@@ -123,7 +123,12 @@ export default function NotificationsScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
+<<<<<<< HEAD
         <Text style={styles.title}>Notifications</Text>
+=======
+          <Text style={styles.headertitle}>Notifications</Text>
+          <SearchIcon />
+>>>>>>> 313555c4aafdedcebac851217eddc67d25cc81ce
       </View>
 
       <SectionList
@@ -160,6 +165,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 20,
+<<<<<<< HEAD
+=======
+    height: 60,
+>>>>>>> 313555c4aafdedcebac851217eddc67d25cc81ce
     backgroundColor: '#FFFFFF',
   },
   title: {
@@ -195,5 +204,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#666666',
   },
+  headertitle: {
+    paddingTop: 13,
+    height: '100%',
+    width: '100%',
+    color: '#343474',
+    fontSize: 30,
+    fontWeight: '600',
+    textAlign: 'left',
+    textAlignVertical: 'center',
+  }
 })
 

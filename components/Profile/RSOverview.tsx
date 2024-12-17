@@ -1,69 +1,46 @@
 import React from 'react'
 import { View, StyleSheet, ScrollView } from 'react-native'
 import { Text } from '../ui/text'
+import { Submission } from '~/app/(profile)/total-rs'
 
-interface RSEntry {
-  date: string
-  time: string
-  type: string
-  status: string
+interface RSOverviewProps {
+  submissions: Submission[];
 }
 
-const entries: RSEntry[] = [
-  {
-    date: 'January 15, 2024',
-    time: '9:00 AM',
-    type: 'Community Service',
-    status: 'Completed'
-  },
-  {
-    date: 'January 10, 2024',
-    time: '2:00 PM',
-    type: 'Library Assistance',
-    status: 'Pending'
-  },
-  {
-    date: 'January 5, 2024',
-    time: '10:00 AM',
-    type: 'Office Work',
-    status: 'Completed'
-  },
-  {
-    date: 'December 28, 2023',
-    time: '1:00 PM',
-    type: 'Community Service',
-    status: 'Completed'
-  },
-  {
-    date: 'December 20, 2023',
-    time: '3:00 PM',
-    type: 'Library Assistance',
-    status: 'Completed'
+export function RSOverview({ submissions }: RSOverviewProps) {
+  if (submissions.length === 0) {
+    return (
+      <View style={styles.emptyContainer}>
+        <Text style={styles.emptyText}>No Activities Found</Text>
+      </View>
+    )
   }
-]
 
-export function RSOverview() {
   return (
     <ScrollView style={styles.container}>
-      {entries.map((entry, index) => (
-        <View key={index} style={styles.entry}>
+      {submissions.map((submission) => (
+        <View key={submission.submission_id} style={styles.entry}>
+          <View style={styles.field}>
+            <Text style={styles.label}>Event Name:</Text>
+            <Text style={styles.value}>{submission.event.event_name}</Text>
+          </View>
           <View style={styles.field}>
             <Text style={styles.label}>Date:</Text>
-            <Text style={styles.value}>{entry.date}</Text>
+            <Text style={styles.value}>{submission.event.date}</Text>
           </View>
           <View style={styles.field}>
             <Text style={styles.label}>Time:</Text>
-            <Text style={styles.value}>{entry.time}</Text>
+            <Text style={styles.value}>{`${submission.event.time_from} - ${submission.event.time_to}`}</Text>
           </View>
           <View style={styles.field}>
             <Text style={styles.label}>Type of RS:</Text>
-            <Text style={styles.value}>{entry.type}</Text>
+            <Text style={styles.value}>{submission.event.event_Type.name}</Text>
           </View>
           <View style={styles.field}>
             <Text style={styles.label}>Status:</Text>
-            <Text style={styles.value}>{entry.status}</Text>
+            <Text style={styles.value}>{submission.status || 'Pending'}</Text>
           </View>
-          {index !== entries.length - 1 && <View style={styles.divider} />}
+          <View style={styles.divider} />
         </View>
       ))}
     </ScrollView>
@@ -94,6 +71,18 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: '#E5E5E5',
     marginTop: 16,
+  },
+  emptyContainer: {
+    flex: 1,
+    backgroundColor: 'white',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  emptyText: {
+    fontSize: 18,
+    color: '#343474',
+    textAlign: 'center',
+    marginTop: 37
   },
 })
 

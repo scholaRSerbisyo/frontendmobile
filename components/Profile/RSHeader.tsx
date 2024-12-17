@@ -81,9 +81,14 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: '700',
     color: 'white',
+<<<<<<< HEAD
     marginTop: 12,
     paddingTop: 12,
     padding: 8
+=======
+    marginTop: 20,
+    paddingTop: 13,
+>>>>>>> 313555c4aafdedcebac851217eddc67d25cc81ce
   },
   nameContainer: {
     position: 'absolute',
@@ -92,7 +97,7 @@ const styles = StyleSheet.create({
     right: 24,
   },
   name: {
-    fontSize: 24,
+    fontSize: 17,
     fontWeight: '600',
     color: 'white',
     paddingTop: 16

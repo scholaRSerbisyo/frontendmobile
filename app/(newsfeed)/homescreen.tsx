@@ -2,14 +2,16 @@ import React, { useState, useEffect } from 'react'
 import { View, StyleSheet, ScrollView, TouchableOpacity, Image, ActivityIndicator, RefreshControl } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useRouter } from 'expo-router'
-import { CalendarDays } from 'lucide-react-native'
+import { Calendar, CalendarDays } from 'lucide-react-native'
 import { Text } from '~/components/ui/text'
-import { SearchBar } from '~/components/ui/search-bar'
 import { EventCard } from '~/components/Feed/EventCard'
-import { BottomNavigation, ScreenName } from '~/components/Navigation/BottomNavigation'
+import { BottomNavigation } from '~/components/Navigation/BottomNavigation'
 import axios from 'axios'
 import * as SecureStore from 'expo-secure-store'
+import { parseISO } from 'date-fns'
 import API_URL from '~/constants/constants'
+import { SearchBar } from './searchbar'
+import { ScreenName } from '~/components/Navigation/BottomNavigation'
 
 interface Event {
   event_id: number            
@@ -41,11 +43,10 @@ interface Event {
 export default function HomeScreen() {
   const router = useRouter()
   const [events, setEvents] = useState<Event[]>([])
-  const [filteredEvents, setFilteredEvents] = useState<Event[]>([])
-  const [searchQuery, setSearchQuery] = useState('')
   const [loading, setLoading] = useState(true)
   const [refreshing, setRefreshing] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [searchQuery, setSearchQuery] = useState('')
 
   const fetchEvents = async (showLoader = true) => {
     if (showLoader) setLoading(true)
@@ -57,8 +58,7 @@ export default function HomeScreen() {
           'Authorization': `Bearer ${token}`
         }
       })
-      setEvents(response.data)
-      setFilteredEvents(response.data)
+      setEvents(response.data.sort((a, b) => parseISO(b.created_at).getTime() - parseISO(a.created_at).getTime()))
     } catch (err) {
       console.error('Error fetching events:', err)
       setError('Failed to fetch events. Please try again.')
@@ -72,15 +72,6 @@ export default function HomeScreen() {
     fetchEvents()
   }, [])
 
-  useEffect(() => {
-    const filtered = events.filter(event =>
-      event.event_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      event.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      event.location.toLowerCase().includes(searchQuery.toLowerCase())
-    )
-    setFilteredEvents(filtered)
-  }, [searchQuery, events])
-
   const onRefresh = () => {
     setRefreshing(true)
     fetchEvents(false)
@@ -88,7 +79,21 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.topheader}>
+        <Image
+          source={require('../../assets/images/2nd-type-logo.png')}
+          style={styles.logo}
+          resizeMode="contain"
+        />
+        <TouchableOpacity 
+          onPress={() => router.push('/calendar')}
+          style={styles.calendarButton}
+        >
+          <CalendarDays size={24} color="#343474" />
+        </TouchableOpacity>
+      </View>
       <View style={styles.header}>
+<<<<<<< HEAD
         <View style={styles.headerTop}>
           <Image
             source={require('../../assets/images/logowithouttext.png')}
@@ -102,15 +107,16 @@ export default function HomeScreen() {
             <CalendarDays size={24} color="#FDB316" />
           </TouchableOpacity>
         </View>
+=======
+>>>>>>> 313555c4aafdedcebac851217eddc67d25cc81ce
         <SearchBar
           value={searchQuery}
           onChangeText={setSearchQuery}
-          placeholder="Search"
-          containerStyle={styles.searchBarContainer}
+          placeholder="Search events..."
         />
       </View>
 
-      <ScrollView
+      <ScrollView 
         style={styles.content}
         contentContainerStyle={styles.scrollContent}
         refreshControl={
@@ -125,17 +131,17 @@ export default function HomeScreen() {
           <ActivityIndicator size="large" color="#FDB316" />
         ) : error ? (
           <Text style={styles.errorText}>{error}</Text>
-        ) : filteredEvents.length === 0 ? (
-          <Text style={styles.noEventsText}>
-            {searchQuery ? 'No events found matching your search' : 'No events available'}
-          </Text>
+        ) : events.length === 0 ? (
+          <Text style={styles.noEventsText}>No events available</Text>
         ) : (
-          filteredEvents.map((event) => (
-            <EventCard
-              key={event.event_id}
-              event={event}
-            />
-          ))
+          events
+            .filter(event => event.event_name.toLowerCase().includes(searchQuery.toLowerCase()))
+            .map((event) => (
+              <EventCard
+                key={event.event_id}
+                event={event}
+              />
+            ))
         )}
       </ScrollView>
 
@@ -148,37 +154,43 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    marginTop: '10%'
   },
   header: {
-    paddingHorizontal: 16,
-    paddingBottom: 12,
-    backgroundColor: '#FFFFFF',
-    marginTop: -20
-  },
-  headerTop: {
     flexDirection: 'row',
-    justifyContent: 'space-between',  
+    justifyContent: 'center',
     alignItems: 'center',
-    paddingBottom: '5%'
+    paddingHorizontal: 8,
+    paddingVertical: 7,
+    backgroundColor: '#FFFFFF',
+    borderBottomWidth: 1,
+    borderBottomColor: '#E5E5E5',
   },
   logo: {
-    height: '100%',
-    width: '25%',
-
+    height: 40,
+    width: 110,
   },
   calendarButton: {
-    padding: 8,
-
+    paddingHorizontal: 8,
+    paddingTop: 10
   },
-  searchBarContainer: {
+  titleContainer: {
     width: '100%',
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    backgroundColor: 'white',
+  },
+  title: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    color: '#191851',
+    paddingTop: 10,
+    textAlign: 'center',
   },
   content: {
     flex: 1,
   },
   scrollContent: {
-    paddingHorizontal: 10,
+    padding: 10,
   },
   errorText: {
     color: 'red',
@@ -192,8 +204,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#666666',
   },
+  topheader: {
+    flexDirection: 'row',
+    paddingTop: 7,
+    paddingHorizontal: 10,
+    justifyContent: 'space-between'
+  }
 })
 
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> 313555c4aafdedcebac851217eddc67d25cc81ce

@@ -40,7 +40,7 @@ export function NotificationItem({ notification }: NotificationItemProps) {
   const relativeTime = formatDistanceToNow(parseISO(notification.created_at), { addSuffix: true });
 
   const handlePress = () => {
-    router.push(`/newsfeed/${notification.event_id}`);
+    router.push(`/(newsfeed)/${notification.event_id}`);
   };
 
   return (

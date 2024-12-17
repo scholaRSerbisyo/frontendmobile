@@ -8,7 +8,7 @@ import { useRouter } from 'expo-router';
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  signIn: (email: string, password: string) => Promise<{ success: boolean; message?: string; scholarId?: number }>;
+  signIn: (email: string, password: string) => Promise<{ success: boolean; message?: string; scholarId?: string }>;
   signOut: () => Promise<void>;
 }
 
@@ -57,7 +57,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     loadStorageData();
   }, []);
 
-  const signIn = async (email: string, password: string): Promise<{ success: boolean; message?: string; scholarId?: number }> => {
+  const signIn = async (email: string, password: string): Promise<{ success: boolean; message?: string; scholarId?: string }> => {
     try {
       console.log('Signing in with email:', email);
       const { token, scholar_id } = await login(email, password);

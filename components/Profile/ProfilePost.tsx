@@ -3,7 +3,7 @@ import { View, Image, StyleSheet, ActivityIndicator } from 'react-native';
 import { Text } from '../ui/text';
 import { getImageUrl } from '../services/imageService';
 import { format } from 'date-fns';
-import { Submission } from '../types/submission';
+import { Submission } from '~/app/(profile)/total-rs';
 
 interface ProfilePostProps {
   submission: Submission;
@@ -71,7 +71,7 @@ export function ProfilePost({ submission }: ProfilePostProps) {
         
         <View style={styles.infoRow}>
           <Text style={styles.label}>Type of RS:</Text>
-          <Text style={styles.value}>{submission.event.event_type}</Text>
+          <Text style={styles.value}>{submission.event.event_Type.name}</Text>
         </View>
 
         <View style={styles.submissionDetails}>
