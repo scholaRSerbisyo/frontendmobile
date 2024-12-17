@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
   },
   menuItemText: {
     color: '#FDB316',
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'center',
     paddingVertical: '5%'
