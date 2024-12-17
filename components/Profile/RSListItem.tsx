@@ -11,13 +11,11 @@ interface RSListItemProps {
 export function RSListItem({ title, status, hours }: RSListItemProps) {
   return (
     <View style={styles.container}>
-      <Text style={styles.year}>{title}</Text>
-      <Text 
-        style={[
-          styles.status,
-          status === 'Complete' ? styles.complete : styles.incomplete
-        ]}
-      >
+      <Text style={styles.title}>{title}</Text>
+      <Text style={[
+        styles.status,
+        status === 'Complete' ? styles.complete : styles.incomplete
+      ]}>
         {status}
       </Text>
       <Text style={styles.hours}>{hours}</Text>
@@ -28,21 +26,22 @@ export function RSListItem({ title, status, hours }: RSListItemProps) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#F0F0F0',
-    padding: 16,
-    marginHorizontal: 16,
-    marginBottom: 8,
+    justifyContent: 'space-between',
+    backgroundColor: '#F5F5F5',
     borderRadius: 12,
+    padding: 16,
+    marginBottom: 8,
   },
-  year: {
+  title: {
     fontSize: 16,
-    color: '#343474',
-    marginBottom: 4,
+    fontWeight: '500',
+    color: '#000000',
+    flex: 1,
   },
   status: {
-    fontSize: 14,
+    fontSize: 16,
+    fontWeight: '500',
     flex: 1,
     textAlign: 'center',
   },
@@ -54,8 +53,10 @@ const styles = StyleSheet.create({
   },
   hours: {
     fontSize: 16,
-    color: '#343474',
     fontWeight: '500',
+    color: '#000000',
+    flex: 1,
+    textAlign: 'right',
   },
 })
 

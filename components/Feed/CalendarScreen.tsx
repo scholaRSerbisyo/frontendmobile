@@ -128,10 +128,16 @@ export function CalendarScreen() {
     Object.keys(events).forEach(date => {
       const dayEvents = events[date]
       markedDates[date] = {
-        marked: true,
-        dotColor: getEventColor(dayEvents[0].status),
         selected: date === selectedDate,
         selectedColor: '#FDB316',
+        customStyles: {
+          container: {
+            backgroundColor: getEventColor(dayEvents[0].status),
+          },
+          text: {
+            color: dayEvents[0].status === 'upcoming' ? '#FFFFFF' : '#000000',
+          },
+        },
       }
     })
     return markedDates
@@ -142,11 +148,11 @@ export function CalendarScreen() {
       case 'ongoing':
         return '#34C759'  // green
       case 'upcoming':
-        return '#0F0E44'  // blue
+        return '#0F0E44'  // dark blue
       case 'previous':
         return '#FFCC00'  // yellow
       default:
-        return '#1E88E5'  // Blue as default
+        return '#FFFFFF'  // White as default
     }
   }
 
@@ -367,7 +373,7 @@ export function CalendarScreen() {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
                 backgroundColor: '#FFFFFF',
-                paddingVertical: 10,
+                paddingVertical: 0,
               },
               container: {
                 backgroundColor: '#FFFFFF',
@@ -376,13 +382,16 @@ export function CalendarScreen() {
               dayContainer: {
                 flex: 1,
                 alignItems: 'center',
+                justifyContent: 'center',
+                aspectRatio: 1,
+                marginVertical: 2,
               }
             },
           }}
           current={currentMonth}
           onDayPress={handleDayPress}
           onMonthChange={handleMonthChange}
-          markingType={'dot'}
+          markingType={'custom'}
           markedDates={getMarkedDates()}
           renderArrow={(direction) => (
             direction === 'left' ? <ChevronLeft color="#FFFFFF" size={26} /> : <ChevronRight color="#FFFFFF" size={26} />

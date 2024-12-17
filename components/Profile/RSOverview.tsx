@@ -33,6 +33,10 @@ export function RSOverview({ submissions }: RSOverviewProps) {
             <Text style={styles.value}>{`${submission.event.time_from} - ${submission.event.time_to}`}</Text>
           </View>
           <View style={styles.field}>
+            <Text style={styles.label}>Location:</Text>
+            <Text style={styles.value}>{submission.event.location || 'N/A'}</Text>
+          </View>
+          <View style={styles.field}>
             <Text style={styles.label}>Type of RS:</Text>
             <Text style={styles.value}>{submission.event.event_Type.name}</Text>
           </View>

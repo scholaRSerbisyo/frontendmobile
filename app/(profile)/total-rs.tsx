@@ -264,7 +264,6 @@ export default function TotalRSScreen() {
         return (
           <>
             <View style={styles.viewToggle}>
-              <Text style={{color: 'black'}}>Year</Text>
             </View>
             <RSYearView />
           </>

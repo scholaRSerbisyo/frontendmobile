@@ -56,7 +56,7 @@ export function PostTabHeader({
               style={styles.editButton}
               onPress={onPhotoEdit}
             >
-              <Edit2 color="#FFFFFF" size={20} />
+              <Edit2 color="#FFFFFF" size={12} />
             </TouchableOpacity>
           </View>
 
@@ -147,10 +147,10 @@ const styles = StyleSheet.create({
   },
   editButton: {
     position: 'absolute',
-    right: 0,
-    bottom: 0,
-    width: 32,
-    height: 32,
+    right: 12,
+    bottom: 12,
+    width: 24,
+    height: 24,
     backgroundColor: '#000000',
     borderRadius: 16,
     justifyContent: 'center',

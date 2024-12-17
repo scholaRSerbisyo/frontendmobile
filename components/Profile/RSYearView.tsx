@@ -7,48 +7,22 @@ import API_URL from '~/constants/constants'
 import { Text } from '../ui/text'
 
 interface YearlyReturnService {
-  year: number;
-  count: number;
+  year: number
+  count: number
 }
 
 interface ReturnService {
-  id: number;
-  firstname: string;
-  lastname: string;
-  mobilenumber: string;
-  age: number;
-  yearLevel: string;
-  scholarType: string;
-  school: {
-    name: string;
-  };
-  barangay: {
-    name: string;
-  };
-  yearlyReturnServices: YearlyReturnService[];
-}
-
-interface YearData {
-  title: string;
-  status: 'Complete' | 'Incomplete';
-  hours: string;
+  yearlyReturnServices: YearlyReturnService[]
 }
 
 export function RSYearView() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [returnService, setReturnService] = useState<ReturnService | null>(null)
-  const [yearData, setYearData] = useState<YearData[]>([])
 
   useEffect(() => {
     fetchReturnServiceCount()
   }, [])
-
-  useEffect(() => {
-    if (returnService) {
-      updateYearData()
-    }
-  }, [returnService])
 
   const fetchReturnServiceCount = async () => {
     try {
@@ -72,17 +46,6 @@ export function RSYearView() {
     }
   }
 
-  const updateYearData = () => {
-    if (returnService && returnService.yearlyReturnServices) {
-      const newYearData: YearData[] = returnService.yearlyReturnServices.map(yearService => ({
-        title: yearService.year.toString(),
-        status: yearService.count >= 5 ? 'Complete' : 'Incomplete',
-        hours: `${yearService.count}/5`
-      }));
-      setYearData(newYearData);
-    }
-  }
-
   if (loading) {
     return (
       <View style={styles.centerContainer}>
@@ -99,22 +62,64 @@ export function RSYearView() {
     )
   }
 
+  if (!returnService?.yearlyReturnServices || returnService.yearlyReturnServices.length === 0) {
+    return (
+      <View style={styles.centerContainer}>
+        <Text style={styles.noDataText}>No Return Service found</Text>
+      </View>
+    )
+  }
+
+  // Group by year and create semester entries
+  const years = returnService.yearlyReturnServices.reduce((acc, service) => {
+    if (!acc[service.year]) {
+      acc[service.year] = {
+        firstSem: { count: 0, status: 'Incomplete' as const },
+        secondSem: { count: 0, status: 'Incomplete' as const }
+      }
+    }
+    
+    // For this example, we'll split the count between semesters
+    // You should adjust this logic based on your actual data structure
+    const semesterCount = Math.floor(service.count / 2)
+    acc[service.year].firstSem = {
+      count: semesterCount,
+      status: semesterCount >= 5 ? 'Complete' : 'Incomplete'
+    }
+    acc[service.year].secondSem = {
+      count: service.count - semesterCount,
+      status: (service.count - semesterCount) >= 5 ? 'Complete' : 'Incomplete'
+    }
+    
+    return acc
+  }, {} as Record<number, { firstSem: { count: number, status: 'Complete' | 'Incomplete' }, secondSem: { count: number, status: 'Complete' | 'Incomplete' } }>)
+
   return (
     <ScrollView style={styles.container}>
-      {yearData.length === 0 ? (
-        <View style={styles.centerContainer}>
-          <Text style={styles.noDataText}>No Return Service found</Text>
+      <View style={styles.headerContainer}>
+        <View style={styles.headerRow}>
+          <Text style={[styles.headerText, styles.yearHeader]}>Year</Text>
+          <Text style={[styles.headerText, styles.statusHeader]}>Status</Text>
+          <Text style={[styles.headerText, styles.rsHeader]}>Recorded RS</Text>
         </View>
-      ) : (
-        yearData.map((year, index) => (
-          <RSListItem
-            key={index}
-            title={year.title}
-            status={year.status}
-            hours={year.hours}
-          />
-        ))
-      )}
+      </View>
+      {Object.entries(years)
+        .sort(([yearA], [yearB]) => Number(yearB) - Number(yearA))
+        .map(([year, data]) => (
+          <View key={year}>
+            <Text style={styles.yearText}>{year}</Text>
+            <RSListItem
+              title="1st Sem"
+              status={data.firstSem.status}
+              hours={`${data.firstSem.count}/5`}
+            />
+            <RSListItem
+              title="2nd Sem"
+              status={data.secondSem.status}
+              hours={`${data.secondSem.count}/5`}
+            />
+          </View>
+        ))}
     </ScrollView>
   )
 }
@@ -123,13 +128,43 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFF',
-    paddingTop: 16,
+    paddingHorizontal: 16,
   },
   centerContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#FFF',
+    minHeight: 200,
+  },
+  headerContainer: {
+    // marginBottom: 12,
+  },
+  headerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 8,
+  },
+  headerText: {
+    fontSize: 14,
+    color: '#666666',
+    fontWeight: '500',
+  },
+  yearHeader: {
+    flex: 1,
+  },
+  statusHeader: {
+    flex: 1,
+    textAlign: 'center',
+  },
+  rsHeader: {
+    flex: 1,
+    textAlign: 'right',
+  },
+  yearText: {
+    fontSize: 14,
+    color: 'black',
+    marginBottom: 8,
   },
   errorText: {
     color: '#FF3B30',
