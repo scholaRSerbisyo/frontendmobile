@@ -31,7 +31,7 @@ export function PostTabHeader({
             <ChevronLeft color="#F3BC00" size={24} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Profile</Text>
-          <TouchableOpacity style={styles.iconButton}>
+          <TouchableOpacity style={styles.iconButton} onPress={() => router.push('/(profile)/burger-menu')}>
             <Menu color="#F3BC00" size={24} />
           </TouchableOpacity>
         </View>

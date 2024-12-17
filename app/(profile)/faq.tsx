@@ -4,6 +4,7 @@ import { useRouter } from 'expo-router'
 import { ChevronDown, ChevronUp, ChevronLeft } from 'lucide-react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { BottomNavigation } from '~/components/Navigation/BottomNavigation'
+import { ScreenName } from '~/components/Navigation/BottomNavigation'
 const FAQScreen = () => {
   const router = useRouter()
   const [expandedIndex, setExpandedIndex] = React.useState<number | null>(null)
@@ -76,7 +77,7 @@ const FAQScreen = () => {
             </TouchableOpacity>
           ))}
         </ScrollView>
-        <BottomNavigation />
+        <BottomNavigation activeScreen={ScreenName.Home} />
       </View>
     </SafeAreaView>
   )

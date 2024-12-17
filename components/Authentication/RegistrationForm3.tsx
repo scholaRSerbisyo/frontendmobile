@@ -71,13 +71,6 @@ export function RegistrationForm3() {
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity 
-          style={styles.backButton}
-          onPress={() => router.back()}
-        >
-          <Text style={styles.buttonText}>Back</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity 
           style={styles.continueButton}
           onPress={() => router.push('/(authentication)/login')}
         >

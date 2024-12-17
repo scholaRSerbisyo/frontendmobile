@@ -101,14 +101,20 @@ export function RSYearView() {
 
   return (
     <ScrollView style={styles.container}>
-      {yearData.map((year, index) => (
-        <RSListItem
-          key={index}
-          title={year.title}
-          status={year.status}
-          hours={year.hours}
-        />
-      ))}
+      {yearData.length === 0 ? (
+        <View style={styles.centerContainer}>
+          <Text style={styles.noDataText}>No Return Service found</Text>
+        </View>
+      ) : (
+        yearData.map((year, index) => (
+          <RSListItem
+            key={index}
+            title={year.title}
+            status={year.status}
+            hours={year.hours}
+          />
+        ))
+      )}
     </ScrollView>
   )
 }
@@ -127,6 +133,11 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: '#FF3B30',
+    textAlign: 'center',
+  },
+  noDataText: {
+    color: '#343474',
+    fontSize: 18,
     textAlign: 'center',
   },
 })

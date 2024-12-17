@@ -15,7 +15,7 @@ interface ApiErrorResponse {
 interface LoginResponse {
   token: string;
   role: number;
-  scholar_id: number;
+  scholar_id: string;
 }
 
 const api = axios.create({
@@ -35,7 +35,7 @@ api.interceptors.request.use(async config => {
   return config;
 });
 
-export const login = async (email: string, password: string): Promise<{ token: string; scholar_id: number; role?: number }> => {
+export const login = async (email: string, password: string): Promise<{ token: string; scholar_id: string; role?: number }> => {
   try {
     console.log('Attempting login with:', { email });
     const response = await api.post<LoginResponse>('/user/login', { email, password });
@@ -44,13 +44,13 @@ export const login = async (email: string, password: string): Promise<{ token: s
     if (response.data && response.data.token && response.data.scholar_id) {
       const { token, scholar_id, role } = response.data;
       
-      if (typeof token !== 'string' || typeof scholar_id !== 'number') {
+      if (typeof token !== 'string' || typeof scholar_id !== 'string') {
         console.error('Invalid token or scholar_id type:', { token, scholar_id });
         throw new Error('Invalid response format from server');
       }
       
       await SecureStore.setItemAsync('authToken', token);
-      await SecureStore.setItemAsync('scholarId', scholar_id.toString());
+      await SecureStore.setItemAsync('scholarId', scholar_id);
       if (role) {
         await SecureStore.setItemAsync('userRole', role.toString());
       }

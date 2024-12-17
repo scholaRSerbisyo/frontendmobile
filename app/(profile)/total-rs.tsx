@@ -15,8 +15,9 @@ import API_URL from '~/constants/constants'
 import { PostTabHeader } from '~/components/Profile/PostTabHeader'
 import * as ImagePicker from 'expo-image-picker'
 
-interface Submission {
+export interface Submission {
   submission_id: number;
+  status: string;
   event: {
     event_id: number;
     event_name: string;
@@ -25,8 +26,10 @@ interface Submission {
     time_from: string;
     time_to: string;
     location: string;
-    status: string;
     event_type: string;
+    event_Type: {
+      name: string;
+    };
     school: string | null;
     barangay: string | null;
   };
@@ -61,13 +64,6 @@ interface SchoolResponse {
 interface Location {
   baranggay_id: number;
   baranggay_name: string;
-}
-
-interface LocationResponse {
-  baranggay: Location;
-  events: any[]; // You can create a more specific type for events if needed
-  upcoming_events: any[];
-  past_events: any[];
 }
 
 interface ScholarData {
@@ -154,12 +150,12 @@ export default function TotalRSScreen() {
   const fetchLocations = async () => {
     try {
       const token = await SecureStore.getItemAsync('authToken')
-      const response = await axios.get<LocationResponse>(`${API_URL}/baranggay/baranggays/${scholarData?.scholar.baranggay_id}`, {
+      const response = await axios.get<Location>(`${API_URL}/baranggay/baranggays/${scholarData?.scholar.baranggay_id}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       })
-      setBarangay(response.data.baranggay)
+      setBarangay(response.data)
     } catch (err) {
       console.error('Error fetching barangay data:', err)
       setError('Failed to load barangay data')
@@ -234,7 +230,7 @@ export default function TotalRSScreen() {
         </View>
       )
     }
-
+  
     if (error) {
       return (
         <View style={styles.errorContainer}>
@@ -242,7 +238,7 @@ export default function TotalRSScreen() {
         </View>
       )
     }
-
+  
     switch (activeTab) {
       case 'Post':
         return (
@@ -261,16 +257,14 @@ export default function TotalRSScreen() {
           </ScrollView>
         )
       case 'Overview':
-        return <RSOverview />
+        return <RSOverview submissions={submissions} />
       case 'Photos':
         return <RSPhotos photos={photos} />
       case 'Total RS':
         return (
           <>
             <View style={styles.viewToggle}>
-              <Text style={{color: 'gray'}}>Year</Text>
-              <Text style={{color: 'gray', marginLeft: 110}}>Status</Text>
-              <Text style={{color: 'gray', marginLeft: 80}}>Recorded RS</Text>
+              <Text style={{color: 'black'}}>Year</Text>
             </View>
             <RSYearView />
           </>
@@ -314,7 +308,7 @@ export default function TotalRSScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#343474',
+    backgroundColor: '#191851',
   },
   scrollView: {
     flex: 1,
@@ -352,10 +346,7 @@ const styles = StyleSheet.create({
   viewToggle: {
     flexDirection: 'row',
     backgroundColor: '#FFF',
-    fontSize: 8,
-    paddingLeft: 35,
-    paddingRight: 40,
-    paddingTop: 25,
+    padding: 0,
   },
   toggleOption: {
     flex: 1,
@@ -365,11 +356,11 @@ const styles = StyleSheet.create({
     borderBottomColor: 'transparent',
   },
   activeToggle: {
-    borderBottomColor: '#F3BC00',
+    borderBottomColor: '#FDB316',
     backgroundColor: '#FFF',
   },
   toggleText: {
-    color: '#343474',
+    color: '#191851',
     fontSize: 16,
     fontWeight: '600',
   },

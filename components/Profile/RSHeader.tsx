@@ -72,11 +72,11 @@ const styles = StyleSheet.create({
     padding: 4,
   },
   headerTitle: {
-    fontSize: 36,
+    fontSize: 33,
     fontWeight: 'black',
     color: 'white',
     marginTop: 20,
-    paddingTop: 12,
+    paddingTop: 13,
   },
   nameContainer: {
     position: 'absolute',
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     right: 24,
   },
   name: {
-    fontSize: 24,
+    fontSize: 17,
     fontWeight: '600',
     color: 'white',
     paddingTop: 16

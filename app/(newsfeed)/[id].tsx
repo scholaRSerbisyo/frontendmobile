@@ -10,7 +10,7 @@ import API_URL from '~/constants/constants'
 import { format, parseISO, formatDistanceToNow, isWithinInterval, parse, set, startOfDay, isSameDay } from 'date-fns'
 import { toZonedTime } from 'date-fns-tz'
 import { fetchComments, postComment, postReply, fetchReplies, deleteComment, deleteReply } from './api'
-import { Comment, Reply, Event } from './types'
+import { Comment, Reply, Event, Scholar } from './types'
 
 export default function ContentScreen() {
   const { id } = useLocalSearchParams()
@@ -31,12 +31,22 @@ export default function ContentScreen() {
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const [isLoading, setIsLoading] = useState(false)
+  const [authenticatedScholarId, setAuthenticatedScholarId] = useState<number | null>(null)
+  const [submissionTimeOut, setSubmissionTimeOut] = useState<string | null>(null)
+  const [submissionTimeIn, setSubmissionTimeIn] = useState<string | null>(null) // Added state for submissionTimeIn
+
 
   useEffect(() => {
     fetchEvent()
     fetchEventComments()
     getUserRole()
+    getAuthenticatedScholarId()
   }, [id])
+
+  const getAuthenticatedScholarId = async () => {
+    const scholarId = await SecureStore.getItemAsync('scholarId')
+    setAuthenticatedScholarId(scholarId ? parseInt(scholarId) : null)
+  }
 
   const getUserRole = async () => {
     const role = await SecureStore.getItemAsync('userRole')
@@ -83,15 +93,15 @@ export default function ContentScreen() {
 
   const fetchCommentReplies = async (commentId: number) => {
     try {
-      const result = await fetchReplies(commentId);
+      const result = await fetchReplies(commentId)
       setReplies(prevReplies => ({
         ...prevReplies,
         [commentId]: result
-      }));
+      }))
     } catch (error) {
-      console.error('Error fetching replies:', error);
+      console.error('Error fetching replies:', error)
     }
-  };
+  }
 
   const checkExistingSubmission = async () => {
     try {
@@ -101,6 +111,8 @@ export default function ContentScreen() {
         headers: { 'Authorization': `Bearer ${token}` }
       })
       setHasExistingSubmission(response.data.hasSubmission)
+      setSubmissionTimeOut(response.data.timeOut)
+      setSubmissionTimeIn(response.data.timeIn) //Added to set submissionTimeIn
     } catch (error) {
       console.error('Error checking existing submission:', error)
     }
@@ -198,9 +210,12 @@ export default function ContentScreen() {
     const now = toZonedTime(new Date(), 'Asia/Manila')
     const eventDate = toZonedTime(parse(event.date, 'yyyy-MM-dd', new Date()), 'Asia/Manila')
     const timeFrom = event.time_from.split(' ')[1] || event.time_from
+    const timeTo = event.time_to.split(' ')[1] || event.time_to
     const [fromHour, fromMinute] = timeFrom.split(':').map(Number)
+    const [toHour, toMinute] = timeTo.split(':').map(Number)
     const eventStart = set(eventDate, { hours: fromHour, minutes: fromMinute })
-    return eventStart > now
+    const eventEnd = set(eventDate, { hours: toHour, minutes: toMinute })
+    return isWithinInterval(now, { start: eventStart, end: eventEnd })
   }
 
   const renderItem = ({ item: comment }: { item: Comment }) => (
@@ -210,8 +225,8 @@ export default function ContentScreen() {
         <Text style={styles.commentText}>{comment.comment_text}</Text>
         <Text style={styles.commentTime}>{getTimeSinceCreation(comment.created_at)}</Text>
       </View>
-      {replies[comment.comment_id]?.map((reply) => (
-        <View key={`reply-${comment.comment_id}-${reply.reply_id}-${reply.created_at}`} style={[styles.comment, styles.replyComment]}>
+      {((userRole === 1 && comment.scholar_id === authenticatedScholarId) || userRole === 2) && replies[comment.comment_id]?.map((reply) => (
+        <View key={`reply-${reply.reply_id}`} style={[styles.comment, styles.replyComment]}>
           <Text style={styles.commentName}>{`${reply.scholar.firstname} ${reply.scholar.lastname}`}</Text>
           <Text style={styles.commentText}>{reply.reply_text}</Text>
           <Text style={styles.commentTime}>{getTimeSinceCreation(reply.created_at)}</Text>
@@ -225,7 +240,7 @@ export default function ContentScreen() {
           )}
         </View>
       ))}
-      {userRole === 2 && (
+      {((userRole === 1 && comment.scholar_id === authenticatedScholarId) || userRole === 2) && (
         <TouchableOpacity 
           style={styles.replyButton}
           onPress={() => {
@@ -282,72 +297,76 @@ export default function ContentScreen() {
       <FlatList
         data={comments}
         renderItem={renderItem}
-        keyExtractor={(item) => `comment-${item.comment_id}-${item.created_at}`}
+        keyExtractor={(item) => `comment-${item.comment_id}`}
         onEndReached={loadMoreComments}
         onEndReachedThreshold={0.1}
         extraData={replies}
         ListHeaderComponent={() => (
           <View style={styles.contentCard}>
-            <Text style={styles.eventTitle}>{event.event_name}</Text>
+            <View style={styles.content}>
+              <Text style={styles.eventTitle}>{event.event_name}</Text>
 
-            <View style={styles.detailsContainer}>
-              <View style={styles.detailRow}>
-                <Text style={styles.detailLabel}>Date:</Text>
-                <Text style={styles.detailText}>{formatDate(event.date)}</Text>
-              </View>
-
-              <View style={styles.detailRow}>
-                <Text style={styles.detailLabel}>Time:</Text>
-                <Text style={styles.detailText}>{`${formatTime(event.time_from)} to ${formatTime(event.time_to)}`}</Text>
-              </View>
-
-              <View style={styles.detailRow}>
-                <Text style={styles.detailLabel}>Location:</Text>
-                <Text style={styles.detailText}>{event.location}</Text>
-              </View>
-
-              <View style={styles.detailRow}>
-                <Text style={styles.detailLabel}>Type of Event:</Text>
-                <Text style={styles.detailText}>{event.event_type.name}</Text>
-              </View>
-
-              {event.school && (
+              <View style={styles.detailsContainer}>
                 <View style={styles.detailRow}>
-                  <Text style={styles.detailLabel}>School:</Text>
-                  <Text style={styles.detailText}>{event.school.name}</Text>
+                  <Text style={styles.detailLabel}>Date:</Text>
+                  <Text style={styles.detailText}>{formatDate(event.date)}</Text>
                 </View>
-              )}
 
-              {event.barangay && (
                 <View style={styles.detailRow}>
-                  <Text style={styles.detailLabel}>Barangay:</Text>
-                  <Text style={styles.detailText}>{event.barangay.name}</Text>
+                  <Text style={styles.detailLabel}>Time:</Text>
+                  <Text style={styles.detailText}>{`${formatTime(event.time_from)} to ${formatTime(event.time_to)}`}</Text>
                 </View>
-              )}
 
-              <View style={styles.descriptionContainer}>
-                <Text style={styles.detailLabel}>Description:</Text>
-                <Text style={styles.descriptionText}>{event.description}</Text>
+                <View style={styles.detailRow}>
+                  <Text style={styles.detailLabel}>Location:</Text>
+                  <Text style={styles.detailText}>{event.location}</Text>
+                </View>
+
+                <View style={styles.detailRow}>
+                  <Text style={styles.detailLabel}>Type of Event:</Text>
+                  <Text style={styles.detailText}>{event.event_type.name}</Text>
+                </View>
+
+                {event.school && (
+                  <View style={styles.detailRow}>
+                    <Text style={styles.detailLabel}>School:</Text>
+                    <Text style={styles.detailText}>{event.school.name}</Text>
+                  </View>
+                )}
+
+                {event.barangay && (
+                  <View style={styles.detailRow}>
+                    <Text style={styles.detailLabel}>Barangay:</Text>
+                    <Text style={styles.detailText}>{event.barangay.name}</Text>
+                  </View>
+                )}
+
+                <View style={styles.descriptionContainer}>
+                  <Text style={styles.detailLabel}>Description:</Text>
+                  <Text style={styles.descriptionText}>{event.description}</Text>
+                </View>
               </View>
+
+              {imageUrl && (
+                <Image
+                  source={{ uri: imageUrl }}
+                  style={styles.eventImage}
+                  resizeMode="cover"
+                />
+              )}
             </View>
-
-            {imageUrl && (
-              <Image
-                source={{ uri: imageUrl }}
-                style={styles.eventImage}
-                resizeMode="cover"
-              />
-            )}
 
             <View style={styles.commentsSection}>
               <View style={styles.commentsHeader}>
                 <Text style={styles.commentsTitle}>All comments</Text>
-                {!isEventActive(event) && !hasExistingSubmission && (
+                {isEventActive(event) && (!hasExistingSubmission || (hasExistingSubmission && !submissionTimeOut)) && (
                   <TouchableOpacity 
                     style={styles.attachButton}
                     onPress={() => router.push(`/(proof)/submit-proof?id=${id}`)}
                   >
-                    <Text style={styles.attachButtonText}>Attach File</Text>
+                    <Text style={styles.attachButtonText}>
+                      {hasExistingSubmission && submissionTimeIn && !submissionTimeOut ? 'Attach File' : 'Attach File'}
+                    </Text>
                   </TouchableOpacity>
                 )}
               </View>
@@ -448,6 +467,21 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: '#000000',
+  },
+  content: {
+    padding: 10,
+    backgroundColor: '#F6F6F6',
+    borderRadius: 12,
+    marginBottom: 16,
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   loadingContainer: {
     flex: 1,
