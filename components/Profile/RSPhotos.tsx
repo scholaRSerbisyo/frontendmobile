@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    gap: 8
   },
   photoContainer: {
     width: itemWidth,
@@ -184,7 +184,6 @@ const styles = StyleSheet.create({
   },
 })
 
-<<<<<<< HEAD
 
 
 // import React, { useState, useEffect } from 'react'
@@ -363,5 +362,3 @@ const styles = StyleSheet.create({
 //   },
 // })
 
-=======
->>>>>>> 313555c4aafdedcebac851217eddc67d25cc81ce
