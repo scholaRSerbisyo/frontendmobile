@@ -62,8 +62,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#343474', 
     paddingVertical: 10,
-    borderTopWidth: 1,
-    borderTopColor: 'rgba(255, 255, 255, 0.1)',
+    borderTopWidth: 6,
+    borderTopColor: '#FDB316',
+
   },
   navButton: {
     padding: 10,

@@ -145,7 +145,7 @@ export default function NotificationsScreen() {
         }
       />
 
-      <View style={styles.yellowLine} />
+      
       <BottomNavigation activeScreen={ScreenName.Notifications}/>
     </SafeAreaView>
   )
@@ -176,10 +176,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingBottom: 80,
   },
-  yellowLine: {
-    height: 4,
-    backgroundColor: '#FDB316',
-  },
+
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
