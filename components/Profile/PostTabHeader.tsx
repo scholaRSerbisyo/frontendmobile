@@ -170,6 +170,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     gap: 8,
+    marginHorizontal: '15%'
   },
   detailText: {
     fontSize: 14,
