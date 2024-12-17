@@ -399,17 +399,17 @@ export function CalendarScreen() {
       </View>
         <View style={styles.legend}>
           <View style={styles.legendItem}>
-            <View style={[styles.legendDot, { backgroundColor: '#1E88E5' }]} />
+            <View style={[styles.legendDot, { backgroundColor: '#34C759' }]} />
             <Text style={styles.legendText}>Today's Return Service</Text>
             <Text style={styles.legendTime}>30min.</Text>
           </View>
           <View style={styles.legendItem}>
-            <View style={[styles.legendDot, { backgroundColor: '#43A047' }]} />
+            <View style={[styles.legendDot, { backgroundColor: '#0F0E44' }]} />
             <Text style={styles.legendText}>Upcoming Return Service</Text>
             <Text style={styles.legendTime}>60min.</Text>
           </View>
           <View style={styles.legendItem}>
-            <View style={[styles.legendDot, { backgroundColor: '#E53935' }]} />
+            <View style={[styles.legendDot, { backgroundColor: '#FFCC00' }]} />
             <Text style={styles.legendText}>Previous Return Service</Text>
             <Text style={styles.legendTime}>30min.</Text>
           </View>
