@@ -123,12 +123,7 @@ export default function NotificationsScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-<<<<<<< HEAD
         <Text style={styles.title}>Notifications</Text>
-=======
-          <Text style={styles.headertitle}>Notifications</Text>
-          <SearchIcon />
->>>>>>> 313555c4aafdedcebac851217eddc67d25cc81ce
       </View>
 
       <SectionList
@@ -165,10 +160,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 20,
-<<<<<<< HEAD
-=======
     height: 60,
->>>>>>> 313555c4aafdedcebac851217eddc67d25cc81ce
     backgroundColor: '#FFFFFF',
   },
   title: {

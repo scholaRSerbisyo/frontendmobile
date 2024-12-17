@@ -93,22 +93,6 @@ export default function HomeScreen() {
         </TouchableOpacity>
       </View>
       <View style={styles.header}>
-<<<<<<< HEAD
-        <View style={styles.headerTop}>
-          <Image
-            source={require('../../assets/images/logowithouttext.png')}
-            style={styles.logo}
-            resizeMode="contain"
-          />
-          <TouchableOpacity
-            onPress={() => router.push('/calendar')}
-            style={styles.calendarButton}
-          >
-            <CalendarDays size={24} color="#FDB316" />
-          </TouchableOpacity>
-        </View>
-=======
->>>>>>> 313555c4aafdedcebac851217eddc67d25cc81ce
         <SearchBar
           value={searchQuery}
           onChangeText={setSearchQuery}
@@ -212,9 +196,3 @@ const styles = StyleSheet.create({
   }
 })
 
-<<<<<<< HEAD
-
-
-
-=======
->>>>>>> 313555c4aafdedcebac851217eddc67d25cc81ce
