@@ -10,6 +10,7 @@ import API_URL from '~/constants/constants'
 import { format, parse, isWithinInterval, set, startOfDay } from 'date-fns'
 import { toZonedTime } from 'date-fns-tz'
 import { BottomNavigation, ScreenName } from '~/components/Navigation/BottomNavigation'
+import { useRouter } from 'expo-router'
 
 type Event = {
   event_id: number
@@ -42,6 +43,7 @@ const TIMEZONE = 'Asia/Manila'
 const { width: SCREEN_WIDTH } = Dimensions.get('window')
 
 export function CalendarScreen() {
+  const router = useRouter()
   const [selectedDate, setSelectedDate] = useState(format(new Date(), 'yyyy-MM-dd'))
   const [currentMonth, setCurrentMonth] = useState(format(new Date(), 'yyyy-MM'))
   const [events, setEvents] = useState<{ [key: string]: Event[] }>({})
@@ -177,6 +179,10 @@ export function CalendarScreen() {
     }
   }
 
+  const handleBack = () => {
+    router.back()
+  }
+
   const formatDate = (dateString: string) => {
     return format(parse(dateString, 'yyyy-MM-dd', new Date()), 'MMMM d yyyy')
   }
@@ -302,7 +308,9 @@ export function CalendarScreen() {
       <ScrollView style={styles.content}>
       <View style={styles.topSection}>
         <View style={styles.header}>
-          <Text style={styles.backButton}>Back</Text>
+          <TouchableOpacity onPress={handleBack} style={styles.backButton}>
+            <Text style={styles.backButtonText}>Back</Text>
+          </TouchableOpacity>
           <Text style={styles.headerTitle}>Calendar</Text>
         </View>
 
@@ -312,7 +320,7 @@ export function CalendarScreen() {
             borderBottomLeftRadius: 0,
             borderBottomRightRadius: 0,
             marginBottom: 0,
-            paddingTop: 0, // Added to give some space at the top
+            paddingTop: 0,
           }]}
           theme={{
             backgroundColor: 'white',
@@ -333,8 +341,8 @@ export function CalendarScreen() {
             textDayHeaderFontSize: 14,
             'stylesheet.calendar.header': {
               week: {
-                marginTop: 0, // Reduced from 5
-                marginBottom: 5, // Reduced from 10
+                marginTop: 0,
+                marginBottom: 5,
                 flexDirection: 'row',
                 justifyContent: 'space-around',
                 paddingHorizontal: 10,
@@ -344,18 +352,18 @@ export function CalendarScreen() {
                 fontSize: 24,
                 color: 'white', 
                 fontWeight: '700',
-                margin: 5, // Reduced from 10
+                margin: 5,
               },
               dayHeader: {
                 color: '#FFFFFF',
                 fontWeight: '400',
                 fontSize: 12,
-                marginBottom: 5, // Added to create some space between weekday names and dates
+                marginBottom: 5,
               },
             },
             'stylesheet.calendar.main': {
               week: {
-                marginTop: 0,  // Remove margin between rows
+                marginTop: 0,
                 flexDirection: 'row',
                 justifyContent: 'space-around',
                 backgroundColor: '#FFFFFF',
@@ -363,7 +371,7 @@ export function CalendarScreen() {
               },
               container: {
                 backgroundColor: '#FFFFFF',
-                paddingTop: 10, // Add some padding at the top
+                paddingTop: 10,
               },
               dayContainer: {
                 flex: 1,
@@ -437,6 +445,9 @@ const styles = StyleSheet.create({
       backButton: {
         position: 'absolute',
         left: 16,
+        top: 16,
+      },
+      backButtonText: {
         fontSize: 18,
         color: '#FDB316',
         fontWeight: '600',
