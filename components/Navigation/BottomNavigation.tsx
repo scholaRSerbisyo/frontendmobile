@@ -2,7 +2,6 @@ import React from 'react'
 import { View, TouchableOpacity, StyleSheet } from 'react-native'
 import { useRouter } from 'expo-router'
 import { Home, User, Bell } from 'lucide-react-native'
-import { Text } from '../ui/text'
 
 export enum ScreenName {
   Home = 'Home',
@@ -39,21 +38,18 @@ export function BottomNavigation({ activeScreen }: BottomNavigationProps) {
         onPress={() => router.push('/(newsfeed)/homescreen')}
       >
         {renderIcon(Home, ScreenName.Home)}
-        <Text style={[styles.navText, activeScreen === ScreenName.Home && styles.activeNavText]}>Home</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.navButton}
         onPress={() => router.push('/(notification)/page')}
       >
         {renderIcon(Bell, ScreenName.Notifications)}
-        <Text style={[styles.navText, activeScreen === ScreenName.Notifications && styles.activeNavText]}>Notifications</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.navButton}
         onPress={() => router.push('/(profile)/total-rs')}
       >
         {renderIcon(User, ScreenName.Profile)}
-        <Text style={[styles.navText, activeScreen === ScreenName.Profile && styles.activeNavText]}>Profile</Text>
       </TouchableOpacity>
     </View>
   )
@@ -72,16 +68,6 @@ const styles = StyleSheet.create({
   navButton: {
     padding: 10,
     alignItems: 'center',
-  },
-  navText: {
-    color: '#FFFFFF',
-    fontSize: 12,
-    marginTop: 4,
-    // fontWeight: 'bold'
-  },
-  activeNavText: {
-    color: '#F3BC00',
-    fontWeight: 'bold',
   },
 })
 

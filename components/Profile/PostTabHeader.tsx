@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Image, StyleSheet, TouchableOpacity } from 'react-native'
 import { ChevronLeft, GraduationCap, MapPin, Menu, Edit2 } from 'lucide-react-native'
 import { Text } from '../ui/text'
 import { useRouter } from 'expo-router'
+import { SideMenu } from './Sidebar/SideMenu'
 
 interface PostTabHeaderProps {
   name: string
@@ -20,6 +21,7 @@ export function PostTabHeader({
   onPhotoEdit 
 }: PostTabHeaderProps) {
   const router = useRouter()
+  const [isSideMenuVisible, setIsSideMenuVisible] = useState(false)
 
   return (
     <View>
@@ -31,8 +33,11 @@ export function PostTabHeader({
             <ChevronLeft color="#F3BC00" size={24} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Profile</Text>
-          <TouchableOpacity style={styles.iconButton} onPress={() => router.push('/(profile)/burger-menu')}>
-            <Menu color="#F3BC00" size={24} />
+          <TouchableOpacity 
+            style={styles.iconButton}
+            onPress={() => setIsSideMenuVisible(true)}
+          >
+            <Menu color="#F3BC00" size={30} />
           </TouchableOpacity>
         </View>
 
@@ -73,6 +78,10 @@ export function PostTabHeader({
           </View>
         </View>
       </View>
+      <SideMenu 
+        isVisible={isSideMenuVisible}
+        onClose={() => setIsSideMenuVisible(false)}
+      />
     </View>
   )
 }
@@ -110,14 +119,13 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   headerTitle: {
-    fontSize: 36,
+    fontSize: 30,
     fontWeight: '700',
     color: 'white',
     paddingTop: 16
   },
   profileSection: {
     alignItems: 'center',
-
   },
   profileImageWrapper: {
     position: 'relative',
