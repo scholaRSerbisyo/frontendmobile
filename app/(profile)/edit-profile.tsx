@@ -128,12 +128,13 @@ const styles = StyleSheet.create({
   },
   fieldLabel: {
     fontSize: 16,
-    color: '#FDB316',
+    color: 'black',
     marginBottom: 8,
+
   },
   fieldValue: {
     fontSize: 16,
-    color: '#000000',
+    color: '#8F8B8B',
     marginBottom: 8,
   },
   fieldBorder: {

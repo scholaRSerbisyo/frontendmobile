@@ -22,9 +22,10 @@ export function NotificationSection({ section }: NotificationSectionProps) {
 
 const styles = StyleSheet.create({
   section: {
-    marginBottom: 20,
-    borderColor: 'black',
-    borderWidth: 1
+    marginBottom: 10,
+    borderColor: 'grey',
+    borderWidth: 1,
+    borderRadius: 10
   },
 })
 
