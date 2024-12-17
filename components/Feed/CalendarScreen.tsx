@@ -140,11 +140,11 @@ export function CalendarScreen() {
   const getEventColor = (status: string) => {
     switch (status) {
       case 'ongoing':
-        return '#1E88E5'  // Blue for Today's
+        return '#34C759'  // green
       case 'upcoming':
-        return '#43A047'  // Green for Upcoming
+        return '#0F0E44'  // blue
       case 'previous':
-        return '#E53935'  // Red for Previous
+        return '#FFCC00'  // yellow
       default:
         return '#1E88E5'  // Blue as default
     }
@@ -560,13 +560,13 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   previous: {
-    color: '#E53935',
+    color: '#FFCC00',
   },
   ongoing: {
-    color: '#1E88E5',
+    color: '#34C759',
   },
   upcoming: {
-    color: '#43A047',
+    color: '#0F0E44',
   },
 })
 
