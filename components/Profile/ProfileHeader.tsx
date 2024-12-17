@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
   },
   detailRow: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     marginBottom: 8,
   },
   detailText: {
