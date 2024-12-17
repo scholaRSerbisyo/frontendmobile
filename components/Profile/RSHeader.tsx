@@ -20,11 +20,11 @@ export function RSHeader({ name, school, location, photo }: RSHeaderProps) {
     <>
       <View style={styles.topSection}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-          <ChevronLeft color="#F3BC00" size={24} />
+          <ChevronLeft color="#FDB316" size={24} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Profile</Text>
         <TouchableOpacity onPress={() => setIsSideMenuVisible(true)} style={styles.menuButton}>
-          <Menu color="#F3BC00" size={24} />
+          <Menu color="#FDB316" size={30} />
         </TouchableOpacity>
         <View style={styles.nameContainer}>
           <Text style={styles.name}>{name}</Text>
@@ -40,13 +40,13 @@ export function RSHeader({ name, school, location, photo }: RSHeaderProps) {
         </View>
         <View style={styles.detailsContainer}>
           <View style={styles.detailRow}>
-            <GraduationCap color="#F3BC00" size={16} />
+            <GraduationCap color="#FDB316" size={16} />
             <Text style={styles.detailText}>
               Studied at <Text style={styles.detailBold}>{school}</Text>
             </Text>
           </View>
           <View style={styles.detailRow}>
-            <MapPin color="#F3BC00" size={16} />
+            <MapPin color="#FDB316" size={16} />
             <Text style={styles.detailText}>
               Live in <Text style={styles.detailBold}>{location}</Text>
             </Text>
@@ -75,14 +75,15 @@ const styles = StyleSheet.create({
     padding: 4,
   },
   menuButton: {
-    padding: 4,
+    padding: 8,
   },
   headerTitle: {
     fontSize: 30,
-    fontWeight: 'black',
+    fontWeight: '700',
     color: 'white',
-    marginTop: 20,
+    marginTop: 12,
     paddingTop: 12,
+    padding: 8
   },
   nameContainer: {
     position: 'absolute',
@@ -161,11 +162,11 @@ const styles = StyleSheet.create({
 //     <>
 //       <View style={styles.topSection}>
 //         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-//           <ChevronLeft color="#F3BC00" size={24} />
+//           <ChevronLeft color="#FDB316" size={24} />
 //         </TouchableOpacity>
 //         <Text style={styles.headerTitle}>Profile</Text>
 //         <TouchableOpacity onPress={() => router.replace('../(profile)/burger-menu')} style={styles.menuButton}>
-//           <Menu color="#F3BC00" size={24} />
+//           <Menu color="#FDB316" size={24} />
 //         </TouchableOpacity>
 //         <View style={styles.nameContainer}>
 //           <Text style={styles.name}>{name}</Text>
@@ -181,13 +182,13 @@ const styles = StyleSheet.create({
 //         </View>
 //         <View style={styles.detailsContainer}>
 //           <View style={styles.detailRow}>
-//             <GraduationCap color="#F3BC00" size={16} />
+//             <GraduationCap color="#FDB316" size={16} />
 //             <Text style={styles.detailText}>
 //               Studied at <Text style={styles.detailBold}>{school}</Text>
 //             </Text>
 //           </View>
 //           <View style={styles.detailRow}>
-//             <MapPin color="#F3BC00" size={16} />
+//             <MapPin color="#FDB316" size={16} />
 //             <Text style={styles.detailText}>
 //               Live in <Text style={styles.detailBold}>{location}</Text>
 //             </Text>

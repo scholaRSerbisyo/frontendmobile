@@ -101,7 +101,7 @@
     },
     backText: {
       fontSize: 18,
-      color: '#F3BC00',
+      color: '#FDB316',
       fontWeight: '600',
       fontFamily: 'Times New Roman',
     },
@@ -131,7 +131,7 @@
 
     },
     sectionHeader: {
-      backgroundColor: '#F3BC00',
+      backgroundColor: '#FDB316',
       paddingVertical: 12,
       paddingHorizontal: 16,
       fontSize: 24,

@@ -411,7 +411,7 @@ export function SubmitProofScreen({ eventId }: SubmitProofScreenProps) {
                 </View>
               ) : (
                 <>
-                  <Camera size={32} color="#F3BC00" />
+                  <Camera size={32} color="#FDB316" />
                   <Text style={styles.photoButtonText}>Time in</Text>
                 </>
               )}
@@ -590,7 +590,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   submitButton: {
-    backgroundColor: '#F3BC00',
+    backgroundColor: '#FDB316',
     paddingVertical: 16,
     borderRadius: 8,
     alignItems: 'center',

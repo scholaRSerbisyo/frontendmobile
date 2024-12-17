@@ -30,14 +30,14 @@ export function PostTabHeader({
       <View style={styles.content}>
         <View style={styles.topSection}>
           <TouchableOpacity onPress={() => router.back()} style={styles.iconButton}>
-            <ChevronLeft color="#F3BC00" size={24} />
+            <ChevronLeft color="#FDB316" size={24} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Profile</Text>
           <TouchableOpacity 
             style={styles.iconButton}
             onPress={() => setIsSideMenuVisible(true)}
           >
-            <Menu color="#F3BC00" size={30} />
+            <Menu color="#FDB316" size={30} />
           </TouchableOpacity>
         </View>
 
@@ -62,15 +62,15 @@ export function PostTabHeader({
 
           <Text style={styles.name}>{name}</Text>
           
-          <View style={styles.detailsContainer}>
+          <View >
             <View style={styles.detailRow}>
-              <GraduationCap color="#F3BC00" size={16} />
+              <GraduationCap color="#FDB316" size={16} />
               <Text style={styles.detailText}>
                 Studied at <Text style={styles.detailBold}>{school}</Text>
               </Text>
             </View>
             <View style={styles.detailRow}>
-              <MapPin color="#F3BC00" size={16} />
+              <MapPin color="#FDB316" size={16} />
               <Text style={styles.detailText}>
                 Live in <Text style={styles.detailBold}>{location}</Text>
               </Text>
@@ -165,9 +165,7 @@ const styles = StyleSheet.create({
     color: '#000000',
     paddingTop: 12
   },
-  detailsContainer: {
-    alignItems: 'center',
-  },
+
   detailRow: {
     flexDirection: 'row',
     alignItems: 'center',

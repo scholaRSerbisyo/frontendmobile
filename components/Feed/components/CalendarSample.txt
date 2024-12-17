@@ -129,7 +129,7 @@ export function CalendarScreenSample() {
         marked: true,
         dotColor: getEventColor(dayEvents[0].status),
         selected: date === selectedDate,
-        selectedColor: '#F3BC00',
+        selectedColor: '#FDB316',
       }
     })
     return markedDates
@@ -319,7 +319,7 @@ export function CalendarScreenSample() {
             backgroundColor: '#2A2A5C',
             calendarBackground: '#2A2A5C',
             textSectionTitleColor: '#FFFFFF',
-            selectedDayBackgroundColor: '#F3BC00',
+            selectedDayBackgroundColor: '#FDB316',
             selectedDayTextColor: '#2A2A5C',
             todayTextColor: '#343474',
             dayTextColor: '#343474',

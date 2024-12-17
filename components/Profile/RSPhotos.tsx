@@ -72,7 +72,7 @@ export function RSPhotos({ photos }: RSPhotosProps) {
                     style={styles.image}
                   />
                 ) : (
-                  <ActivityIndicator size="small" color="#F3BC00" />
+                  <ActivityIndicator size="small" color="#FDB316" />
                 )}
                 <View style={styles.searchButton}>
                   <Image size={20} color="#343474" />
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: '#F3BC00',
+    backgroundColor: '#FDB316',
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
@@ -250,7 +250,7 @@ const styles = StyleSheet.create({
 //                     style={styles.image}
 //                   />
 //                 ) : (
-//                   <ActivityIndicator size="small" color="#F3BC00" />
+//                   <ActivityIndicator size="small" color="#FDB316" />
 //                 )}
 //                 <View style={styles.searchButton}>
 //                   <Image size={20} color="#343474" />
@@ -316,7 +316,7 @@ const styles = StyleSheet.create({
 //     width: 32,
 //     height: 32,
 //     borderRadius: 16,
-//     backgroundColor: '#F3BC00',
+//     backgroundColor: '#FDB316',
 //     justifyContent: 'center',
 //     alignItems: 'center',
 //     position: 'absolute',

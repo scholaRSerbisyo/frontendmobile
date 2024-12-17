@@ -102,7 +102,7 @@ export function EventCard({ event }: { event: Event }) {
 
         {event.event_image_uuid && (
           loading ? (
-            <ActivityIndicator size="large" color="#F3BC00" style={styles.loader} />
+            <ActivityIndicator size="large" color="#FDB316" style={styles.loader} />
           ) : (
             imageUrl && (
               <Image 
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
   footer: {
     marginTop: 8,
     borderBottomWidth: 3,
-    borderBlockColor: '#F3BC00'
+    borderBlockColor: '#FDB316'
   },
   createdAtText: {
     fontSize: 12,

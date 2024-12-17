@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   },
   activeTabText: {
     fontWeight: 'bold',
-    color: '#F3BC00',
+    color: '#FDB316',
   },
   activeIndicator: {
     position: 'absolute',
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: 3,
-    backgroundColor: '#F3BC00',
+    backgroundColor: '#FDB316',
   },
   divider: {
     position: 'absolute',
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: 2,
-    // backgroundColor: 'rgba(253, 179, 22, 0.8)', // #F3BC00 with 80% opacity
+    // backgroundColor: 'rgba(253, 179, 22, 0.8)', // #FDB316 with 80% opacity
   },
 })
 

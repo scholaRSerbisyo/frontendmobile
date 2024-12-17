@@ -113,15 +113,16 @@ const styles = StyleSheet.create({
   formContainer: {
     flex: 1,
     paddingHorizontal: 24,
-    justifyContent: 'center',
+    justifyContent: 'flex-start', // Changed from 'center' to 'flex-start'
+    paddingTop: 60, // Added paddingTop to move content up
   },
   title: {
-    fontSize: 28,
+    fontSize: 36,
     fontWeight: 'bold',
     color: 'white',
-    marginBottom: 16,
-    textAlign: 'center',
-    paddingTop: 12,
+    marginBottom: 24, // Increased marginBottom
+    textAlign: 'center', // Changed from 'center' to 'left'
+    paddingTop: 10, // Removed paddingTop
   },
   input: {
     backgroundColor: 'white',
@@ -145,7 +146,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   continueButton: {
-    backgroundColor: '#F3BC00',
+    backgroundColor: '#FDB316',
     height: 48,
     borderRadius: 24,
     justifyContent: 'center',
@@ -166,7 +167,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   registerLink: {
-    color: '#F3BC00',
+    color: '#FDB316',
     fontWeight: 'bold',
     textDecorationLine: 'underline'
   },

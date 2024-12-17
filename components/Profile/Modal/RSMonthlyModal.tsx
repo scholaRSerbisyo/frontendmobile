@@ -41,7 +41,7 @@ export default function RSMonthlyModal({
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
               style={styles.closeButton}
             >
-              <X size={20} color="#F3BC00" />
+              <X size={20} color="#FDB316" />
             </TouchableOpacity>
             <Text style={styles.titleText}>Year: {year} - {semester}</Text>
           </View>

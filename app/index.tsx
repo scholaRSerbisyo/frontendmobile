@@ -11,7 +11,7 @@ export default function LandingPage() {
     <View style={styles.container}>
       <StatusBar style="dark" />
       
-      <View style={styles.contentContainer}>
+      <View style={styles.contentContainer}>  
         <Animated.View 
           entering={FadeIn.delay(300).duration(1000)} 
           style={styles.logoContainer}
@@ -30,7 +30,7 @@ export default function LandingPage() {
         >
           {/* <Link href="/profile\total-rs" asChild> */}
             <Button 
-            onPress={() => router.replace('/(newsfeed)/homescreen')}
+            onPress={() => router.replace('/(authentication)/login')}
 
             style={styles.continueButton}>
               <Text style={styles.continueButtonText}>
@@ -60,14 +60,14 @@ const styles = StyleSheet.create({
     marginBottom: undefined, // Reduced space between logo and button
   },
   logo: {
-    width: 280,
+    width: 300,
     height: 180,
   },
   buttonContainer: {
     width: '80%',
   },
   continueButton: {
-    backgroundColor: '#F3BC00',
+    backgroundColor: '#FDB316',
     height: 50,
     borderRadius: 25,
     shadowColor: '#000',
@@ -80,8 +80,8 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   continueButtonText: {
-    color: '#343474',
-    fontSize: 18,
+    color: 'white',
+    fontSize: 22,
     fontWeight: 'bold',
   },
 })

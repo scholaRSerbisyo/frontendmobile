@@ -230,7 +230,7 @@ export default function TotalRSScreen() {
     if (loading) {
       return (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#F3BC00" />
+          <ActivityIndicator size="large" color="#FDB316" />
         </View>
       )
     }
@@ -365,7 +365,7 @@ const styles = StyleSheet.create({
     borderBottomColor: 'transparent',
   },
   activeToggle: {
-    borderBottomColor: '#F3BC00',
+    borderBottomColor: '#FDB316',
     backgroundColor: '#FFF',
   },
   toggleText: {

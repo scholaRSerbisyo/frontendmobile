@@ -390,7 +390,7 @@ export function SubmitProofScreen({ eventId }: SubmitProofScreenProps) {
               {timeInImage ? (
                 <Image source={{ uri: timeInImage }} style={styles.capturedImage} />
               ) : (
-                <Camera size={32} color="#F3BC00" />
+                <Camera size={32} color="#FDB316" />
               )}
             </TouchableOpacity>
 
@@ -456,7 +456,7 @@ const styles = StyleSheet.create({
   },
   orangeBar: {
     height: 4,
-    backgroundColor: '#F3BC00',
+    backgroundColor: '#FDB316',
     position: 'absolute',
     top: 0,
     left: 0,
@@ -557,7 +557,7 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   submitButton: {
-    backgroundColor: '#F3BC00',
+    backgroundColor: '#FDB316',
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',

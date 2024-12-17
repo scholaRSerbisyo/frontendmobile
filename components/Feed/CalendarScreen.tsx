@@ -129,7 +129,7 @@ export function CalendarScreen() {
         marked: true,
         dotColor: getEventColor(dayEvents[0].status),
         selected: date === selectedDate,
-        selectedColor: '#F3BC00',
+        selectedColor: '#FDB316',
       }
     })
     return markedDates
@@ -318,7 +318,7 @@ export function CalendarScreen() {
             backgroundColor: 'white',
             calendarBackground: 'white',
             textSectionTitleColor: '#FFFFFF',
-            selectedDayBackgroundColor: '#F3BC00',
+            selectedDayBackgroundColor: '#FDB316',
             selectedDayTextColor: '#2A2A5C',
             todayTextColor: '#343474',
             dayTextColor: '#343474',
@@ -438,7 +438,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         left: 16,
         fontSize: 18,
-        color: '#F3BC00',
+        color: '#FDB316',
         fontWeight: '600',
       },
       headerTitle: {

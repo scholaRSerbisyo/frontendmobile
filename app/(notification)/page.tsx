@@ -123,12 +123,7 @@ export default function NotificationsScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity 
-          onPress={() => router.back()} 
-          style={styles.backButton}
-        >
-          <ChevronLeft size={36} color="#F3BC00" />
-        </TouchableOpacity>
+        <Text style={styles.title}>Notifications</Text>
       </View>
 
       <SectionList
@@ -165,8 +160,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 20,
-    paddingTop: 30,
     backgroundColor: '#FFFFFF',
+  },
+  title: {
+    color: "#343474",
+    fontSize: 32,
+    fontWeight: 'bold',
+    paddingTop: "10%"
   },
   backButton: {
     padding: 10,
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
   },
   yellowLine: {
     height: 4,
-    backgroundColor: '#F3BC00',
+    backgroundColor: '#FDB316',
   },
   sectionTitle: {
     fontSize: 18,

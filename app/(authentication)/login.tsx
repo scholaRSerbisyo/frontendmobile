@@ -8,7 +8,7 @@ export default function LoginScreen() {
     <SafeAreaView style={styles.container}>
       <View style={styles.topSection}>
         <Image
-          source={require('../../assets/images/2nd-type-logo.png')}
+          source={require('~/assets/images/2nd-type-logo.png')}
           style={styles.logo}
           resizeMode="contain"
         />

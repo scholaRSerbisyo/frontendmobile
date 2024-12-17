@@ -17,7 +17,7 @@ export function BottomNavigation({ activeScreen }: BottomNavigationProps) {
   const router = useRouter()
 
   const getNavIconColor = (screen: ScreenName) =>
-    activeScreen === screen ? '#F3BC00' : '#FFFFFF'
+    activeScreen === screen ? '#FDB316' : '#FFFFFF'
 
   const renderIcon = (Icon: typeof Home, screen: ScreenName) => {
     const isActive = activeScreen === screen
@@ -25,7 +25,7 @@ export function BottomNavigation({ activeScreen }: BottomNavigationProps) {
       <Icon
         size={24}
         color={getNavIconColor(screen)}
-        fill={isActive ? '#F3BC00' : 'none'}
+        fill={isActive ? '#FDB316' : 'none'}
         strokeWidth={isActive ? 0 : 2}
       />
     )

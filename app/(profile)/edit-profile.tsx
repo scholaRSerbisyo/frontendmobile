@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
   },
   backText: {
     fontSize: 18,
-    color: '#F3BC00',
+    color: '#FDB316',
     fontWeight: '600',
   },
   headerTitle: {
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
   },
   fieldLabel: {
     fontSize: 16,
-    color: '#F3BC00',
+    color: '#FDB316',
     marginBottom: 8,
   },
   fieldValue: {
@@ -209,7 +209,7 @@ export default ScholarsInfoScreen
 //     return (
 //       <SafeAreaView style={styles.container}>
 //         <View style={styles.loadingContainer}>
-//           <ActivityIndicator size="large" color="#F3BC00" />
+//           <ActivityIndicator size="large" color="#FDB316" />
 //         </View>
 //       </SafeAreaView>
 //     )
@@ -282,7 +282,7 @@ export default ScholarsInfoScreen
 //   },
 //   backText: {
 //     fontSize: 18,
-//     color: '#F3BC00',
+//     color: '#FDB316',
 //     fontWeight: '600',
 //   },
 //   headerTitle: {
@@ -303,7 +303,7 @@ export default ScholarsInfoScreen
 //   },
 //   fieldLabel: {
 //     fontSize: 16,
-//     color: '#F3BC00',
+//     color: '#FDB316',
 //     marginBottom: 8,
 //   },
 //   fieldValue: {

@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   menuButtonText: {
-    color: '#F3BC00',
+    color: '#FDB316',
     fontSize: 16,
     fontWeight: '600',
   },

@@ -15,7 +15,7 @@ export function RSVideos() {
           <TouchableOpacity key={video.id} style={styles.videoContainer}>
             <View style={styles.thumbnail}>
               <View style={styles.playButton}>
-                <ImagePlay size={24} color="#F3BC00" />
+                <ImagePlay size={24} color="#FDB316" />
               </View>
             </View>
           </TouchableOpacity>

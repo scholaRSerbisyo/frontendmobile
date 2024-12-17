@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   attachButton: {
-    backgroundColor: '#F3BC00',
+    backgroundColor: '#FDB316',
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 20,

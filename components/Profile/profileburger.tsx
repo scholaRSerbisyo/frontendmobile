@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   },
   status: {
     fontSize: 14,
-    color: '#F3BC00',
+    color: '#FDB316',
     marginBottom: 20,
   },
   menuSection: {
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     backgroundColor: '#fff',
     borderWidth: 1,
-    borderColor: '#F3BC00',
+    borderColor: '#FDB316',
     paddingVertical: 10,
   },
   menuText: {

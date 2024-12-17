@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   title: {
-    fontSize: 28,
+    fontSize: 36,
     fontWeight: 'bold',
     color: 'white',
     marginBottom: 24,
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   backButton: {
-    backgroundColor: '#F3BC00',
+    backgroundColor: '#FDB316',
     height: 48,
     borderRadius: 24,
     justifyContent: 'center',
@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
     width: '45%',
   },
   continueButton: {
-    backgroundColor: '#F3BC00',
+    backgroundColor: '#FDB316',
     height: 48,
     borderRadius: 24,
     justifyContent: 'center',

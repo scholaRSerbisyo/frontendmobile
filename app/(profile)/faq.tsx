@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
   },
   backText: {
     fontSize: 18,
-    color: '#F3BC00',
+    color: '#FDB316',
     fontWeight: '600',
   },
   headerTitle: {
@@ -343,7 +343,7 @@ export default FAQScreen
 //   },
 //   backButtonText: {
 //     fontSize: 16,
-//     color: '#F3BC00',
+//     color: '#FDB316',
 //     fontWeight: '600',
 //   },
 // })

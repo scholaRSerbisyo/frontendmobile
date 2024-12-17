@@ -102,7 +102,7 @@ export function SideMenu({ isVisible, onClose }: SideMenuProps) {
         >
           <View style={styles.header}>
             <TouchableOpacity onPress={onClose}>
-              <X color="#F3BC00" size={24} />
+              <X color="#FDB316" size={30} />
             </TouchableOpacity>
           </View>
 
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center',
     padding: 20,
-    paddingTop: 60,
+    paddingTop: 30,
   },
   menuItems: {
     padding: 20,
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
     borderColor: 'black',
   },
   menuItemText: {
-    color: '#F3BC00',
+    color: '#FDB316',
     fontSize: 28,
     fontWeight: 'bold',
     textAlign: 'center',

@@ -42,7 +42,7 @@ export function ProfilePost({ submission }: ProfilePostProps) {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#F3BC00" />
+        <ActivityIndicator size="large" color="#FDB316" />
       </View>
     );
   }
@@ -303,7 +303,7 @@ const styles = StyleSheet.create({
 //   if (loading) {
 //     return (
 //       <View style={styles.loadingContainer}>
-//         <ActivityIndicator size="large" color="#F3BC00" />
+//         <ActivityIndicator size="large" color="#FDB316" />
 //       </View>
 //     );
 //   }
